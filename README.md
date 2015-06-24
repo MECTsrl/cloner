@@ -1,13 +1,13 @@
 # cloner
-Application for copying and installing the software from/to the MECT panels.
+Application for copying and installing the system software from/to the MECT panels.
 
 The cloner manages all the software parts: Kernel, RootFS and local applications.
 
 You build the cloner package from the developer's Linux PC also used for imx\_mect (LTIB). 
 
 The build steps are:
- - rebuild by ltib the qt-everywhere package with the "-static" gcc option into the spec file;
- - run the following commands:
+- rebuild by ltib the qt-everywhere package with the "-static" gcc option into the spec file;
+- run the following commands:
 	export VERSION="xx"
 	/usr/local/Trolltech/Qt-qvfb-version/bin/qmake -spec /usr/local/Trolltech/Qt-qvfb-version/mkspecs/qws/linux-arm-gnueabi-g++
 	make
