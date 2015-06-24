@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>img/Refresh.png</file>
+        <file>img/Loading0.png</file>
+        <file>img/Loading3.png</file>
+        <file>img/Loading2.png</file>
+        <file>img/Loading1.png</file>
+        <file>img/Delete.png</file>
+        <file>img/Play.png</file>
+        <file>img/Apply.png</file>
+    </qresource>
+</RCC>
