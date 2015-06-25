@@ -13,6 +13,6 @@ The build steps are:
   - make
   - ./make_sysupdate.sh
 
-The output is the "sysupdate\_cloner.sh" uuencoded script 
+The output is the "sysupdate\_cloner.sh" "uuencoded" script 
 
 You need to copy the script to an empty USB pendrive and then boot the panel with the USB pendrive inserted: the cloner shall start instead of the panel applications (details into the pdf manual).
