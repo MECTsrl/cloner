@@ -30,8 +30,8 @@
         <section id="main-content">
           <p><img src="http://www.mect.it/dati/immagini/Sviluppo%20Mect%20Suite%20con%20link_960_563_cloner.png" alt="Sviluppo_software"></p>
 
-<h2>
-<a id="cloner" class="anchor" href="#cloner" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cloner</h2>
+<h3>
+<a id="cloner-part-of-mect-suite-sdk" class="anchor" href="#cloner-part-of-mect-suite-sdk" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cloner (part of <a href="http://www.mect.it/en/github/">Mect Suite SDK</a>)</h3>
 
 <p>Application for copying and installing the system software from/to the MECT panels.The cloner manages all the software parts: Kernel, RootFS and local applications.</p>
 
@@ -47,11 +47,12 @@
 <li>export VERSION="xx"</li>
 <li>/usr/local/Trolltech/Qt-qvfb-version/bin/qmake -spec /usr/local/Trolltech/Qt-qvfb-version/mkspecs/qws/linux-arm-gnueabi-g++</li>
 <li>make</li>
-<li>./make_sysupdate.sh
-The output is the "sysupdate_cloner.sh" uuencoded script.</li>
+<li>./make_sysupdate.sh</li>
 </ul>
 </li>
 </ul>
+
+<p>The output is the "sysupdate_cloner.sh" "uuencoded" script.</p>
 
 <p>You need to copy the script to an empty USB pendrive and then boot the panel with the USB pendrive inserted: the cloner shall start instead of the panel applications (details into the pdf manual).</p>
         </section>
