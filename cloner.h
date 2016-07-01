@@ -45,15 +45,15 @@ public:
     
 private slots:
 
-    void on_pushButtonStart_clicked();
-
     void updateData();
 
     void finishProcess();
 
-    void on_pushButtonBackup_toggled(bool checked);
+    void on_comboBoxImages_currentIndexChanged(const QString &arg1);
 
-    void on_pushButtonRestore_toggled(bool checked);
+    void on_pushButtonBackup_clicked();
+
+    void on_pushButtonInstall_clicked();
 
 private:
     bool backupLocalFs();
@@ -63,6 +63,9 @@ private:
     bool restoreRootFs();
     bool restoreKernel();
     bool loadInfo();
+    QString getDefaultDirName();
+    int getIP(const char * interface, char * ip);
+    int getMAC(const char *interface, char * mac);
 
 private:
     Ui::cloner *ui;
@@ -70,6 +73,8 @@ private:
     QString points;
     myProcess mp;
     int arrayQueue[step_nb];
+    char backupDir[256];
+    char restoreDir[256];
 };
 
 #endif // CLONER_H

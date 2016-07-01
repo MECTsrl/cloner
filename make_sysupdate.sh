@@ -12,28 +12,6 @@ then
 	return 1
 fi
 
-if [ ! -e bunzip2 ]
-then
-if [ -e ${ROOT_FS_DIR}/usr/bin/bunzip2 ]
-then
-	cp ${ROOT_FS_DIR}/usr/bin/bunzip2 .
-else
-	echo cannot find \"${ROOT_FS_DIR}/usr/bin/bunzip2\"
-	return 1
-fi
-fi
-
-if [ ! -e bzip2 ]
-then
-if [ -e ${ROOT_FS_DIR}/usr/bin/bzip2 ]
-then
-	cp ${ROOT_FS_DIR}/usr/bin/bzip2 .
-else
-	echo cannot find \"${ROOT_FS_DIR}/usr/bin/bzip2\"
-	return 1
-fi
-fi
-
 if [ ! -e flash_eraseall ]
 then
 if [ -e ${ROOT_FS_DIR}/usr/bin/flash_eraseall ]
@@ -66,7 +44,7 @@ then
 	rm -f ./$OUT_FILE_NAME
 fi
 
-tar cf update.tar cloner flash_eraseall kobs-ng bzip2 bunzip2
+tar cf update.tar cloner flash_eraseall kobs-ng
 gzip update.tar
 cp sysupdate_script.sh $OUT_FILE_NAME
 uuencode update.tar.gz $OUT_DIR/update.tar.gz >> $OUT_FILE_NAME

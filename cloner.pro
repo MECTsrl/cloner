@@ -12,7 +12,13 @@ DEFINES -= QT_SHARED
 TARGET = cloner
 TEMPLATE = app
 
-DEFINES+=SVN_REV=\"$(VERSION)\"
+LIBS += \
+-lts \
+-lATCMinputdialog
+
+
+DEFINES+=SVN_REV=6.4
+#DEFINES+=SVN_REV=\"$(VERSION)\"
 #DEFINES+='SVN_REV="rev. $(shell svnversion -n .)"'
 
 SOURCES += main.cpp\

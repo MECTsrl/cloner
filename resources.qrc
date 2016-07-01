@@ -8,5 +8,17 @@
         <file>img/Delete.png</file>
         <file>img/Play.png</file>
         <file>img/Apply.png</file>
+        <file>img/Back.png</file>
+        <file>img/Forward.png</file>
+        <file>img/logo.png</file>
+        <file>img/usb.png</file>
+    </qresource>
+    <qresource prefix="/systemicons">
+        <file>img/Back.png</file>
+        <file>img/Clear.png</file>
+        <file>img/Delete.png</file>
+        <file>img/Forward.png</file>
+        <file>img/OK.png</file>
+        <file>img/Up.png</file>
     </qresource>
 </RCC>

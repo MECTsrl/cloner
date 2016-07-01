@@ -27,7 +27,7 @@ export TSLIB_CONFFILE=/usr/etc/ts.conf
 export TSLIB_PLUGINDIR=/usr/lib/ts
 export TSLIB_TSDEVICE=/dev/input/ts0
 export TSLIB_CONSOLEDEVICE=none
-export TSLIB_CALIBFILE=/local/etc/sysconfig/pointercal
+export TSLIB_CALIBFILE=/etc/pointercal
 
 # qt variable
 export QWS_MOUSE_PROTO=tslib:$TSLIB_TSDEVICE
@@ -37,7 +37,10 @@ export POINTERCAL_FILE=$TSLIB_CALIBFILE
 /etc/rc.d/init.d/autoexec stop
 killall -q hmi fcrts autoexec
 
-#SIZE=`awk -F ',' '{print $1"x"$2}' /sys/class/graphics/fb0/virtual_size`
+SIZE=`awk -F ',' '{print $1"x"$2}' /sys/class/graphics/fb0/virtual_size`
+
+test -z $SIZE && SIZE=480x272
+
 $OUT_DIR/cloner -qws -display "Multi: VNC:0:size=${SIZE} Transformed:rot0" || $OUT_DIR/cloner -qws
 RET_VAL=$?
 

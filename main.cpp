@@ -2,6 +2,7 @@
 #include "cloner.h"
 #include <QWSServer>
 #include <getopt.h>
+#include <stdio.h>
 
 /* Long options */
 static struct option long_options[] = {
@@ -33,7 +34,7 @@ static int application_options(int argc, char *argv[])
 	while ((c = getopt_long(argc, argv, short_options, long_options, &option_index)) != -1) {
 		switch (c) {
 			case 'v':
-                printf("%s version: rev.%d\n", argv[0], SVN_REV);
+                printf("%s version: rev.%.1f\n", argv[0], SVN_REV);
 				exit(0);
 				break;
 			default:
