@@ -228,7 +228,7 @@ void cloner::finishProcess()
     }
     arrayQueue[actualStep] = step_none_e;
     actualStep = step_none_e;
-    loadInfo();
+    //loadInfo();
 }
 
 bool cloner::backupLocalFs()
