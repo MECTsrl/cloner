@@ -1,4 +1,5 @@
 # cloner
+
 Application for copying and installing the system software from/to the MECT panels.
 
 The cloner manages all the software parts: Kernel, RootFS and local applications.
@@ -11,7 +12,7 @@ The build steps are:
   - export VERSION="xx"
   - /usr/local/Trolltech/Qt-qvfb-version/bin/qmake -spec /usr/local/Trolltech/Qt-qvfb-version/mkspecs/qws/linux-arm-gnueabi-g++
   - make
-  - ./make_sysupdate.sh
+  - ./make\_sysupdate.sh
 
 The output is the "sysupdate\_cloner.sh" "uuencoded" script 
 
