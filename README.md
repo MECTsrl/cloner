@@ -1,19 +1,25 @@
 # cloner
 
-Application for copying and installing the system software from/to the MECT panels.
+Application for copying and installing the system software
+from/to the MECT panels.  It handles all software parts of the
+TPAC: kernel, root file sytem and local applications.
 
-The cloner manages all the software parts: Kernel, RootFS and local applications.
+## Build flow
 
-You build the cloner package from the developer's Linux PC also used for imx\_mect (LTIB). 
-
-The build steps are:
-- rebuild by ltib the qt-everywhere package with the "-static" gcc option into the spec file;
+The cloner package is automatically built within the imx\_mect
+flow as follows:
+- rebuild by ltib the qt-everywhere package with the "-static"
+  gcc option into the spec file;
 - run the following commands:
   - export VERSION="xx"
-  - /usr/local/Trolltech/Qt-qvfb-version/bin/qmake -spec /usr/local/Trolltech/Qt-qvfb-version/mkspecs/qws/linux-arm-gnueabi-g++
+  - /opt/Trolltech/bin/qmake -spec /opt/Trolltech/mkspecs/qws/linux-g++-mx
   - make
   - ./make\_sysupdate.sh
 
-The output is the "sysupdate\_cloner.sh" "uuencoded" script 
+The output is the "sysupdate\_cloner.sh" "uuencoded" script.
 
-You need to copy the script to an empty USB pendrive and then boot the panel with the USB pendrive inserted: the cloner shall start instead of the panel applications (details into the pdf manual).
+## Usage
+
+Copy the script on an empty USB pendrive.  Insert the pendrive
+in the TPAC and reboot.  The TPAC will start in cloner mode
+(check the user manual for details).
