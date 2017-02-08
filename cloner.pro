@@ -4,29 +4,37 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
-CONFIG += static
-CONFIG += staticlib
-DEFINES += STATIC
-DEFINES -= QT_SHARED
-TARGET = cloner
 TEMPLATE = app
 
+TARGET = cloner
+
+QT += \
+    core \
+    gui \
+
+INCLUDEPATH += \
+    $$(DEV_IMAGE)/usr/include \
+
 LIBS += \
--lts \
--lATCMinputdialog
+    -L$$(DEV_IMAGE)/usr/lib \
+    -lATCMinputdialog \
+    -lts \
 
+### LIBS = -L/opt/Trolltech/lib -Wl,-Bstatic -lts -lATCMinputdialog -L/opt/Trolltech/lib -lQtGui -lQtNetwork -lQtCore -Wl,-Bdynamic -lpthread
 
-DEFINES+=SVN_REV=6.4
-#DEFINES+=SVN_REV=\"$(VERSION)\"
-#DEFINES+='SVN_REV="rev. $(shell svnversion -n .)"'
+DEFINES += SVN_REV=6.4
+#DEFINES += SVN_REV=\"$(VERSION)\"
+#DEFINES += 'SVN_REV="rev. $(shell svnversion -n .)"'
 
-SOURCES += main.cpp\
-        cloner.cpp
+SOURCES += \
+    main.cpp \
+    cloner.cpp \
 
-HEADERS  += cloner.h
+HEADERS += \
+    cloner.h \
 
-FORMS    += cloner.ui
+FORMS += \
+    cloner.ui \
 
 RESOURCES += \
-    resources.qrc
+    resources.qrc \
