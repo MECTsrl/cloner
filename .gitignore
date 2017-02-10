@@ -1,0 +1,9 @@
+Makefile
+cloner
+cloner.o
+main.o
+moc_cloner.cpp
+moc_cloner.o
+qrc_resources.cpp
+qrc_resources.o
+ui_cloner.h
