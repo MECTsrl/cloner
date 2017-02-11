@@ -720,7 +720,7 @@ void cloner::on_pushButtonBackup_clicked()
     sprintf(command, "mkdir -p %s", backupDir);
     system(command);
 
-    /* perform the backup */
+    /* Request backup operations. */
     arrayQueue[step_bkup_localfs_e] = 1;
     arrayQueue[step_bkup_rootfs_e] = 1;
 }
@@ -759,6 +759,7 @@ void cloner::on_pushButtonInstall_clicked()
     sprintf(command, "mkdir -p %s", backupDir);
     system(command);
 
-    /* perform the restore */
+    /* Request restore operations. */
     arrayQueue[step_restore_localfs_e] = 1;
+    arrayQueue[step_restore_rootfs_e] = 1;
 }
