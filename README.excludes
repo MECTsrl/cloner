@@ -1,0 +1,22 @@
+The fiels/directories to exclude during clone restore are
+stored one per line in the following files:
+
+- excludes_rootfs.lst  -- exclude list for the root  file system
+- excludes_localfs.lst -- exclude list for the local file system
+
+The cloner reads the contents of these files only once, during
+its initialization.
+
+The format of the exclude files is as follows:
+
+- excludes_rootfs.lst lists the excludes using *absolute*
+  paths, e.g.:
+
+/etc/mac.conf
+/etc/serial.conf
+
+- excludes_localfs.lst lists the excludes using paths *relative*
+  to /local directory, e.g.:
+
+flash/root/fcrts
+flash/etc/sysconfig/net.conf

@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Clean up dos2unix temp file.
+sync
+
 test -n "$0" || exit 1
 
 FROMWD="$(pwd)"

@@ -6,7 +6,7 @@
 #include <QProcess>
 #include <QThread>
 
-#define COMMAND_LEN 1024
+#define COMMAND_LEN 65536
 
 namespace Ui {
 class cloner;

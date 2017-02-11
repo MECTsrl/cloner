@@ -22,6 +22,9 @@
 #define POINTS_NB 30
 #define BASE_DIR "/tmp/mnt/cloner"
 #define TMP_DIR "/tmp/tmp"
+#define DIST_DIR "/tmp/mnt/bin"
+#define EXCLUDES_RFS "excludes_rootfs.lst"
+#define EXCLUDES_LFS "excludes_localfs.lst"
 
 char arrayStepName[step_nb][16] = {
     "None",
@@ -36,6 +39,10 @@ char arrayStepName[step_nb][16] = {
 int actualStep = step_none_e;
 int exitArray[step_nb];
 char stringError[COMMAND_LEN];
+
+// Exclude lists for all clonable file systems.
+QStringList excludesRFSList;    // Root file system.
+QStringList excludesLFSList;    // Local file system.
 
 myProcess::myProcess(void)
 {
@@ -102,7 +109,7 @@ cloner::cloner(QWidget *parent) :
     QStringList imagesList;
     QDir imagesDir(BASE_DIR);
 
-    if (imagesDir.entryList(QDir::AllDirs|QDir::NoDotAndDotDot).count() != 0)
+    if (imagesDir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot).count() != 0)
     {
         imagesList = imagesDir.entryList(QDir::AllDirs|QDir::NoDotAndDotDot);
         for (int i = 0; i < imagesList.count(); i++)
@@ -111,6 +118,27 @@ cloner::cloner(QWidget *parent) :
         }
     }
     ui->labelStatus->setText("");
+
+
+    QDir distDir(DIST_DIR);
+
+    // Load the exclude list for the root file system.
+    excludesRFSList.prepend("");
+    if (distDir.exists(EXCLUDES_RFS)) {
+        QFile excludesRFS(distDir.filePath(EXCLUDES_RFS));
+        if (excludesRFS.open(QIODevice::ReadOnly))
+            while (!excludesRFS.atEnd())
+                excludesRFSList.append(excludesRFS.readLine().simplified());
+    }
+
+    // Load the exclude list for the local file system.
+    excludesLFSList.prepend("");
+    if (distDir.exists(EXCLUDES_LFS)) {
+        QFile excludesLFS(distDir.filePath(EXCLUDES_LFS));
+        if (excludesLFS.open(QIODevice::ReadOnly))
+            while (!excludesLFS.atEnd())
+                excludesLFSList.append(excludesLFS.readLine().simplified());
+    }
 }
 
 cloner::~cloner()
@@ -382,6 +410,7 @@ bool cloner::restoreLocalFs()
                         );
         }
 
+        QByteArray excludesLFSListBA = excludesLFSList.join(" --exclude ").toLatin1();
         sprintf(command,
                 "cd /"
                 " ; "
@@ -393,7 +422,7 @@ bool cloner::restoreLocalFs()
                 " && "
                 "tar xf %s/localfs.tar -C %s"
                 " && "
-                "rsync -Havx %s/ /local/ --exclude flash/root/fcrts --exclude flash/etc/sysconfig/net.conf"
+                "rsync -Havx %s/ /local/ %s"
                 " ; "
                 "sync"
                 " ; "
@@ -404,6 +433,7 @@ bool cloner::restoreLocalFs()
                 restoreDir,
                 TMP_DIR,
                 TMP_DIR,
+                excludesLFSListBA.data(),
                 TMP_DIR
                 );
     }
@@ -430,6 +460,7 @@ bool cloner::restoreRootFs()
      */
 
     char command[COMMAND_LEN];
+    QByteArray excludesRFSListBA = excludesRFSList.join(" --exclude ").toLatin1();
     sprintf(command,
             "/etc/rc.d/init.d/boa stop"
             " ; "
@@ -443,7 +474,7 @@ bool cloner::restoreRootFs()
             " && "
             "mount -o rw,remount /"
             " && "
-            "rsync -Havx %s/ / --exclude=/etc/mac.conf --exclude=/etc/serial.conf"
+            "rsync -Havx %s/ / %s"
             " && "
             "mount -o ro,remount /"
             " ; "
@@ -456,6 +487,7 @@ bool cloner::restoreRootFs()
             restoreDir,
             TMP_DIR,
             TMP_DIR,
+            excludesRFSListBA.data(),
             TMP_DIR
             );
     if (mp.setCommand(command) == false)
