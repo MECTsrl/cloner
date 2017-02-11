@@ -231,8 +231,7 @@ void cloner::updateData()
             }
             ui->labelStatus->setStyleSheet("color: rgb(0,0,255);");
             ui->labelStatus->setText(
-                        QString("%1 %2%3")
-                        .arg((actualStep <= step_bkup_localfs_e)?"Saving":"Restoring")
+                        QString("Transferring %1%2")
                         .arg(arrayStepName[actualStep])
                         .arg(points)
                         );
@@ -351,7 +350,7 @@ bool cloner::backupRootFs()
      *  tar cf /mnt/floppy/backup/rootfs.tar -C / .
      */
     sprintf(command,
-            "tar cf %s/rootfs.tar -C / ."
+            "tar cf %s/rootfs.tar -C / `find / -maxdepth 1 -type d -print | grep -v '^/\\(local\\|tmp\\|mnt\\|dev\\|sys\\|proc\\|\\)$'`"
             " ; "
             "sync"
             ,
@@ -723,6 +722,7 @@ void cloner::on_pushButtonBackup_clicked()
 
     /* perform the backup */
     arrayQueue[step_bkup_localfs_e] = 1;
+    arrayQueue[step_bkup_rootfs_e] = 1;
 }
 
 void cloner::on_pushButtonInstall_clicked()
