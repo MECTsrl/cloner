@@ -2,19 +2,19 @@
 
 test -n "$0" || exit 1
 
-WORKDIR="$(dirname $0)/cloner"
 FROMWD="$(pwd)"
+
+WORKDIR="$(dirname $0)"
+CLONERDIR="$WORKDIR/bin"
 
 trap cleanup EXIT
 cleanup()
 {
     cd "$FROMWD"
-    rm -rf "$WORKDIR"
+    rm -rf "$CLONERDIR"
 
     sync
 }
 
-test -d "$WORKDIR" && rm -rf "$WORKDIR"
-mkdir -p "$WORKDIR"
 cd "$WORKDIR"
 

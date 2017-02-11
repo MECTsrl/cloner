@@ -22,7 +22,7 @@ LIBS += \
 
 ### LIBS = -L/opt/Trolltech/lib -Wl,-Bstatic -lts -lATCMinputdialog -L/opt/Trolltech/lib -lQtGui -lQtNetwork -lQtCore -Wl,-Bdynamic -lpthread
 
-DEFINES += SVN_REV=6.4
+DEFINES += SVN_REV=6.5
 #DEFINES += SVN_REV=\"$(VERSION)\"
 #DEFINES += 'SVN_REV="rev. $(shell svnversion -n .)"'
 

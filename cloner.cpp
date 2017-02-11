@@ -37,6 +37,15 @@ int actualStep = step_none_e;
 int exitArray[step_nb];
 char stringError[COMMAND_LEN];
 
+myProcess::myProcess(void)
+{
+    _command[0] = '\0';
+}
+
+myProcess::~myProcess(void)
+{
+}
+
 bool myProcess::setCommand(char * command)
 {
     if (command != NULL && strlen(command) > 0)
@@ -49,15 +58,6 @@ bool myProcess::setCommand(char * command)
     {
         return false;
     }
-}
-
-myProcess::myProcess(void)
-{
-    _command[0] = '\0';
-}
-
-myProcess::~myProcess(void)
-{
 }
 
 void myProcess::run(void)
@@ -96,9 +96,9 @@ cloner::cloner(QWidget *parent) :
     
     connect(&mp, SIGNAL(finished()), this, SLOT(finishProcess()));
 
-    ui->label->setText(QString("Cloner rev.%1").arg(SVN_REV));
+    ui->label->setText(QString("Cloner v%1").arg(SVN_REV));
 
-    /* extract all the available images */
+    /* Collect all existing clones. */
     QStringList imagesList;
     QDir imagesDir(BASE_DIR);
 
@@ -111,6 +111,11 @@ cloner::cloner(QWidget *parent) :
         }
     }
     ui->labelStatus->setText("");
+}
+
+cloner::~cloner()
+{
+    delete ui;
 }
 
 void cloner::updateData()
@@ -208,23 +213,18 @@ void cloner::updateData()
     }
 }
 
-cloner::~cloner()
-{
-    delete ui;
-}
-
 void cloner::finishProcess()
 {
     fprintf(stderr, "exitCode: %d\n",exitArray[actualStep]);
     sync();
     if (exitArray[actualStep] != 0)
     {
-        QMessageBox::critical(0,"Cloner", QString("Operation '%1' Fail! [%2][%3]").arg(arrayStepName[actualStep]).arg(exitArray[actualStep]).arg(stringError));
+        QMessageBox::critical(0,"Cloner", QString("Operation '%1' failed. [%2][%3]").arg(arrayStepName[actualStep]).arg(exitArray[actualStep]).arg(stringError));
     }
     else
     {
         ui->labelStatus->setStyleSheet("color: rgb(0,255,0);");
-        ui->labelStatus->setText( QString("Operation '%1' Done!").arg(arrayStepName[actualStep]));
+        ui->labelStatus->setText( QString("Operation '%1' completed.").arg(arrayStepName[actualStep]));
     }
     arrayQueue[actualStep] = step_none_e;
     actualStep = step_none_e;
@@ -239,7 +239,7 @@ bool cloner::backupLocalFs()
     sprintf(command, "%s/localfs.tar", backupDir);
     if (QFile::exists(command))
     {
-        if (QMessageBox::question(this, tr("Cloner"), tr("a %1 clone already exist. Do you want overwrite?").arg(arrayStepName[actualStep]), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok)
+        if (QMessageBox::question(this, tr("Cloner"), tr("Clone %1 exists. Overwrite?").arg(arrayStepName[actualStep]), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok)
         {
             if (QFile::remove(command) == false)
             {
@@ -263,31 +263,18 @@ bool cloner::backupLocalFs()
      *  cd /
      *  /bin/umount /tmp/mnt
      */
+    /*** MTL: LOCAL FS
+     *  /etc/rc.d/init.d/sdcheck stop
+     *  tar cf /mnt/floppy/backup/localfs.tar -C /local .
+     */
     sprintf(command,
             "/etc/rc.d/init.d/sdcheck stop"
             " ; "
-            "mkdir -p %s"
-            " ; "
-            "/bin/mount -t tmpfs -o size=128M tmpfs %s"
-            " && "
-            "rsync -Hlrax /local/ %s"
-            " && "
-            "cd %s"
-            " && "
-            "tar cf %s/localfs.tar *"
+            "tar cf %s/localfs.tar -C /local ."
             " ; "
             "sync"
-            " ; "
-            "cd /"
-            " ; "
-            "/bin/umount %s"
             ,
-            TMP_DIR,
-            TMP_DIR,
-            TMP_DIR,
-            TMP_DIR,
-            backupDir,
-            TMP_DIR
+            backupDir
             );
 
     fprintf(stderr, "backupLocalFs@%s@\n", command);
@@ -303,24 +290,13 @@ bool cloner::backupLocalFs()
 
 bool cloner::backupRootFs()
 {
-
-    /*** ROOT FS
-     *  mkdir -p /tmp/mnt
-     *  /bin/mount -t tmpfs -o size=128M tmpfs /tmp/mnt
-     *  rsync -Hlrax / /tmp/mnt
-     *  cd /tmp/mnt
-     *  tar cf /mnt/floppy/backup/rootfs.tar *
-     *  cd /
-     *  /bin/umount /tmp/mnt
-     */
-
     QDir().mkdir(backupDir);
     /* tar for the rootfs folder into the actual path */
     char command[COMMAND_LEN];
     sprintf(command, "%s/rootfs.tar", backupDir);
     if (QFile::exists(command))
     {
-        if (QMessageBox::question(this, tr("Cloner"), tr("a %1 clone already exist. Do you want overwrite?").arg(arrayStepName[actualStep]), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok)
+        if (QMessageBox::question(this, tr("Cloner"), tr("Clone %1 exists. Overwrite?").arg(arrayStepName[actualStep]), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok)
         {
             if (QFile::remove(command) == false)
             {
@@ -333,29 +309,25 @@ bool cloner::backupRootFs()
             return false;
         }
     }
+
+    /*** ROOT FS
+     *  mkdir -p /tmp/mnt
+     *  /bin/mount -t tmpfs -o size=128M tmpfs /tmp/mnt
+     *  rsync -Hlrax / /tmp/mnt
+     *  cd /tmp/mnt
+     *  tar cf /mnt/floppy/backup/rootfs.tar *
+     *  cd /
+     *  /bin/umount /tmp/mnt
+     */
+    /*** MTL: ROOT FS
+     *  tar cf /mnt/floppy/backup/rootfs.tar -C / .
+     */
     sprintf(command,
-            "mkdir -p %s"
-            " ; "
-            "/bin/mount -t tmpfs -o size=128M tmpfs %s"
-            " && "
-            "rsync -Hlrax / %s"
-            " && "
-            "cd %s"
-            " && "
-            "tar cf %s/rootfs.tar *"
+            "tar cf %s/rootfs.tar -C / ."
             " ; "
             "sync"
-            " ; "
-            "cd /"
-            " ; "
-            "/bin/umount %s"
             ,
-            TMP_DIR,
-            TMP_DIR,
-            TMP_DIR,
-            TMP_DIR,
-            backupDir,
-            TMP_DIR
+            backupDir
             );
     if (mp.setCommand(command) == false)
     {
@@ -365,9 +337,10 @@ bool cloner::backupRootFs()
     return true;
 }
 
+// TODO MTL
 bool cloner::backupKernel()
 {
-    QMessageBox::information(0,"Cloner", "Backup kernel not implemented yet!");
+    QMessageBox::information(0,"Cloner", "Kernel clone not yet implemented.");
     exitArray[actualStep] = 1;
     return false;
 }
@@ -420,13 +393,9 @@ bool cloner::restoreLocalFs()
                 " && "
                 "tar xf %s/localfs.tar -C %s"
                 " && "
-                "cp /local/etc/sysconfig/net.conf /tmp/net.conf"
-                " && "
-                "rsync -Hlrax %s/ /local"
-                " && "
-                "cp /tmp/net.conf /local/etc/sysconfig/net.conf"
+                "rsync -Havx %s/ /local/ --exclude flash/root/fcrts --exclude flash/etc/sysconfig/net.conf"
                 " ; "
-                " sync "
+                "sync"
                 " ; "
                 "/bin/umount %s"
                 ,
@@ -474,11 +443,11 @@ bool cloner::restoreRootFs()
             " && "
             "mount -o rw,remount /"
             " && "
-            "rsync -Hlrax %s/ / --exclude=/etc/mac.conf --exclude=/etc/serial.conf"
+            "rsync -Havx %s/ / --exclude=/etc/mac.conf --exclude=/etc/serial.conf"
             " && "
             "mount -o ro,remount /"
             " ; "
-            " sync "
+            "sync"
             " ; "
             "/bin/umount %s"
             ,
@@ -497,6 +466,7 @@ bool cloner::restoreRootFs()
     return true;
 }
 
+// TODO MTL
 bool cloner::restoreKernel()
 {
     char command[COMMAND_LEN];

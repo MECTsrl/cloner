@@ -92,7 +92,7 @@ color: rgb(255, 170, 0);
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">border-image: url(:/icons/img/usb.png);</string>
+        <string notr="true">border-image: url(:/libicons/img/usb.png);</string>
        </property>
        <property name="text">
         <string/>
@@ -117,7 +117,7 @@ color: rgb(255, 170, 0);
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">border-image: url(:/icons/img/Back.png);</string>
+        <string notr="true">border-image: url(:/libicons/img/Back.png);</string>
        </property>
        <property name="text">
         <string>BACKUP</string>
@@ -151,7 +151,7 @@ color: rgb(255, 170, 0);
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">border-image: url(:/icons/img/logo.png);</string>
+        <string notr="true">border-image: url(:/libicons/img/logo.png);</string>
        </property>
        <property name="text">
         <string/>
@@ -199,7 +199,7 @@ color: rgb(255, 170, 0);
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">border-image: url(:/icons/img/usb.png);</string>
+        <string notr="true">border-image: url(:/libicons/img/usb.png);</string>
        </property>
        <property name="text">
         <string/>
@@ -226,7 +226,7 @@ color: rgb(255, 170, 0);
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">border-image: url(:/icons/img/Forward.png);</string>
+          <string notr="true">border-image: url(:/libicons/img/Forward.png);</string>
          </property>
          <property name="text">
           <string>INSTALL</string>
@@ -271,7 +271,7 @@ color: rgb(255, 170, 0);
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">border-image: url(:/icons/img/logo.png);</string>
+        <string notr="true">border-image: url(:/libicons/img/logo.png);</string>
        </property>
        <property name="text">
         <string/>
