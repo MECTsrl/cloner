@@ -26,13 +26,13 @@
 #define EXCLUDES_RFS "excludes_rootfs.lst"
 #define EXCLUDES_LFS "excludes_localfs.lst"
 
-char arrayStepName[step_nb][16] = {
+char arrayStepName[step_nb][18] = {
     "None",
-    "LocalFS",
-    "RootFS",
+    "Local file system",
+    "Root file system",
     "Kernel",
-    "LocalFS",
-    "RootFS",
+    "Local file system",
+    "Root file system",
     "Kernel"
 };
 
@@ -86,7 +86,7 @@ void myProcess::run(void)
         exitArray[actualStep] = 1;
     }
     fprintf(stderr, "EXIT @%d@\n", exitArray[actualStep]);
-    exit (exitArray[actualStep]);
+    exit(exitArray[actualStep]);
 }
 
 cloner::cloner(QWidget *parent) :
@@ -105,22 +105,16 @@ cloner::cloner(QWidget *parent) :
 
     ui->label->setText(QString("Cloner v%1").arg(SVN_REV));
 
-    /* Collect all existing clones. */
-    QStringList imagesList;
     QDir imagesDir(BASE_DIR);
+    QDir distDir(DIST_DIR);
 
-    if (imagesDir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot).count() != 0)
-    {
-        imagesList = imagesDir.entryList(QDir::AllDirs|QDir::NoDotAndDotDot);
-        for (int i = 0; i < imagesList.count(); i++)
-        {
-            ui->comboBoxImages->addItem(imagesList.at(i));
-        }
-    }
+    /* Fill the list with all existing clones. */
+    ui->comboBoxImages->clear();        // FIXME Not working
+    ui->comboBoxImages->addItems(imagesDir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot));
+
+    /* Reset the status line. */
     ui->labelStatus->setText("");
 
-
-    QDir distDir(DIST_DIR);
 
     // Load the exclude list for the root file system.
     excludesRFSList.prepend("");
@@ -221,20 +215,13 @@ void cloner::updateData()
         {
             ui->pushButtonBackup->setEnabled(false);
             ui->pushButtonInstall->setEnabled(false);
+
             if (points.length() > POINTS_NB)
-            {
                 points.clear();
-            }
-            else
-            {
-                points += ".";
-            }
+            points += ".";
+
             ui->labelStatus->setStyleSheet("color: rgb(0,0,255);");
-            ui->labelStatus->setText(
-                        QString("Transferring %1%2")
-                        .arg(arrayStepName[actualStep])
-                        .arg(points)
-                        );
+            ui->labelStatus->setText(QString("Transferring %1%2").arg(arrayStepName[actualStep]).arg(points));
         }
         ui->labelStatus->update();
     }
@@ -243,16 +230,18 @@ void cloner::updateData()
 void cloner::finishProcess()
 {
     fprintf(stderr, "exitCode: %d\n",exitArray[actualStep]);
+
     sync();
-    if (exitArray[actualStep] != 0)
-    {
+
+    points.clear();
+    if (exitArray[actualStep] != 0) {
         QMessageBox::critical(0,"Cloner", QString("Operation '%1' failed. [%2][%3]").arg(arrayStepName[actualStep]).arg(exitArray[actualStep]).arg(stringError));
     }
-    else
-    {
+    else {
         ui->labelStatus->setStyleSheet("color: rgb(0,255,0);");
         ui->labelStatus->setText( QString("Operation '%1' completed.").arg(arrayStepName[actualStep]));
     }
+
     arrayQueue[actualStep] = step_none_e;
     actualStep = step_none_e;
     //loadInfo();
@@ -266,7 +255,7 @@ bool cloner::backupLocalFs()
     sprintf(command, "%s/localfs.tar", backupDir);
     if (QFile::exists(command))
     {
-        if (QMessageBox::question(this, tr("Cloner"), tr("Clone %1 exists. Overwrite?").arg(arrayStepName[actualStep]), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok)
+        if (QMessageBox::question(this, tr("Cloner"), tr("Clone for %1 exists. Overwrite?").arg(arrayStepName[actualStep]), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok)
         {
             if (QFile::remove(command) == false)
             {
@@ -282,27 +271,17 @@ bool cloner::backupLocalFs()
 
     /*** LOCAL FS
      *  /etc/rc.d/init.d/sdcheck stop
-     *  mkdir -p /tmp/mnt
-     *  /bin/mount -t tmpfs -o size=128M tmpfs /tmp/mnt
-     *  rsync -Hlrax /local/ /tmp/mnt
-     *  cd /tmp/mnt/local
-     *  tar cf /mnt/floppy/backup/localfs.tar *
-     *  cd /
-     *  /bin/umount /tmp/mnt
-     */
-    /*** MTL: LOCAL FS
-     *  /etc/rc.d/init.d/sdcheck stop
      *  tar cf /mnt/floppy/backup/localfs.tar -C /local .
      */
     sprintf(command,
-            "/etc/rc.d/init.d/sdcheck stop"
-            " ; "
-            "tar cf %s/localfs.tar -C /local ."
-            " ; "
-            "sync"
-            ,
-            backupDir
-            );
+        "/etc/rc.d/init.d/sdcheck stop"
+        " ; "
+        "tar cf %s/localfs.tar -C /local ."
+        " ; "
+        "sync"
+        ,
+        backupDir
+    );
 
     fprintf(stderr, "backupLocalFs@%s@\n", command);
 
@@ -321,46 +300,33 @@ bool cloner::backupRootFs()
     /* tar for the rootfs folder into the actual path */
     char command[COMMAND_LEN];
     sprintf(command, "%s/rootfs.tar", backupDir);
-    if (QFile::exists(command))
-    {
-        if (QMessageBox::question(this, tr("Cloner"), tr("Clone %1 exists. Overwrite?").arg(arrayStepName[actualStep]), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok)
-        {
+    if (QFile::exists(command)) {
+        if (QMessageBox::question(this, tr("Cloner"), tr("Clone for %1 exists. Overwrite?").arg(arrayStepName[actualStep]), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok) {
             if (QFile::remove(command) == false)
-            {
                 return false;
-            }
         }
-        else
-        {
+        else {
             exitArray[actualStep] = 0;
+
             return false;
         }
     }
 
     /*** ROOT FS
-     *  mkdir -p /tmp/mnt
-     *  /bin/mount -t tmpfs -o size=128M tmpfs /tmp/mnt
-     *  rsync -Hlrax / /tmp/mnt
-     *  cd /tmp/mnt
-     *  tar cf /mnt/floppy/backup/rootfs.tar *
-     *  cd /
-     *  /bin/umount /tmp/mnt
-     */
-    /*** MTL: ROOT FS
      *  tar cf /mnt/floppy/backup/rootfs.tar -C / .
      */
     sprintf(command,
-            "tar cf %s/rootfs.tar -C / `find / -maxdepth 1 -type d -print | grep -v '^/\\(local\\|tmp\\|mnt\\|dev\\|sys\\|proc\\|\\)$'`"
-            " ; "
-            "sync"
-            ,
-            backupDir
-            );
+        "tar cf %s/rootfs.tar -C / `find / -maxdepth 1 -type d -print | grep -v '^/\\(local\\|tmp\\|mnt\\|dev\\|sys\\|proc\\|\\)$'`"
+        " ; "
+        "sync"
+        ,
+        backupDir
+    );
     if (mp.setCommand(command) == false)
-    {
         return false;
-    }
+
     mp.start();
+
     return true;
 }
 
@@ -368,7 +334,9 @@ bool cloner::backupRootFs()
 bool cloner::backupKernel()
 {
     QMessageBox::information(0,"Cloner", "Kernel clone not yet implemented.");
+
     exitArray[actualStep] = 1;
+
     return false;
 }
 
@@ -387,60 +355,59 @@ bool cloner::restoreLocalFs()
      *  cp /tmp/net.conf /local/etc/sysconfig/
      *  /bin/umount /tmp/mnt
      */
-    {
-        /* before 2.0 */
-        if (!QFile::exists("/etc/mac.conf"))
-        {
-            /* extract MAC0 from /local/etc/sysconfig/net.conf and put it into /etc/mac.conf */
-            system(
-                        "mount -o rw,remount /"
-                        " && "
-                        "grep MAC0 /local/etc/sysconfig/net.conf "
-                        " && "
-                        "grep MAC0 /local/etc/sysconfig/net.conf > /etc/mac.conf"
-                        " && "
-                        "mount -o ro,remount /"
-                        );
-            /* delete MAC0 from /local/etc/sysconfig/net.conf */
-            system(
-                        "grep -v MAC0 /local/etc/sysconfig/net.conf > /tmp/net.conf"
-                        " && "
-                        "mv /tmp/net.conf /local/etc/sysconfig/net.conf"
-                        );
-        }
+    /* before 2.0 */
+    if (!QFile::exists("/etc/mac.conf")) {
+        /* extract MAC0 from /local/etc/sysconfig/net.conf and put it into /etc/mac.conf */
+        system(
+            "mount -o rw,remount /"
+            " && "
+            "grep MAC0 /local/etc/sysconfig/net.conf "
+            " && "
+            "grep MAC0 /local/etc/sysconfig/net.conf > /etc/mac.conf"
+            " && "
+            "mount -o ro,remount /"
+        );
 
-        QByteArray excludesLFSListBA = excludesLFSList.join(" --exclude ").toLatin1();
-        sprintf(command,
-                "cd /"
-                " ; "
-                "/etc/rc.d/init.d/sdcheck stop"
-                " ; "
-                "mkdir -p %s"
-                " ; "
-                "/bin/mount -t tmpfs -o size=128M tmpfs %s"
-                " && "
-                "tar xf %s/localfs.tar -C %s"
-                " && "
-                "rsync -Havx %s/ /local/ %s"
-                " ; "
-                "sync"
-                " ; "
-                "/bin/umount %s"
-                ,
-                TMP_DIR,
-                TMP_DIR,
-                restoreDir,
-                TMP_DIR,
-                TMP_DIR,
-                excludesLFSListBA.data(),
-                TMP_DIR
-                );
+        /* delete MAC0 from /local/etc/sysconfig/net.conf */
+        system(
+            "grep -v MAC0 /local/etc/sysconfig/net.conf > /tmp/net.conf"
+            " && "
+            "mv /tmp/net.conf /local/etc/sysconfig/net.conf"
+        );
     }
+
+    QByteArray excludesLFSListBA = excludesLFSList.join(" --exclude ").toLatin1();
+    sprintf(command,
+        "cd /"
+        " ; "
+        "/etc/rc.d/init.d/sdcheck stop"
+        " ; "
+        "mkdir -p %s"
+        " ; "
+        "/bin/mount -t tmpfs -o size=128M tmpfs %s"
+        " && "
+        "tar xf %s/localfs.tar -C %s"
+        " && "
+        "rsync -Havx %s/ /local/ %s"
+        " ; "
+        "sync"
+        " ; "
+        "/bin/umount %s"
+        ,
+        TMP_DIR,
+        TMP_DIR,
+        restoreDir,
+        TMP_DIR,
+        TMP_DIR,
+        excludesLFSListBA.data(),
+        TMP_DIR
+    );
+
     if (mp.setCommand(command) == false)
-    {
         return false;
-    }
+
     mp.start();
+
     return true;
 }
 
@@ -448,52 +415,52 @@ bool cloner::restoreRootFs()
 {
     /*** ROOT FS
      * /etc/rc.d/init.d/boa stop
-     *  cd /
-     *  mkdir -p /tmp/mnt
-     *  /bin/mount -t tmpfs -o size=128M tmpfs /tmp/mnt
-     *  tar xf /mnt/floppy/restore/rootfs.tar -C /tmp/mnt
-     *  mount -o rw,remount /
-     *  rsync -Hlrax /tmp/mnt/ /  --exclude=/etc/mac.conf --exclude=/etc/serial.conf
-     *  mount -o ro,remount /
-     *  /bin/umount /tmp/mnt
+     * cd /
+     * mkdir -p /tmp/mnt
+     * /bin/mount -t tmpfs -o size=128M tmpfs /tmp/mnt
+     * tar xf /mnt/floppy/restore/rootfs.tar -C /tmp/mnt
+     * mount -o rw,remount /
+     * rsync -Hlrax /tmp/mnt/ /  --exclude=/etc/mac.conf --exclude=/etc/serial.conf
+     * mount -o ro,remount /
+     * /bin/umount /tmp/mnt
      */
-
     char command[COMMAND_LEN];
     QByteArray excludesRFSListBA = excludesRFSList.join(" --exclude ").toLatin1();
     sprintf(command,
-            "/etc/rc.d/init.d/boa stop"
-            " ; "
-            "cd /"
-            " ; "
-            "mkdir -p %s"
-            " && "
-            "/bin/mount -t tmpfs -o size=128M tmpfs %s"
-            " && "
-            "tar xf %s/rootfs.tar -C %s"
-            " && "
-            "mount -o rw,remount /"
-            " && "
-            "rsync -Havx %s/ / %s"
-            " && "
-            "mount -o ro,remount /"
-            " ; "
-            "sync"
-            " ; "
-            "/bin/umount %s"
-            ,
-            TMP_DIR,
-            TMP_DIR,
-            restoreDir,
-            TMP_DIR,
-            TMP_DIR,
-            excludesRFSListBA.data(),
-            TMP_DIR
-            );
+        "/etc/rc.d/init.d/boa stop"
+        " ; "
+        "cd /"
+        " ; "
+        "mkdir -p %s"
+        " && "
+        "/bin/mount -t tmpfs -o size=128M tmpfs %s"
+        " && "
+        "tar xf %s/rootfs.tar -C %s"
+        " && "
+        "mount -o rw,remount /"
+        " && "
+        "rsync -Havx %s/ / %s"
+        " && "
+        "mount -o ro,remount /"
+        " ; "
+        "sync"
+        " ; "
+        "/bin/umount %s"
+        ,
+        TMP_DIR,
+        TMP_DIR,
+        restoreDir,
+        TMP_DIR,
+        TMP_DIR,
+        excludesRFSListBA.data(),
+        TMP_DIR
+    );
+
     if (mp.setCommand(command) == false)
-    {
         return false;
-    }
+
     mp.start();
+
     return true;
 }
 
@@ -502,15 +469,15 @@ bool cloner::restoreKernel()
 {
     char command[COMMAND_LEN];
     sprintf(command, "%s/flash_eraseall /dev/mtd0 && %s/kobs-ng init %s/imx28_ivt_linux.sb",
-            QApplication::applicationDirPath().toAscii().data(),
-            QApplication::applicationDirPath().toAscii().data(),
-            restoreDir
-            );
+        QApplication::applicationDirPath().toAscii().data(),
+        QApplication::applicationDirPath().toAscii().data(),
+        restoreDir
+    );
     if (mp.setCommand(command) == false)
-    {
         return false;
-    }
+
     mp.start();
+
     return true;
 }
 
@@ -527,21 +494,17 @@ int cloner::getMAC(const char *interface, char * mac)
     /* I want IP address attached to "interface" */
     strncpy(ifr.ifr_name, interface, IFNAMSIZ-1);
     if (ioctl(fd, SIOCGIFHWADDR, &ifr) != 0)
-    {
         return -1;
-    }
 
     //close(fd);
     unsigned char mac_address[6]= "";
     memcpy(mac_address, ifr.ifr_hwaddr.sa_data, 6);
     int j = 0;
     int i = 0;
-    for (i = 0; i < 6; i++)
-    {
+    for (i = 0, j = 0; i < 6; i++, j += 3)
         sprintf(&(mac[j]), "%02X:", mac_address[i]);
-        j+=3;
-    }
-    mac[j-1]= '\0';
+    mac[j-1] = '\0';
+
     return 0;
 }
 
