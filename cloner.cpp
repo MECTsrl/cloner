@@ -685,7 +685,6 @@ void cloner::on_pushButtonBackup_clicked()
 
     /* Request backup operations. */
     arrayQueue[step_bkup_localfs_e] = 1;
-    arrayQueue[step_bkup_rootfs_e] = 1;
 }
 
 void cloner::on_pushButtonInstall_clicked()
@@ -724,5 +723,4 @@ void cloner::on_pushButtonInstall_clicked()
 
     /* Request restore operations. */
     arrayQueue[step_restore_localfs_e] = 1;
-    arrayQueue[step_restore_rootfs_e] = 1;
 }
