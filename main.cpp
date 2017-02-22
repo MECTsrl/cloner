@@ -34,7 +34,7 @@ static int application_options(int argc, char *argv[])
 	while ((c = getopt_long(argc, argv, short_options, long_options, &option_index)) != -1) {
 		switch (c) {
 			case 'v':
-                printf("%s version: rev.%.1f\n", argv[0], SVN_REV);
+                printf("%s version: v%s\n", argv[0], SVN_REV);
 				exit(0);
 				break;
 			default:

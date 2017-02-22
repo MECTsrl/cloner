@@ -220,7 +220,7 @@ void cloner::updateData()
                 points.clear();
             points += ".";
 
-            ui->labelStatus->setStyleSheet("color: rgb(0,0,255);");
+            ui->labelStatus->setStyleSheet("color: rgb(0,0,128);");
             ui->labelStatus->setText(QString("Transferring %1%2").arg(arrayStepName[actualStep]).arg(points));
         }
         ui->labelStatus->update();
@@ -238,7 +238,7 @@ void cloner::finishProcess()
         QMessageBox::critical(0,"Cloner", QString("Operation '%1' failed. [%2][%3]").arg(arrayStepName[actualStep]).arg(exitArray[actualStep]).arg(stringError));
     }
     else {
-        ui->labelStatus->setStyleSheet("color: rgb(0,255,0);");
+        ui->labelStatus->setStyleSheet("color: rgb(0,128,0);");
         ui->labelStatus->setText( QString("Operation '%1' completed.").arg(arrayStepName[actualStep]));
     }
 

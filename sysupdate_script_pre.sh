@@ -8,7 +8,7 @@ test -n "$0" || exit 1
 FROMWD="$(pwd)"
 
 WORKDIR="$(dirname $0)"
-CLONERDIR="$WORKDIR/bin"
+CLONERDIR="$WORKDIR/temp"
 
 trap cleanup EXIT
 cleanup()
