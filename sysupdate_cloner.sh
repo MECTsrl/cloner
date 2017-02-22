@@ -9,7 +9,7 @@ FROMWD="$(pwd)"
 
 WORKDIR="$(dirname $0)"
 CLONERDIR="/tmp/cloner"
-CLONEIMG=${WORKDIR}/cloner_2.1.0.img
+CLONEIMG=${WORKDIR}/cloner_@@CLONER_VERSION@@.ext2
 CLONER=${CLONERDIR}/cloner
 
 trap cleanup EXIT
