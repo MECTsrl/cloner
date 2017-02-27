@@ -20,9 +20,8 @@
 
 #define REFRESH_MS 1000
 #define POINTS_NB 30
-#define BASE_DIR "/tmp/mnt/cloner"
+#define CLONED_IMAGES_DIR "/tmp/mnt/cloner"
 #define TMP_DIR "/tmp/tmp"
-#define DIST_DIR "/tmp/mnt/bin"
 #define EXCLUDES_RFS "excludes_rootfs.lst"
 #define EXCLUDES_LFS "excludes_localfs.lst"
 
@@ -105,8 +104,8 @@ cloner::cloner(QWidget *parent) :
 
     ui->label->setText(QString("Cloner v%1").arg(SVN_REV));
 
-    QDir imagesDir(BASE_DIR);
-    QDir distDir(DIST_DIR);
+    QDir imagesDir(CLONED_IMAGES_DIR);
+    QDir distDir(QCoreApplication::applicationDirPath());
 
     /* Fill the list with all existing clones. */
     ui->comboBoxImages->clear();        // FIXME Not working
@@ -591,8 +590,8 @@ bool cloner::loadInfo()
 
 void cloner::on_comboBoxImages_currentIndexChanged(const QString &arg1)
 {
-    sprintf(restoreDir, "%s/%s", BASE_DIR, arg1.toAscii().data());
-    sprintf(backupDir, "%s/%s", BASE_DIR, arg1.toAscii().data());
+    sprintf(restoreDir, "%s/%s", CLONED_IMAGES_DIR, arg1.toAscii().data());
+    sprintf(backupDir, "%s/%s", CLONED_IMAGES_DIR, arg1.toAscii().data());
     if(arg1.length() > 0)
     {
         char command[COMMAND_LEN];
@@ -668,11 +667,11 @@ void cloner::on_pushButtonBackup_clicked()
 
         if (dk->exec() == QDialog::Accepted && strlen(value) != 0)
         {
-            QDir().mkdir(QString("%1/%2").arg(BASE_DIR).arg(value));
+            QDir().mkdir(QString("%1/%2").arg(CLONED_IMAGES_DIR).arg(value));
             ui->comboBoxImages->addItem(value);
             ui->comboBoxImages->setCurrentIndex(ui->comboBoxImages->count()-1);
             fprintf(stderr, "%s\n", backupDir);
-            sprintf(backupDir, "%s/%s", BASE_DIR, value);
+            sprintf(backupDir, "%s/%s", CLONED_IMAGES_DIR, value);
         }
         else
         {
@@ -701,11 +700,11 @@ void cloner::on_pushButtonInstall_clicked()
 
         if (dk->exec() == QDialog::Accepted && strlen(value) != 0)
         {
-            QDir().mkdir(QString("%1/%2").arg(BASE_DIR).arg(value));
+            QDir().mkdir(QString("%1/%2").arg(CLONED_IMAGES_DIR).arg(value));
             ui->comboBoxImages->addItem(value);
             ui->comboBoxImages->setCurrentIndex(ui->comboBoxImages->count()-1);
             fprintf(stderr, "%s\n", backupDir);
-            sprintf(backupDir, "%s/%s", BASE_DIR, value);
+            sprintf(backupDir, "%s/%s", CLONED_IMAGES_DIR, value);
         }
         else
         {
@@ -714,7 +713,7 @@ void cloner::on_pushButtonInstall_clicked()
     }
     else
     {
-        sprintf(backupDir, "%s/%s", BASE_DIR, ui->comboBoxImages->currentText().toAscii().data());
+        sprintf(backupDir, "%s/%s", CLONED_IMAGES_DIR, ui->comboBoxImages->currentText().toAscii().data());
     }
 
     char command[256];
