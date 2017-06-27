@@ -1,2 +1,3 @@
 flash/root/fcrts
 flash/etc/sysconfig/net.conf
+var/spool/cron/crontabs/root

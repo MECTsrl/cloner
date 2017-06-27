@@ -350,7 +350,7 @@ bool cloner::restoreLocalFs()
      *  /bin/mount -t tmpfs -o size=128M tmpfs /tmp/mnt
      *  tar xf /mnt/floppy/restore/localfs.tar -C /tmp/mnt
      *  cp /local/etc/sysconfig/net.conf /tmp/
-     *  rsync -Hlrax /tmp/mnt/ /local
+     *  rsync -Hax --delete /tmp/mnt/ /local/
      *  cp /tmp/net.conf /local/etc/sysconfig/
      *  /bin/umount /tmp/mnt
      */
@@ -387,7 +387,7 @@ bool cloner::restoreLocalFs()
         " && "
         "tar xf %s/localfs.tar -C %s"
         " && "
-        "rsync -Havx %s/ /local/ %s"
+        "rsync -Havx --delete %s/ /local/ %s"
         " ; "
         "sync"
         " ; "
