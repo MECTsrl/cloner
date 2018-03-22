@@ -25,6 +25,7 @@ cleanup()
 }
 
 cd "$WORKDIR"
+mount -o remount,ro /
 
 test -d "$CLONERDIR" && rm -rf "$CLONERDIR"
 mkdir -p "$CLONERDIR"
