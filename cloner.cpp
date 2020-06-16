@@ -667,6 +667,8 @@ void cloner::on_pushButtonBackup_clicked()
 
         if (dk->exec() == QDialog::Accepted && strlen(value) != 0)
         {
+            // Replace Space with Underscore to create standard paths
+            replacechar(value, ' ', '_');
             QDir().mkdir(QString("%1/%2").arg(CLONED_IMAGES_DIR).arg(value));
             ui->comboBoxImages->addItem(value);
             ui->comboBoxImages->setCurrentIndex(ui->comboBoxImages->count()-1);
@@ -722,4 +724,14 @@ void cloner::on_pushButtonInstall_clicked()
 
     /* Request restore operations. */
     arrayQueue[step_restore_localfs_e] = 1;
+}
+int cloner::replacechar(char *str, char orig, char rep)
+{
+    char *ix = str;
+    int n = 0;
+    while((ix = strchr(ix, orig)) != NULL) {
+        *ix++ = rep;
+        n++;
+    }
+    return n;
 }

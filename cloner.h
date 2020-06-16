@@ -63,6 +63,7 @@ private:
     bool restoreRootFs();
     bool restoreKernel();
     bool loadInfo();
+    int  replacechar(char *str, char orig, char rep);
     QString getDefaultDirName();
     int getIP(const char * interface, char * ip);
     int getMAC(const char *interface, char * mac);
