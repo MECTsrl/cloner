@@ -7,6 +7,7 @@
 #include <QProcess>
 #include <QFile>
 #include <QDir>
+
 #include <errno.h>
 #include <stdio.h>
 
@@ -207,7 +208,7 @@ void cloner::updateData()
         if (actualStep == step_none_e)
         {
             ui->pushButtonBackup->setEnabled(true);
-            ui->pushButtonInstall->setEnabled(true);
+            ui->pushButtonInstall->setEnabled(ui->comboBoxImages->count() > 0);
         }
         /* working */
         else
@@ -695,36 +696,40 @@ void cloner::on_pushButtonInstall_clicked()
 
     if (ui->comboBoxImages->currentText().length() == 0)
     {
-        alphanumpad * dk;
-        char value[256];
-        dk = new alphanumpad(value, getDefaultDirName().toAscii().data());
-        dk->showFullScreen();
+        return;
+        //        alphanumpad * dk;
+        //        char value[256];
+        //        dk = new alphanumpad(value, getDefaultDirName().toAscii().data());
+        //        dk->showFullScreen();
 
-        if (dk->exec() == QDialog::Accepted && strlen(value) != 0)
-        {
-            QDir().mkdir(QString("%1/%2").arg(CLONED_IMAGES_DIR).arg(value));
-            ui->comboBoxImages->addItem(value);
-            ui->comboBoxImages->setCurrentIndex(ui->comboBoxImages->count()-1);
-            fprintf(stderr, "%s\n", backupDir);
-            sprintf(backupDir, "%s/%s", CLONED_IMAGES_DIR, value);
-        }
-        else
-        {
-            return;
-        }
+        //        if (dk->exec() == QDialog::Accepted && strlen(value) != 0)
+        //        {
+        //            QDir().mkdir(QString("%1/%2").arg(CLONED_IMAGES_DIR).arg(value));
+        //            ui->comboBoxImages->addItem(value);
+        //            ui->comboBoxImages->setCurrentIndex(ui->comboBoxImages->count()-1);
+        //            fprintf(stderr, "%s\n", backupDir);
+        //            sprintf(backupDir, "%s/%s", CLONED_IMAGES_DIR, value);
+        //        }
+        //        else
+        //        {
+        //            return;
+        //        }
     }
     else
     {
         sprintf(backupDir, "%s/%s", CLONED_IMAGES_DIR, ui->comboBoxImages->currentText().toAscii().data());
     }
+    // Richiesta di conferma ad utente
+    if (QMessageBox::question(0,"Cloner", QString("Continue with configuration restore from:\n\n%1") .arg(ui->comboBoxImages->currentText()) , QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Ok)  {
+        char command[256];
+        sprintf(command, "mkdir -p %s", backupDir);
+        system(command);
 
-    char command[256];
-    sprintf(command, "mkdir -p %s", backupDir);
-    system(command);
-
-    /* Request restore operations. */
-    arrayQueue[step_restore_localfs_e] = 1;
+        /* Request restore operations. */
+        arrayQueue[step_restore_localfs_e] = 1;
+    }
 }
+
 int cloner::replacechar(char *str, char orig, char rep)
 {
     char *ix = str;
