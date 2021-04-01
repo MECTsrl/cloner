@@ -1,61 +1,55 @@
-#include <QtGui/QApplication>
-#include "cloner.h"
+#include "maincloner.h"
+// #include "ntpclient.h"
+
+#include <QApplication>
+#include <QFile>
+#include <QString>
+#include <QStringList>
+
+#if QT_VERSION < 0x050000
 #include <QWSServer>
-#include <getopt.h>
-#include <stdio.h>
+#endif
 
-/* Long options */
-static struct option long_options[] = {
-	{"version", no_argument,        NULL, 'v'},
-	{"qt", no_argument,        NULL, 'q'},
-	{"qt", no_argument,        NULL, 'w'},
-	{"qt", no_argument,        NULL, 's'},
-	{NULL,      no_argument,        NULL,  0}
-};
+#define QSS_FILE ":/qss/cloner.qss"
 
-/*
- * Short options.
- * FIXME: KEEP THEIR LETTERS IN SYNC WITH THE RETURN VALUE
- * FROM THE LONG OPTIONS!
- */
-static char short_options[] = "vqws";
 
-static int application_options(int argc, char *argv[])
-{
-	int option_index = 0;
-	int c = 0;
-
-	if (argc <= 0)
-		return 0;
-
-	if (argv == NULL)
-		return 1;
-
-	while ((c = getopt_long(argc, argv, short_options, long_options, &option_index)) != -1) {
-		switch (c) {
-			case 'v':
-                printf("%s version: v%s\n", argv[0], SVN_REV);
-				exit(0);
-				break;
-			default:
-				break;
-		}
-	}
-
-	return 0;
-}
+QString     szModel;                // Target Model
+QString     szTargetVersion;        // MS Target Version
+QString     szClonerVersion;        // Cloner App Version
+QStringList excludesRFSList;        // Root file system  Exclude
+QStringList excludesLFSList;        // Local file system Exclude
+QString     sysUpdateModelFile;     // Sysupdate Model File
+QString     mfgToolsModelFile;      // MFG Tools Model File
+// NtpClient   *ntpclient;             // NTP Interface
 
 int main(int argc, char *argv[])
 {
-	if (application_options(argc, argv) != 0) {
-		fprintf(stderr, "%s: command line option error.\n", __func__);
+#ifdef Q_WS_QWS
 
-		return 1;
-	}
+    int myargc = 4;
+    char *myargv[] =
+    {
+        argv[0],
+        strdup("-qws"),
+        strdup("-display"),
+        strdup("VNC:LinuxFb")
+    };
+    QApplication a(myargc, myargv);
+#else
     QApplication a(argc, argv);
+#endif
     QWSServer::setCursorVisible(false);
-    cloner w;
+    // ntpclient = new NtpClient(NULL);
+    // Qss globale di applicazione
+    QFile   fileQSS(QSS_FILE);
+    if (fileQSS.exists())  {
+        fileQSS.open(QFile::ReadOnly);
+        QString styleSheet = QString(fileQSS.readAll());
+        fileQSS.close();
+        a.setStyleSheet(styleSheet);
+    }
+    MainCloner w;
     w.showFullScreen();
-    
+
     return a.exec();
 }
