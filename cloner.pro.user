@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 2.8.1, 2021-04-02T12:41:41. -->
+<!-- Written by QtCreator 2.8.1, 2021-04-02T15:16:20. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -201,7 +201,7 @@
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedSysroots"/>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes"/>
       <value type="QString" key="RemoteLinux.CheckForFreeDiskSpaceStep.PathToCheck">/</value>
-      <value type="qulonglong" key="RemoteLinux.CheckForFreeDiskSpaceStep.RequiredSpace">5242880</value>
+      <value type="qulonglong" key="RemoteLinux.CheckForFreeDiskSpaceStep.RequiredSpace">7340032</value>
      </valuemap>
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.2">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -210,18 +210,28 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinux.DirectUploadStep</value>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedFiles">
        <value type="QString">/home/andreas/build-cloner-Qt_4_8_5_qt_everywhere_opensource_src_4_8_5-Release/cloner</value>
+       <value type="QString">/home/andreas/build-cloner-Qt_4_8_5_qt_everywhere_opensource_src_4_8_5-Release/cloner</value>
+       <value type="QString">/home/andreas/build-cloner-Qt_4_8_5_qt_everywhere_opensource_src_4_8_5-Release/hmi_only</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedHosts">
+       <value type="QString">192.168.5.145</value>
        <value type="QString">192.168.5.47</value>
+       <value type="QString">192.168.5.145</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedRemotePaths">
+       <value type="QString">/local/root</value>
+       <value type="QString">/local/root</value>
        <value type="QString">/local/root</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedSysroots">
        <value type="QString">/home/andreas/imx_mect/ltib/rootfs</value>
+       <value type="QString">/home/andreas/imx_mect/ltib/rootfs</value>
+       <value type="QString">/home/andreas/imx_mect/ltib/rootfs</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
+       <value type="QDateTime">2021-04-02T13:05:54</value>
        <value type="QDateTime">2021-04-02T12:40:13</value>
+       <value type="QDateTime">2021-04-02T15:14:00</value>
       </valuelist>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.Incremental">false</value>
      </valuemap>

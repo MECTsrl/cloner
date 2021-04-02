@@ -48,6 +48,7 @@
 #define ACTION_BACKUP       1
 #define ACTION_RESTORE      2
 
+#define RAMDISK_SIZE        48
 
 extern QString     szModel;                     // Target Model
 extern QString     szTargetVersion;             // MS Target Version

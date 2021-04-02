@@ -40,8 +40,9 @@ void ChooseImage::timerEvent(QTimerEvent *event)
 }
 
 
-QString ChooseImage::getSelectedImage()
+QString ChooseImage::getSelectedImage(int &nRetentiveMode)
 {
+    nRetentiveMode = retentiveMode;
     return selectedImage;
 }
 

@@ -18,6 +18,7 @@
 #include <QDir>
 #include <QTextStream>
 #include <QDialog>
+#include <QByteArray>
 
 
 
@@ -74,12 +75,12 @@ void MainCloner::updateData()
     QString szDateTime = QDateTime::currentDateTime().toString("yyyy/MM/dd hh:mm:ss");
     ui->lblDateTime->setText(szDateTime);
     if (runningAction > ACTION_NONE)  {
-        if (runningAction == ACTION_BACKUP)  {
-            szMessage = QString("Backup Image: [%1] - Elapsed: [%2]") .arg(szDestination) .arg(startElapsed.elapsed() / 1000);
-        }
-        else if (runningAction == ACTION_RESTORE)  {
-            szMessage = QString("Restore Image: [%1] - Elapsed: [%2]") .arg(szSource) .arg(startElapsed.elapsed() / 1000);
-        }
+//        if (runningAction == ACTION_BACKUP)  {
+//            szMessage = QString("Backup Image: [%1] - Elapsed: [%2]") .arg(szDestination) .arg(startElapsed.elapsed() / 1000);
+//        }
+//        else if (runningAction == ACTION_RESTORE)  {
+//            szMessage = QString("Restore Image: [%1] - Elapsed: [%2]") .arg(szSource) .arg(startElapsed.elapsed() / 1000);
+//        }
     }
     else  {
         ui->lblAction->setText("");
@@ -217,6 +218,7 @@ void MainCloner::on_cmdBackup_clicked()
         connect(myProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(actionFailed(QProcess::ProcessError)));
         // Avvio del Task
         runningAction = ACTION_BACKUP;
+        ui->lblAction->setText(QString("Command: %1") .arg(runningCommand));
         myProcess->start(runningCommand);
         // Restart del Timer
         startElapsed.start();
@@ -228,13 +230,69 @@ void MainCloner::on_cmdRestore_clicked()
 {
     ChooseImage     *selectImage;
     QString         image2Restore;
+    int             nRetentiveMode = -1;
 
     selectImage = new ChooseImage(this);
     selectImage->showFullScreen();
     if (selectImage->exec() == QDialog::Accepted)   {
-        image2Restore = selectImage->getSelectedImage();
+        // Revert resore Options
+        image2Restore = selectImage->getSelectedImage(nRetentiveMode);
         if (! image2Restore.isEmpty())  {
+            // Restore
+            szSource = image2Restore;
+            /* before 2.0 */
+            if (! QFile::exists("/etc/mac.conf")) {
+                /* extract MAC0 from /local/etc/sysconfig/net.conf and put it into /etc/mac.conf */
+                system(
+                    "mount -o rw,remount /"
+                    " && "
+                    "grep MAC0 /local/etc/sysconfig/net.conf "
+                    " && "
+                    "grep MAC0 /local/etc/sysconfig/net.conf > /etc/mac.conf"
+                    " && "
+                    "mount -o ro,remount /"
+                );
 
+                /* delete MAC0 from /local/etc/sysconfig/net.conf */
+                system(
+                    "grep -v MAC0 /local/etc/sysconfig/net.conf > /tmp/net.conf"
+                    " && "
+                    "mv /tmp/net.conf /local/etc/sysconfig/net.conf"
+                );
+            }
+
+            QStringList localExclude = excludesLFSList;
+            // Remove retentive file from exclude list
+            // if (nRetentiveMode == RETENTIVE_RESTORE)   {
+            //
+            // }
+            QString excludesToLocal = localExclude.join(" --exclude ");
+            runningCommand = QString("/etc/rc.d/init.d/sdcheck stop");
+            commandList.append(QString("mkdir -p %1") .arg(TMP_DIR));
+            commandList.append(QString("/bin/mount -t tmpfs -o size=%1M tmpfs %2") .arg(RAMDISK_SIZE) .arg(TMP_DIR));
+            commandList.append(QString("tar xf %1%2/localfs.tar -C %3") .arg(CLONED_IMAGES_DIR) .arg(image2Restore) .arg(TMP_DIR));
+            commandList.append(QString("rsync -Havxc --delete %1/ /local/ %2") .arg(TMP_DIR) .arg(excludesToLocal));
+            commandList.append(QString("sync"));
+            commandList.append(QString("/bin/umount %1") .arg(TMP_DIR));
+            // Clear variabili ritentive
+            if (nRetentiveMode == RETENTIVE_RESET)  {
+                commandList.append(QString("dd if=/dev/zero of=/local/retentive bs=768 count=1"));
+            }
+            // Avvio del Processo di Backup
+            fprintf(stderr, "First Restore Command: [%s]\n", runningCommand.toLatin1().data());
+            // Creazione processo
+            myProcess = new QProcess(this);
+            // Impostazione dei parametri del Processo
+            myProcess->setWorkingDirectory("/");
+            // Slot di Gestione del processo
+            connect(myProcess, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(actionCompleted(int,QProcess::ExitStatus)));
+            connect(myProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(actionFailed(QProcess::ProcessError)));
+            // Avvio del Task
+            runningAction = ACTION_RESTORE;
+            ui->lblAction->setText(QString("Command: %1") .arg(runningCommand));
+            myProcess->start(runningCommand);
+            // Restart del Timer
+            startElapsed.start();
         }
     }
     selectImage->deleteLater();
@@ -334,6 +392,7 @@ void MainCloner::actionCompleted(int exitCode, QProcess::ExitStatus exitStatus)
                                         szNextCommand.toLatin1().data(), exitCode, exitStatus);
         myProcess->start(szNextCommand);
         runningCommand = szNextCommand;
+        ui->lblAction->setText(QString("Command: %1") .arg(runningCommand));
     }
 }
 

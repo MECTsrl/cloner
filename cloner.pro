@@ -8,8 +8,8 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = cloner
-#TARGET = hmi_only
+#TARGET = cloner
+TARGET = hmi_only
 
 
 DEFINES +=  MECT_BUILD_MAJOR=\"$(MECT_BUILD_MAJOR)\" \

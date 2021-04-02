@@ -17,7 +17,7 @@ class ChooseImage : public QDialog
 
 public:
     explicit ChooseImage(QWidget *parent = 0);
-    QString     getSelectedImage();
+    QString     getSelectedImage(int &nRetentiveMode);
     ~ChooseImage();
 
 protected:
