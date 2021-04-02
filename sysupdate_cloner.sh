@@ -11,6 +11,7 @@ WORKDIR="$(dirname $0)"
 CLONERDIR="/tmp/cloner"
 CLONEIMG=${WORKDIR}/img_cloner_@@CLONER_VERSION@@.ext2
 CLONER=${CLONERDIR}/cloner
+SYSUPDATE_CLONER=_ysupdate_img_@@CLONER_VERSION@@.sh
 
 trap cleanup EXIT
 cleanup()
@@ -59,4 +60,32 @@ export LD_LIBRARY_PATH=${CLONERDIR}
 
 QWS_DISPLAY="Multi:VNC:0:size=${SIZE} Transformed:rot0" ${CLONER} -qws || ${CLONER} -qws
 
+RESULT=$?
+
+if [ ${RESULT} -eq 42 ]
+then
+	umount ${CLONERDIR}
+	dd if=/dev/zero of=/dev/fb0 
+	if ! /bin/mount -o remount,rw / 2>/dev/null
+	then
+		echo "Cannot mount the file system in read/write." | tee -a $logfile
+		if [ -x /usr/bin/splash ]
+		then
+			killall splash
+			/usr/bin/splash -qws --text "<font color=\"red\"><h1>Cannot mount the filesystem in read/write mode.</h1></font>" --dimension 12 >/dev/null 2>&1
+		fi
+		/bin/umount $mntdir
+		/bin/mount -oro,remount / 2>&1 | tee -a $logfile
+		/etc/rc.d/init.d/autoexec start >/dev/null 2>&1
+		exit 1
+	fi
+	/usr/bin/dos2unix ${SYSUPDATE_CLONER} 2>&1 | tee -a $logfile
+	/bin/sh ${SYSUPDATE_CLONER} 2>&1 | tee -a $logfile
+	/bin/mount -o remount,ro / 2>/dev/null
+	#Sync for local
+	/bin/sync	
+else
+	echo "Return:" ${RESULT}
+	echo "Turn off the device and remove the USB Stick"
+fi
 exit $?
