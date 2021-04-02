@@ -30,14 +30,6 @@ LIBS += \
     -lATCMinputdialog \
     -lts \
 
-#INCLUDEPATH += \
-#    $$(MECT_RFSDIR)/usr/include \
-
-#LIBS += \
-#    -L$$(MECT_RFSDIR)/usr/lib \
-#    -lATCMinputdialog \
-#    -lts \
-
 
 SOURCES += main.cpp\
         maincloner.cpp \
@@ -71,7 +63,7 @@ RESOURCES += \
 OTHER_FILES += \
     cloner.qss
 
-#target.path = /local/root
+target.path = /local/root
 
-#INSTALLS += target
+INSTALLS += target
 

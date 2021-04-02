@@ -1,29 +1,29 @@
 <RCC>
     <qresource prefix="/libicons">
+        <file>img/Back.png</file>
+        <file>img/Cancel_32.png</file>
+        <file>img/Checked_32.png</file>
         <file>img/Clock-icon.png</file>
+        <file>img/Delete.png</file>
         <file>img/Factory_64.png</file>
+        <file>img/info_64.png</file>
         <file>img/Key64.png</file>
         <file>img/Load.png</file>
+        <file>img/Mect64.png</file>
         <file>img/Network_64.png</file>
-        <file>img/OpenVPN64.png</file>
-        <file>img/Save.png</file>
-        <file>img/Back.png</file>
-        <file>img/Delete.png</file>
         <file>img/OK.png</file>
-        <file>img/Checked_32.png</file>
-        <file>img/Unchecked_32.png</file>
-        <file>img/Trash_32.png</file>
-        <file>img/usbpendrive_64.png</file>
+        <file>img/OpenVPN64.png</file>
+        <file>img/Open_32.png</file>
         <file>img/Radio_Checked_32.png</file>
         <file>img/Radio_UnChecked_32.png</file>
-        <file>img/info_64.png</file>
         <file>img/Reload_64.png</file>
-        <file>img/Undo_32.png</file>
-        <file>img/Cancel_32.png</file>
-        <file>img/Open_32.png</file>
         <file>img/Reset_32.png</file>
+        <file>img/Save.png</file>
         <file>img/Save_32.png</file>
-        <file>img/Mect64.png</file>
+        <file>img/Trash_32.png</file>
+        <file>img/Unchecked_32.png</file>
+        <file>img/Undo_32.png</file>
+        <file>img/usbpendrive_64.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file>cloner.qss</file>
