@@ -8,19 +8,13 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-#TARGET = cloner
-TARGET = hmi_only
-
+TARGET = cloner
 
 DEFINES +=  MECT_BUILD_MAJOR=\"$(MECT_BUILD_MAJOR)\" \
             MECT_BUILD_MINOR=\"$(MECT_BUILD_MINOR)\" \
             MECT_BUILD_BUILD=\"$(MECT_BUILD_BUILD)\"
 
-#DEFINES += SVN_REV=\"$(VERSION)\"
-
 TEMPLATE = app
-
-
 
 INCLUDEPATH += \
     $$(DEV_IMAGE)/usr/include \
@@ -28,8 +22,7 @@ INCLUDEPATH += \
 LIBS += \
     -L$$(DEV_IMAGE)/usr/lib \
     -lATCMinputdialog \
-    -lts \
-
+    -lts  
 
 SOURCES += main.cpp\
         maincloner.cpp \
