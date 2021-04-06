@@ -3,7 +3,7 @@ QWidget{
 	color:Yellow;
 }
 QPushButton {
-	border: 2px solid light gray;
+        border: 2px solid DarkCyan;
 	border-radius: 10px;
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 RoyalBlue, stop:1 rgb(0, 0, 128));
 	background-repeat: no-repeat;
@@ -13,16 +13,16 @@ QPushButton {
 }
 QPushButton:disabled {
 	border: 2px solid darkGray;
-        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 Silver, stop:1 SlateGray);
+        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 LightGrey, stop:1 rgb(78, 89, 101));
         border-radius: 10px;
         color: darkGray;
 }
 QPushButton:enabled {
-	border: 2px solid navy;
+        border: 2px solid DodgerBlue;
         border-radius: 10px;
 }
 QPushButton:selected, QPushButton:hover {
-	border: 2px solid teal;
+        border: 2px solid DarkOrange;
         border-radius: 10px;
 }
 QPushButton:pressed {

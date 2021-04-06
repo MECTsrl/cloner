@@ -72,7 +72,7 @@ int ChooseImage::fillImagesList()
         ui->lstImmagini->clear();
         for (int nItem = 0; nItem < lstDir.count(); nItem++)  {
             // Check localfs.tar existence
-            QString localFsTar = QString("%1%2%3") .arg(CLONED_IMAGES_DIR) .arg(lstDir.at(nItem)) .arg(LOCAL_FS_TAR);
+            QString localFsTar = QString("%1%2/%3") .arg(CLONED_IMAGES_DIR) .arg(lstDir.at(nItem)) .arg(LOCAL_FS_TAR);
             if (QFile::exists(localFsTar))  {
                 QListWidgetItem *newItem = new QListWidgetItem;
                 newItem->setText(lstDir.at(nItem));

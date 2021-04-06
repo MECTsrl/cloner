@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>480</height>
+    <width>480</width>
+    <height>272</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -108,7 +108,7 @@ color: Yellow;</string>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
-          <pointsize>12</pointsize>
+          <pointsize>7</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -154,7 +154,7 @@ color: Yellow;</string>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
-          <pointsize>11</pointsize>
+          <pointsize>7</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -191,7 +191,7 @@ color: Yellow;</string>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
-          <pointsize>11</pointsize>
+          <pointsize>6</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -234,7 +234,7 @@ color: Yellow;</string>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
-          <pointsize>11</pointsize>
+          <pointsize>7</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -268,6 +268,24 @@ color: Yellow;</string>
       </item>
       <item>
        <widget class="QPushButton" name="cmdMenu">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>29</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>29</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
@@ -280,12 +298,7 @@ color: Yellow;</string>
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">min-width: 25px;
-min-height: 25px;
-max-width: 25px;
-max-height: 25px;
-text-align: center center;
-</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string/>
@@ -324,7 +337,7 @@ text-align: center center;
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>14</pointsize>
+         <pointsize>8</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -371,7 +384,7 @@ text-align: bottom center;
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>14</pointsize>
+         <pointsize>8</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -416,7 +429,7 @@ text-align: bottom center;
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>14</pointsize>
+         <pointsize>8</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -455,7 +468,7 @@ text-align: bottom center;
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>14</pointsize>
+         <pointsize>8</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -495,7 +508,7 @@ text-align: bottom center;
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>14</pointsize>
+         <pointsize>8</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -534,7 +547,7 @@ text-align: bottom center;
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>14</pointsize>
+         <pointsize>8</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -574,7 +587,7 @@ text-align: bottom center;
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>14</pointsize>
+         <pointsize>8</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -613,7 +626,7 @@ text-align: bottom center;
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>14</pointsize>
+         <pointsize>8</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>

@@ -52,7 +52,7 @@ MainCloner::MainCloner(QWidget *parent) :
     if (! mfgToolsModelDir.isEmpty())  {
         QDir dirSimple(mfgToolsModelDir);
         if (dirSimple.exists())  {
-            ui->cmdSimple->setEnabled(QFile::exists(simpleModelFile));
+            ui->cmdSimple->setEnabled(dirSimple.exists(LOCAL_FS_TAR));
         }
     }
     // TODO: Verifica che sulla chiavetta esistano dei file OVPN
@@ -128,10 +128,10 @@ bool MainCloner::loadInfo()
         // Model Dependent Info
         if (! szModel.isEmpty())  {
             sysUpdateModelFile = QString(MODEL_SYSUPDATE_FILE) .arg(szClonerVersion) .arg(szModel);
-            mfgToolsModelDir = QString(MODEL_IMAGE_DIR) .arg(szModel) .arg(MECT_BUILD_MAJOR) .arg(MECT_BUILD_MINOR) .arg(MECT_BUILD_BUILD);
-            simpleModelFile = QString(LOCAL_FS_TAR);
-            simpleModelFile.prepend(mfgToolsModelDir);
-            fprintf(stderr, "SysUpdate File:[%s] Simple Local Image Direcoty:[%s]\n", sysUpdateModelFile.toLatin1().data(), mfgToolsModelDir.toLatin1().data());
+            mfgToolsModelDir = QString(MODEL_IMAGE_DIR) .arg(szModel) .arg(szClonerVersion);
+            fprintf(stderr, "SysUpdate File:[%s]-Simple Local Image Directory:[%s]\n",
+                    sysUpdateModelFile.toLatin1().data(),
+                    mfgToolsModelDir.toLatin1().data());
         }
     }
     // Load the exclude list for the root file system.
@@ -187,6 +187,7 @@ void MainCloner::on_cmdBackup_clicked()
     {
         QString szDirImage = QString(value);
         szDirImage.replace(" ", "_");
+        szDirImage.append("/");
         szDestination = szDirImage;
         szDirImage.prepend(CLONED_IMAGES_DIR);
         QDir backupDir(szDirImage);
