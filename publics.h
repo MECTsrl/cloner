@@ -27,7 +27,7 @@
 #define TMP_DIR                 "/tmp/tmp"
 #define SIMPLE_DIR              MOUNTED_FS"Simples"
 #define MODEL_SYSUPDATE_FILE    "img_sysupdate-%1-%2.ext2"
-#define MODEL_IMAGE_FILE        "%1_ms%2_%3_%4.zip"
+#define MODEL_IMAGE_DIR         "%1_ms%2.%3.%4"
 #define LOCAL_FS_TAR            "/localfs.tar"
 
 #define COLOR_OK        "color: LimeGreen;"
@@ -54,7 +54,9 @@ extern QString     szModel;                     // Target Model
 extern QString     szTargetVersion;             // MS Target Version
 extern QString     szClonerVersion;             // Cloner App Version
 extern QString     sysUpdateModelFile;          // Sysupdate Model File
-extern QString     mfgToolsModelFile;           // MFG Tools Model File
+extern QString     mfgToolsModelDir;            // MFG Tools Model Directory (contains Local)
+extern QString     simpleModelFile;             // Simple Local file for current Target Model
+
 
 extern QStringList excludesRFSList;             // Root file system.
 extern QStringList excludesLFSList;             // Local file system Exclude

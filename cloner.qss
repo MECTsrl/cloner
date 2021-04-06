@@ -13,6 +13,7 @@ QPushButton {
 }
 QPushButton:disabled {
 	border: 2px solid darkGray;
+        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 Silver, stop:1 SlateGray);
         border-radius: 10px;
         color: darkGray;
 }
@@ -62,20 +63,21 @@ QListView {
     alternate-background-color: rgb(0,69,138);
     show-decoration-selected: 1;
 }
-
-
 QListView::item:selected {
     border: 1px solid White;
 }
-
 QListView::item:selected:!active {
     background: Brown;
     color: gray;
 }
-
 QListView::item:selected:active {
     background: red;
     color: yellow;
+}
+/* QMessageBox */
+QMessageBox QPushButton{
+    min-width: 100px;
+    min-height: 40px;
 }
 /* QDialogButtonBox */
 QDialogButtonBox    {

@@ -14,8 +14,8 @@
 
 
 #include <QDate>
-#include <QFile>
 #include <QDir>
+#include <QFile>
 #include <QTextStream>
 #include <QDialog>
 #include <QByteArray>
@@ -49,9 +49,11 @@ MainCloner::MainCloner(QWidget *parent) :
     }
     // Verifica che nell'immagine Cloner esista il Simple del Modello
     ui->cmdSimple->setEnabled(false);
-    QDir dirSimple(SIMPLE_DIR);
-    if (! mfgToolsModelFile.isEmpty() && dirSimple.exists(mfgToolsModelFile))  {
-        ui->cmdSimple->setEnabled(true);
+    if (! mfgToolsModelDir.isEmpty())  {
+        QDir dirSimple(mfgToolsModelDir);
+        if (dirSimple.exists())  {
+            ui->cmdSimple->setEnabled(QFile::exists(simpleModelFile));
+        }
     }
     // TODO: Verifica che sulla chiavetta esistano dei file OVPN
     ui->cmdVPN->setEnabled(true);
@@ -126,8 +128,10 @@ bool MainCloner::loadInfo()
         // Model Dependent Info
         if (! szModel.isEmpty())  {
             sysUpdateModelFile = QString(MODEL_SYSUPDATE_FILE) .arg(szClonerVersion) .arg(szModel);
-            mfgToolsModelFile = QString(MODEL_IMAGE_FILE) .arg(szModel) .arg(MECT_BUILD_MAJOR) .arg(MECT_BUILD_MINOR) .arg(MECT_BUILD_BUILD);
-            fprintf(stderr, "SysUpdate File:[%s] Simple Image File:[%s]\n", sysUpdateModelFile.toLatin1().data(), mfgToolsModelFile.toLatin1().data());
+            mfgToolsModelDir = QString(MODEL_IMAGE_DIR) .arg(szModel) .arg(MECT_BUILD_MAJOR) .arg(MECT_BUILD_MINOR) .arg(MECT_BUILD_BUILD);
+            simpleModelFile = QString(LOCAL_FS_TAR);
+            simpleModelFile.prepend(mfgToolsModelDir);
+            fprintf(stderr, "SysUpdate File:[%s] Simple Local Image Direcoty:[%s]\n", sysUpdateModelFile.toLatin1().data(), mfgToolsModelDir.toLatin1().data());
         }
     }
     // Load the exclude list for the root file system.
@@ -351,7 +355,7 @@ void MainCloner::on_cmdSimple_clicked()
 {
     if (QMessageBox::question(this, "Confirm Simple Restore",
                               QString("Confirm Mect Suite Simple Restore for Model:\n\n[%1]\n\nVersion: [%2]\n\nFile:[%3]")
-                              .arg(szModel) .arg(szClonerVersion) .arg(mfgToolsModelFile),
+                              .arg(szModel) .arg(szClonerVersion) .arg(mfgToolsModelDir),
                     QMessageBox::Ok|QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Ok)  {
         // TODO: Simple Restore
     }

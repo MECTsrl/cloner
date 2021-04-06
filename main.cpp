@@ -19,7 +19,9 @@ QString     szClonerVersion;        // Cloner App Version
 QStringList excludesRFSList;        // Root file system  Exclude
 QStringList excludesLFSList;        // Local file system Exclude
 QString     sysUpdateModelFile;     // Sysupdate Model File
-QString     mfgToolsModelFile;      // MFG Tools Model File
+QString     mfgToolsModelDir;       // MFG Tools Model Directory (contains Local)
+QString     simpleModelFile;        // Simple Local file for current Target Model
+
 // NtpClient   *ntpclient;             // NTP Interface
 
 int main(int argc, char *argv[])
