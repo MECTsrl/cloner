@@ -58,7 +58,7 @@ export QWS_MOUSE_PROTO=tslib:$TSLIB_TSDEVICE
 # Use our libraries.
 export LD_LIBRARY_PATH=${CLONERDIR}
 
-QWS_DISPLAY="Multi:VNC:0:size=${SIZE} Transformed:rot0" ${CLONER} -qws || ${CLONER} -qws
+QWS_DISPLAY="Multi:VNC:0:size=${SIZE} Transformed:rot0" ${CLONER} -qws
 
 RESULT=$?
 
