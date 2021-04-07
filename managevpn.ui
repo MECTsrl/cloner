@@ -84,7 +84,7 @@ color: Yellow;</string>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
-          <pointsize>11</pointsize>
+          <pointsize>7</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -133,7 +133,7 @@ color: Yellow;</string>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
-          <pointsize>11</pointsize>
+          <pointsize>7</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -167,7 +167,7 @@ color: Yellow;</string>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
-          <pointsize>11</pointsize>
+          <pointsize>6</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -184,6 +184,13 @@ color: Yellow;</string>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
       <widget class="QLabel" name="lblTPac">
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>On TP/TPAC:</string>
        </property>
@@ -197,6 +204,13 @@ color: Yellow;</string>
      </item>
      <item row="0" column="1">
       <widget class="QLabel" name="lblUsb">
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>On USB Key:</string>
        </property>
@@ -216,6 +230,13 @@ color: Yellow;</string>
          <height>100</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="showDropIndicator" stdset="0">
         <bool>false</bool>
        </property>
@@ -231,6 +252,13 @@ color: Yellow;</string>
          <width>200</width>
          <height>100</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
        <property name="selectionMode">
         <enum>QAbstractItemView::MultiSelection</enum>
@@ -254,7 +282,7 @@ color: Yellow;</string>
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>10</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -292,7 +320,7 @@ color: Yellow;</string>
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>10</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -381,7 +409,7 @@ color: Yellow;</string>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
-          <pointsize>10</pointsize>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">
@@ -410,7 +438,7 @@ color: Yellow;</string>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
-          <pointsize>10</pointsize>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">

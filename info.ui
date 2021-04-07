@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>480</width>
-    <height>272</height>
+    <height>336</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -84,7 +84,7 @@ color: Yellow;</string>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
-          <pointsize>11</pointsize>
+          <pointsize>7</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -133,7 +133,7 @@ color: Yellow;</string>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
-          <pointsize>11</pointsize>
+          <pointsize>7</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -167,7 +167,7 @@ color: Yellow;</string>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
-          <pointsize>11</pointsize>
+          <pointsize>6</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -187,6 +187,12 @@ color: Yellow;</string>
        <width>80</width>
        <height>0</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>DejaVu Sans</family>
+       <pointsize>7</pointsize>
+      </font>
      </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
@@ -803,7 +809,7 @@ color: Yellow;</string>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
-          <pointsize>10</pointsize>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">
@@ -832,7 +838,7 @@ color: Yellow;</string>
         <property name="font">
          <font>
           <family>DejaVu Sans</family>
-          <pointsize>10</pointsize>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">

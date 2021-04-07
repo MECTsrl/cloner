@@ -75,7 +75,11 @@ QListView::item:selected:active {
     color: yellow;
 }
 /* QMessageBox */
-QMessageBox QPushButton{
+QMessageBox {
+    font-size: 8pt;
+    font-style: bold;
+}
+QMessageBox QPushButton {
     min-width: 100px;
     min-height: 40px;
 }
@@ -88,7 +92,7 @@ QDialogButtonBox    {
     dialog-close-icon: url(":/libicons/img/Delete.png");
     dialog-discard-icon: url(":/libicons/img/Undo_32.png");
     dialog-no-icon: url(":/libicons/img/Cancel_32.png");
-    dialog-ok-icon: url("::/libicons/img/OK.png");
+    dialog-ok-icon: url(":/libicons/img/OK.png");
     dialog-open-icon: url(":/libicons/img/Open_32.png");
     dialog-reset-icon: url(":/libicons/img/Reset_32.png");
     dialog-save-icon: url(":/libicons/img/Save.png");

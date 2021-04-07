@@ -30,6 +30,7 @@ MainCloner::MainCloner(QWidget *parent) :
     refresh_timer = new QTimer(this);
     connect(refresh_timer, SIGNAL(timeout()), this, SLOT(updateData()));
     runningAction = ACTION_NONE;
+    nCommandCount = 0;
     refresh_timer->start(REFRESH_MS);
     if (loadInfo())  {
         ui->lblModel->setStyleSheet(COLOR_OK);
@@ -61,6 +62,10 @@ MainCloner::MainCloner(QWidget *parent) :
     ui->cmdSSH->setEnabled(true);
     szDestination.clear();
     szSource.clear();
+    ui->lblAction->setText("");
+    ui->lblAction->setMaximumWidth((screen_width / 2) -10);
+    ui->progressBar->setMaximumWidth((screen_width / 3) -10);
+    ui->progressBar->setVisible(false);
 }
 
 MainCloner::~MainCloner()
@@ -86,6 +91,7 @@ void MainCloner::updateData()
     }
     else  {
         ui->lblAction->setText("");
+        ui->progressBar->setVisible(false);
     }
 }
 
@@ -223,7 +229,7 @@ void MainCloner::on_cmdBackup_clicked()
         connect(myProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(actionFailed(QProcess::ProcessError)));
         // Avvio del Task
         runningAction = ACTION_BACKUP;
-        ui->lblAction->setText(QString("Command: %1") .arg(runningCommand));
+        ui->lblAction->setText(runningCommand);
         myProcess->start(runningCommand);
         // Restart del Timer
         startElapsed.start();
@@ -243,7 +249,7 @@ void MainCloner::on_cmdRestore_clicked()
         // Revert resore Options
         image2Restore = selectImage->getSelectedImage(nRetentiveMode);
         if (! image2Restore.isEmpty())  {
-            // Restore
+            // Restore Dir
             szSource = image2Restore;
             /* before 2.0 */
             if (! QFile::exists("/etc/mac.conf")) {
@@ -265,39 +271,10 @@ void MainCloner::on_cmdRestore_clicked()
                     "mv /tmp/net.conf /local/etc/sysconfig/net.conf"
                 );
             }
+            // Start restore procedure
+            QString sourceTar = QString("%1%2/%3") .arg(CLONED_IMAGES_DIR) .arg(image2Restore) .arg(LOCAL_FS_TAR);
+            restoreLocalFile(sourceTar, excludesLFSList, nRetentiveMode);
 
-            QStringList localExclude = excludesLFSList;
-            // Remove retentive file from exclude list
-            // if (nRetentiveMode == RETENTIVE_RESTORE)   {
-            //
-            // }
-            QString excludesToLocal = localExclude.join(" --exclude ");
-            runningCommand = QString("/etc/rc.d/init.d/sdcheck stop");
-            commandList.append(QString("mkdir -p %1") .arg(TMP_DIR));
-            commandList.append(QString("/bin/mount -t tmpfs -o size=%1M tmpfs %2") .arg(RAMDISK_SIZE) .arg(TMP_DIR));
-            commandList.append(QString("tar xf %1%2/localfs.tar -C %3") .arg(CLONED_IMAGES_DIR) .arg(image2Restore) .arg(TMP_DIR));
-            commandList.append(QString("rsync -Havxc --delete %1/ /local/ %2") .arg(TMP_DIR) .arg(excludesToLocal));
-            commandList.append(QString("sync"));
-            commandList.append(QString("/bin/umount %1") .arg(TMP_DIR));
-            // Clear variabili ritentive
-            if (nRetentiveMode == RETENTIVE_RESET)  {
-                commandList.append(QString("dd if=/dev/zero of=/local/retentive bs=768 count=1"));
-            }
-            // Avvio del Processo di Backup
-            fprintf(stderr, "First Restore Command: [%s]\n", runningCommand.toLatin1().data());
-            // Creazione processo
-            myProcess = new QProcess(this);
-            // Impostazione dei parametri del Processo
-            myProcess->setWorkingDirectory("/");
-            // Slot di Gestione del processo
-            connect(myProcess, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(actionCompleted(int,QProcess::ExitStatus)));
-            connect(myProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(actionFailed(QProcess::ProcessError)));
-            // Avvio del Task
-            runningAction = ACTION_RESTORE;
-            ui->lblAction->setText(QString("Command: %1") .arg(runningCommand));
-            myProcess->start(runningCommand);
-            // Restart del Timer
-            startElapsed.start();
         }
     }
     selectImage->deleteLater();
@@ -355,10 +332,17 @@ void MainCloner::on_cmdNetwork_clicked()
 void MainCloner::on_cmdSimple_clicked()
 {
     if (QMessageBox::question(this, "Confirm Simple Restore",
-                              QString("Confirm Mect Suite Simple Restore for Model:\n\n[%1]\n\nVersion: [%2]\n\nFile:[%3]")
+                              QString("Confirm Mect Suite Simple Restore for Model:\n[%1]\nVersion: [%2]\nFile:[%3]")
                               .arg(szModel) .arg(szClonerVersion) .arg(mfgToolsModelDir),
                     QMessageBox::Ok|QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Ok)  {
-        // TODO: Simple Restore
+        // Start restore procedure
+        szSource = QString("%1_%2") .arg(szModel) .arg(szClonerVersion);
+        QStringList lstExclude;
+        int         nRestore = ACTION_RESTORE;
+        QString sourceTar = mfgToolsModelDir;
+        sourceTar.append(LOCAL_FS_TAR);
+        lstExclude.clear();
+        restoreLocalFile(sourceTar, lstExclude, nRestore);
     }
 
 }
@@ -372,12 +356,61 @@ void MainCloner::on_cmdMenu_clicked()
     infoPage->deleteLater();
 }
 
+void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclude, int nRetentiveMode)
+{
+    QStringList localExclude = files2Exclude;
+
+    // Add retentive file to exclude list
+    if (nRetentiveMode == RETENTIVE_IGNORE)   {
+        localExclude.append(RETENTIVE_FILE);
+    }
+    // Extract list of Exclude files
+    QString excludesToLocal = localExclude.join(" --exclude ");
+    runningCommand = QString("/etc/rc.d/init.d/sdcheck stop");
+    // Create Ram Disk Mount Point
+    commandList.append(QString("mkdir -p %1") .arg(TMP_DIR));
+    // Mount Ram Disk
+    commandList.append(QString("/bin/mount -t tmpfs -o size=%1M tmpfs %2") .arg(RAMDISK_SIZE) .arg(TMP_DIR));
+    // Expand local tar to ram disk
+    commandList.append(QString("tar xf %1 -C %2") .arg(szLocalTar) .arg(TMP_DIR));
+    // Rsync to target local partition
+    commandList.append(QString("rsync -Havxc --delete %1/ /local/ %2") .arg(TMP_DIR) .arg(excludesToLocal));
+    // Final Sync
+    commandList.append(QString("sync"));
+    // Umount Ram Disk
+    commandList.append(QString("/bin/umount %1") .arg(TMP_DIR));
+    // Clear variabili ritentive
+    if (nRetentiveMode == RETENTIVE_RESET)  {
+        commandList.append(QString("dd if=/dev/zero of=%1 bs=768 count=1") .arg(RETENTIVE_FILE));
+    }
+    // Avvio del Processo di Backup
+    fprintf(stderr, "First Restore Command: [%s]\n", runningCommand.toLatin1().data());
+    // Creazione processo
+    myProcess = new QProcess(this);
+    // Impostazione dei parametri del Processo
+    myProcess->setWorkingDirectory("/");
+    // Slot di Gestione del processo
+    connect(myProcess, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(actionCompleted(int,QProcess::ExitStatus)));
+    connect(myProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(actionFailed(QProcess::ProcessError)));
+    // Avvio del Task
+    runningAction = ACTION_RESTORE;
+    ui->lblAction->setText(runningCommand);
+    nCommandCount = commandList.count();
+    ui->progressBar->setMaximum(nCommandCount);
+    ui->progressBar->setValue(0);
+    ui->progressBar->setVisible(true);
+    myProcess->start(runningCommand);
+    // Restart del Timer
+    startElapsed.start();
+}
+
 void MainCloner::actionCompleted(int exitCode, QProcess::ExitStatus exitStatus)
 {
     QString     szTitle;
     QString     szMessage;
 
     if (commandList.isEmpty())  {
+        ui->progressBar->setValue(ui->progressBar->maximum());
         if (runningAction == ACTION_BACKUP)  {
             szTitle = "Back-Up";
             szMessage = QString("Back-Up to [%1] Successfully completed!") .arg(szDestination);
@@ -388,6 +421,8 @@ void MainCloner::actionCompleted(int exitCode, QProcess::ExitStatus exitStatus)
         }
         fprintf(stderr, "Last Command Done [%s]. %s exitCode: %d exitStatus: %d\n", runningCommand.toLatin1().data(), szMessage.toLatin1().data(), exitCode, exitStatus);
         QMessageBox::information(this, szTitle, szMessage, QMessageBox::Ok);
+        ui->lblAction->setText("");
+        ui->progressBar->setVisible(false);
         QObject::disconnect(myProcess, 0, 0, 0);
         myProcess->deleteLater();
     }
@@ -397,7 +432,8 @@ void MainCloner::actionCompleted(int exitCode, QProcess::ExitStatus exitStatus)
                                         szNextCommand.toLatin1().data(), exitCode, exitStatus);
         myProcess->start(szNextCommand);
         runningCommand = szNextCommand;
-        ui->lblAction->setText(QString("Command: %1") .arg(runningCommand));
+        ui->lblAction->setText(runningCommand);
+        ui->progressBar->setValue(ui->progressBar->value() + 1);
     }
 }
 
@@ -419,3 +455,4 @@ void MainCloner::actionFailed(QProcess::ProcessError errorCode)
     QObject::disconnect(myProcess, 0, 0, 0);
     myProcess->deleteLater();
 }
+

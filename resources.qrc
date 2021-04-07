@@ -3,6 +3,7 @@
         <file>img/Back.png</file>
         <file>img/Cancel_32.png</file>
         <file>img/Checked_32.png</file>
+        <file>img/Clear.png</file>
         <file>img/Clock-icon.png</file>
         <file>img/Delete.png</file>
         <file>img/Factory_64.png</file>
@@ -23,6 +24,7 @@
         <file>img/Trash_32.png</file>
         <file>img/Unchecked_32.png</file>
         <file>img/Undo_32.png</file>
+        <file>img/Up.png</file>
         <file>img/usbpendrive_64.png</file>
     </qresource>
     <qresource prefix="/qss">

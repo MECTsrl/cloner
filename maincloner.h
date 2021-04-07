@@ -36,6 +36,7 @@ private slots:
 
 private:
     bool        loadInfo();
+    void        restoreLocalFile(QString &szLocalTar, QStringList &files2Exclude, int nRetentiveMode);
     QString     getDefaultDirName();
 
 
@@ -45,6 +46,7 @@ private:
     QProcess        *myProcess;
     QElapsedTimer   startElapsed;
     int             runningAction;
+    int             nCommandCount;
     QString         szDestination;
     QString         szSource;
     QString         runningCommand;
