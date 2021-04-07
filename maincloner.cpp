@@ -188,6 +188,12 @@ void MainCloner::on_cmdBackup_clicked()
     szDestination.clear();
     commandList.clear();
     dk = new alphanumpad(value, false, getDefaultDirName().toAscii().data(), false, this);
+    QString szStyle = QString("font-size: 10pt;\n");
+    szStyle.append(QString(
+    "background-color: Azure;\n"
+    "color: Navy;\n"
+    ));
+    dk->setStyleSheet(szStyle);
     dk->showFullScreen();
     if (dk->exec() == QDialog::Accepted && strlen(value) != 0)
     {
