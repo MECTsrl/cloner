@@ -59,7 +59,7 @@ QRadioButton::indicator:checked {
     image: url(":/libicons/img/Radio_Checked_32.png");
 }
 /* QListView */
-QListView {
+QListView  {
     alternate-background-color: rgb(0,69,138);
     show-decoration-selected: 1;
 }
@@ -73,6 +73,25 @@ QListView::item:selected:!active {
 QListView::item:selected:active {
     background: red;
     color: yellow;
+}
+/* QTableView */
+QTableView  {
+    alternate-background-color: rgb(0,69,138);
+    show-decoration-selected: 1;
+}
+/* QHeaderView */
+QHeaderView::section {
+    font-size: 7pt;
+    background: 	rgb(62, 104, 168);
+    color: rgb(125, 158, 207);
+    padding-left: 4px;
+    border: 1px solid ;
+}
+
+QHeaderView::section:checked
+{
+    background-color: rgb(125, 158, 207);
+        color: rgb(62, 104, 168);
 }
 /* QMessageBox */
 QMessageBox {

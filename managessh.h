@@ -2,6 +2,9 @@
 #define MANAGESSH_H
 
 #include <QDialog>
+#include <QStringList>
+#include <QTableWidget>
+
 
 namespace Ui {
 class ManageSSH;
@@ -22,7 +25,11 @@ private slots:
     void on_cmdCancel_clicked();
 
 private:
-    Ui::ManageSSH *ui;
+    bool            loadSSHKeys();
+    void            clearTable(QTableWidget *table);
+
+    Ui::ManageSSH   *ui;
+    QStringList     lstSSHKeys;
 };
 
 #endif // MANAGESSH_H

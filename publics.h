@@ -30,6 +30,14 @@
 #define MODEL_IMAGE_DIR         SIMPLE_DIR"%1_ms%2/"
 #define LOCAL_FS_TAR            "localfs.tar"
 
+#define SSH_KEY_DIR             MOUNTED_USB"keys/"
+#define SSH_KEY_FILE            "/etc/dropbear/authorized_keys"
+#define SSH_KEY_SMILY           "root@vpndev.vpn-smily.com"
+// Columns in SSH Keys
+#define SSH_KEY_TYPE            0
+#define SSH_KEY_VALUE           1
+#define SSH_KEY_COMMENT         2
+
 #define COLOR_OK        "color: LimeGreen;"
 #define COLOR_FAIL      "color: OrangeRed;"
 

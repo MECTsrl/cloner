@@ -41,7 +41,9 @@ MainCloner::MainCloner(QWidget *parent) :
         ui->lblVersion->setStyleSheet(COLOR_FAIL);
     }
     ui->lblTile->setText(QString("Cloner_%1") .arg(szClonerVersion));
+    //-----------------------------------------
     // Abilitazione dei bottoni d'interfaccia
+    //-----------------------------------------
     // Verifica che sulla chiavetta esista il file sysupdate di versione nella Root della Chiavetta
     QDir dirRootUSB(MOUNTED_USB);
     ui->cmdMectSuite->setEnabled(false);
@@ -57,9 +59,10 @@ MainCloner::MainCloner(QWidget *parent) :
         }
     }
     // TODO: Verifica che sulla chiavetta esistano dei file OVPN
-    ui->cmdVPN->setEnabled(true);
-    // TODO: Verifica che sulla chiavetta esistano dei file SSH
-    ui->cmdSSH->setEnabled(true);
+    ui->cmdVPN->setEnabled(false);
+    // Abilitazione bottone SSH_KEYS
+    ui->cmdSSH->setEnabled(QFile::exists(SSH_KEY_FILE));
+    // Clear values
     szDestination.clear();
     szSource.clear();
     ui->lblAction->setText("");
@@ -146,7 +149,7 @@ bool MainCloner::loadInfo()
     if (distDir.exists(EXCLUDES_RFS)) {
         QFile excludesRFS(distDir.filePath(EXCLUDES_RFS));
         if (excludesRFS.open(QIODevice::ReadOnly))  {
-            while (!excludesRFS.atEnd())    {
+            while (! excludesRFS.atEnd())    {
                 excludesRFSList.append(excludesRFS.readLine().simplified());
             }
             fprintf(stderr, "%s Read:%d Items\n", EXCLUDES_RFS, excludesRFSList.count());
@@ -157,7 +160,7 @@ bool MainCloner::loadInfo()
     if (distDir.exists(EXCLUDES_LFS)) {
         QFile excludesLFS(distDir.filePath(EXCLUDES_LFS));
         if (excludesLFS.open(QIODevice::ReadOnly))  {
-            while (!excludesLFS.atEnd())  {
+            while (! excludesLFS.atEnd())  {
                 excludesLFSList.append(excludesLFS.readLine().simplified());
             }
             fprintf(stderr, "%s Read:%d Items\n", EXCLUDES_LFS, excludesLFSList.count());

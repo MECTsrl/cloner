@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 2.8.1, 2021-04-07T11:40:37. -->
+<!-- Written by QtCreator 2.8.1, 2021-04-07T15:58:59. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -238,9 +238,9 @@
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
        <value type="QDateTime">2021-04-02T15:53:35</value>
-       <value type="QDateTime">2021-04-07T10:47:59</value>
+       <value type="QDateTime">2021-04-07T15:45:17</value>
        <value type="QDateTime">2021-04-07T10:09:44</value>
-       <value type="QDateTime">2021-04-07T11:01:43</value>
+       <value type="QDateTime">2021-04-07T15:58:37</value>
        <value type="QDateTime">2021-04-02T15:37:14</value>
       </valuelist>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.Incremental">false</value>
