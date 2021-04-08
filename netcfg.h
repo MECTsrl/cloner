@@ -23,6 +23,12 @@ protected:
 
 private slots:
     void on_cmdCancel_clicked();
+    bool netcfg_ini_set(QString setting, QString value, QString file);
+    QString netcfg_ini_get(QString setting, QString file);
+    QString getMacAddr(QString interface);
+    QString getIPAddr(QString interface);
+
+
 
     ///MOBILE
     void on_pushButton_wan0_dialnb_clicked();
@@ -58,12 +64,18 @@ private slots:
     void on_checkBox_eth0_DHCP_clicked(bool checked);
     void on_checkBox_eth1_DHCP_clicked(bool checked);
 
+
+    void on_cmdOk_clicked();
+
 private:
     bool checkNetAddr(char * ipaddr);
     bool saveETH0cfg();
     bool saveETH1cfg();
     bool saveWLAN0cfg();
     bool saveWAN0cfg();
+
+    void loadETH0cfg();
+
 
     bool isWlanOn(void);
     bool isWanOn(void);

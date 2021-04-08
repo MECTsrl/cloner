@@ -26,6 +26,9 @@
         <file>img/Undo_32.png</file>
         <file>img/Up.png</file>
         <file>img/usbpendrive_64.png</file>
+        <file>img/wifi_connect.png</file>
+        <file>img/disconnect.png</file>
+        <file>img/4g_connect.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file>cloner.qss</file>
