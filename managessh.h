@@ -39,7 +39,6 @@ private:
     Ui::ManageSSH   *ui;
     QStringList     lstSSH_TPacKeys;                    // SSH Key on TPAC
     QStringList     lstSSH_USBKeys;                     // SSH Key on USB Files
-    int             nSmilyKey;
     int             nCurrentFile;                       // Current USB File
     int             nCurrentKey;                        // Current SSH Key on TPAC
 };

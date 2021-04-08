@@ -20,7 +20,6 @@ ManageSSH::ManageSSH(QWidget *parent) :
     ui->lblFile->setText("");
     nCurrentFile = -1;
     nCurrentKey = -1;
-    nSmilyKey = -1;
     // Clear Tables
     clearTable(ui->tblTPac);
     clearTable(ui->tblUsb);
@@ -70,43 +69,38 @@ bool    ManageSSH::loadSSHKeys()
         sshFile.close();
         // Parse and load Keys
         if (lstRawKeys.count() > 0)  {
-            ui->tblTPac->setColumnCount(3);
+            ui->tblTPac->setColumnCount(2);
             for (int nKey = 0; nKey < lstRawKeys.count(); nKey++)  {
                 QString     sshKey = lstRawKeys.at(nKey);
                 QStringList lstItems = sshKey.split(" ", QString::SkipEmptyParts);
                 if (lstItems.count() > SSH_KEY_COMMENT)  {
                     lstSSH_TPacKeys.append(sshKey);
-                    ui->tblTPac->insertRow(nRows++);
-                    // Add Row Info
-                    tItem = new QTableWidgetItem(QString::number(nKey));
-                    ui->tblTPac->setItem(ui->tblTPac->rowCount() - 1, 0, tItem);
+                    ui->tblTPac->insertRow(nRows);
                     // Add Type Info
                     tItem = new QTableWidgetItem(lstItems.at(SSH_KEY_TYPE));
-                    ui->tblTPac->setItem(ui->tblTPac->rowCount() - 1, 1, tItem);
+                    ui->tblTPac->setItem(nRows, 0, tItem);
                     // Add Comment Info
                     tItem = new QTableWidgetItem(lstItems.at(SSH_KEY_COMMENT));
-                    ui->tblTPac->setItem(ui->tblTPac->rowCount() - 1, 2, tItem);
+                    ui->tblTPac->setItem(nRows, 1, tItem);
                     // Lock Smily Row
                     if (lstItems.at(SSH_KEY_COMMENT) == QString(SSH_KEY_SMILY))  {
-                        nSmilyKey = ui->tblTPac->rowCount() - 1;
-                        lockTableRow(ui->tblTPac, nSmilyKey);
+                        lockTableRow(ui->tblTPac, nRows);
                     }
                     else if (nFirstSelectable < 0)  {
-                        nFirstSelectable = ui->tblTPac->rowCount() - 1;
+                        nFirstSelectable = nRows;
                     }
+                    nRows++;
                 }
             }
             // Column Headers
             if (lstSSH_TPacKeys.count() > 0)  {
                 QStringList lstCols;
-                lstCols.append("Row");
                 lstCols.append("Type");
                 lstCols.append("Comment");
                 ui->tblTPac->setHorizontalHeaderLabels(lstCols);
                 ui->tblTPac->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
                 ui->tblTPac->horizontalHeader()->setStretchLastSection(true);
                 ui->tblTPac->verticalHeader()->hide();
-                ui->tblTPac->setColumnHidden(0, true);
                 fRes = true;
             }
             // Select first user available row
@@ -221,13 +215,12 @@ void ManageSSH::on_tblTPac_itemClicked(QTableWidgetItem *item)
     nCurrentKey = -1;
     if (nRow >= 0 && nRow < ui->tblTPac->rowCount())  {
         // retrieve file name from hidden column 0
-        rowCell = ui->tblTPac->item(nRow, 0);
+        rowCell = ui->tblTPac->item(nRow, 1);
         if (rowCell)  {
             QString szText = rowCell->text();
-            int nKeyRow = szText.toInt();
-            if (nKeyRow >= 0 && nKeyRow < lstSSH_TPacKeys.count())  {
-                ui->lblKey->setText(QString("Key:%1") .arg(nKeyRow + 1, 3, 10));
-                nCurrentKey = nKeyRow;
+            if (szText != QString(SSH_KEY_SMILY))  {
+                nCurrentKey = nRow;
+                ui->lblKey->setText(QString("Key:%1") .arg(nRow + 1, 3, 10));
             }
         }
     }
@@ -248,28 +241,32 @@ void ManageSSH::on_cmdAdd_clicked()
 {
     QTableWidgetItem    *tItem;
 
-    if (nCurrentFile >= 0 && nCurrentFile < ui->tblUsb->rowCount())  {
+    if (nCurrentFile >= 0 && nCurrentFile < ui->tblUsb->rowCount() && nCurrentFile < lstSSH_USBKeys.count())  {
         QString szNewKey = lstSSH_USBKeys.at(nCurrentFile);
         QStringList lstItems = szNewKey.split(" ", QString::SkipEmptyParts);
         if (lstItems.count() > SSH_KEY_COMMENT)  {
             lstSSH_TPacKeys.append(szNewKey);
             int nNewRowIndex = ui->tblTPac->rowCount();
             ui->tblTPac->insertRow(nNewRowIndex);
-            // Add Row Info
-            tItem = new QTableWidgetItem(QString::number(nNewRowIndex));
-            ui->tblTPac->setItem(nNewRowIndex, 0, tItem);
             // Add Type Info
             tItem = new QTableWidgetItem(lstItems.at(SSH_KEY_TYPE));
-            ui->tblTPac->setItem(nNewRowIndex, 1, tItem);
+            ui->tblTPac->setItem(nNewRowIndex, 0, tItem);
             // Add Comment Info
             tItem = new QTableWidgetItem(lstItems.at(SSH_KEY_COMMENT));
-            ui->tblTPac->setItem(nNewRowIndex, 2, tItem);
-            // Deselect Current File
-            lockTableRow(ui->tblUsb, nCurrentFile);
-            nCurrentFile = -1;
+            ui->tblTPac->setItem(nNewRowIndex, 1, tItem);
+            // Remove Current File from List
+            lstSSH_USBKeys.removeAt(nCurrentFile);
+            ui->tblUsb->removeRow(nCurrentFile);
+            if (lstSSH_USBKeys.count() > 0)  {
+                nCurrentFile = 0;
+            }
+            else  {
+                ui->cmdAdd->setEnabled(false);
+            }
             ui->tblUsb->selectRow(nCurrentFile);
             // Update Interface
-            ui->lblNumUSB->setText(QString::number(lstSSH_TPacKeys.count()));
+            ui->lblNumTP->setText(QString::number(lstSSH_TPacKeys.count()));
+            ui->lblNumUSB->setText(QString::number(lstSSH_USBKeys.count()));
             ui->tblTPac->update();
             ui->tblUsb->update();
         }
@@ -279,6 +276,22 @@ void ManageSSH::on_cmdAdd_clicked()
 void ManageSSH::on_cmdRemove_clicked()
 // Remove a key from TPAC Key List
 {
-    if (nCurrentKey >= 0 && nCurrentFile  < ui->tblTPac->rowCount())  {
+    QTableWidgetItem    *tItem;
+
+    if (nCurrentKey >= 0 && nCurrentKey  < ui->tblTPac->rowCount() && nCurrentKey < lstSSH_USBKeys.count())  {
+        // Check if sMily Key
+        tItem = ui->tblTPac->item(nCurrentKey, 2);
+        if (tItem->text() != QString(SSH_KEY_SMILY))  {
+            // Remove Current Key from List
+            lstSSH_TPacKeys.removeAt(nCurrentKey);
+            ui->tblTPac->removeRow(nCurrentKey);
+            nCurrentKey = -1;
+            ui->tblTPac->selectRow(nCurrentKey);
+            // Update Interface
+            ui->lblKey->setText("");
+            ui->lblNumTP->setText(QString::number(lstSSH_TPacKeys.count()));
+            ui->tblTPac->update();
+        }
     }
+
 }
