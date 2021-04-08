@@ -93,7 +93,7 @@ void MainCloner::updateData()
 //        }
     }
     else  {
-        ui->lblAction->setText("Select an option or Power OFF and remove USB Key");
+        ui->lblAction->setText("Select an option or power off and remove the USB Key");
         ui->progressBar->setVisible(false);
     }
 }
@@ -128,7 +128,7 @@ bool MainCloner::loadInfo()
                 if (line.startsWith("Release:"))  {
                     line.replace("Release:", "");
                     szTargetVersion = line.trimmed();
-                    ui->lblVersion->setText(szTargetVersion);
+                    ui->lblVersion->setText(QString(" v%1") .arg(szTargetVersion));
                 }
 
             }

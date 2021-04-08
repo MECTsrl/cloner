@@ -21,7 +21,7 @@ QPushButton:enabled {
         border: 2px solid DodgerBlue;
         border-radius: 10px;
 }
-QPushButton:selected, QPushButton:hover {
+QPushButton:selected {
         border: 2px solid DarkOrange;
         border-radius: 10px;
 }
