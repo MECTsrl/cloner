@@ -5,6 +5,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QHeaderView>
 
@@ -15,12 +16,21 @@ ManageSSH::ManageSSH(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->lblModel->setText(szModel);
+    ui->lblKey->setText("");
+    ui->lblFile->setText("");
+    nCurrentFile = -1;
+    nCurrentKey = -1;
+    nSmilyKey = -1;
     // Clear Tables
     clearTable(ui->tblTPac);
     clearTable(ui->tblUsb);
     // Load SSH Key on TPac
     if (loadSSHKeys())  {
         ui->tblTPac->setEnabled(true);
+    }
+    // Load SSH Key files on USB
+    if (loadSSHFiles())  {
+        ui->tblUsb->setEnabled(true);
     }
     startTimer(REFRESH_MS);
 }
@@ -43,22 +53,21 @@ void ManageSSH::on_cmdCancel_clicked()
 }
 
 bool    ManageSSH::loadSSHKeys()
+// Read authorized_keys file on TPAC
 {
     bool                fRes = false;
     QStringList         lstRawKeys;
     QTableWidgetItem    *tItem;
     int                 nRows = 0;
-    int                 nSmilyRow = -1;
     int                 nFirstSelectable = -1;
 
-    lstSSHKeys.clear();
+    lstSSH_TPacKeys.clear();
     QFile sshFile(SSH_KEY_FILE);
     if (sshFile.open(QIODevice::ReadOnly)) {
         while (! sshFile.atEnd())  {
             lstRawKeys.append(sshFile.readLine().simplified());
         }
         sshFile.close();
-        fprintf(stderr, "%s: Read:%d Items\n", SSH_KEY_FILE, lstRawKeys.count());
         // Parse and load Keys
         if (lstRawKeys.count() > 0)  {
             ui->tblTPac->setColumnCount(3);
@@ -66,7 +75,7 @@ bool    ManageSSH::loadSSHKeys()
                 QString     sshKey = lstRawKeys.at(nKey);
                 QStringList lstItems = sshKey.split(" ", QString::SkipEmptyParts);
                 if (lstItems.count() > SSH_KEY_COMMENT)  {
-                    lstSSHKeys.append(sshKey);
+                    lstSSH_TPacKeys.append(sshKey);
                     ui->tblTPac->insertRow(nRows++);
                     // Add Row Info
                     tItem = new QTableWidgetItem(QString::number(nKey));
@@ -79,10 +88,8 @@ bool    ManageSSH::loadSSHKeys()
                     ui->tblTPac->setItem(ui->tblTPac->rowCount() - 1, 2, tItem);
                     // Lock Smily Row
                     if (lstItems.at(SSH_KEY_COMMENT) == QString(SSH_KEY_SMILY))  {
-                        nSmilyRow = ui->tblTPac->rowCount() - 1;
-                        ui->tblTPac->item(nSmilyRow, 0)->setFlags(Qt::NoItemFlags);
-                        ui->tblTPac->item(nSmilyRow, 1)->setFlags(Qt::NoItemFlags);
-                        ui->tblTPac->item(nSmilyRow, 2)->setFlags(Qt::NoItemFlags);
+                        nSmilyKey = ui->tblTPac->rowCount() - 1;
+                        lockTableRow(ui->tblTPac, nSmilyKey);
                     }
                     else if (nFirstSelectable < 0)  {
                         nFirstSelectable = ui->tblTPac->rowCount() - 1;
@@ -90,7 +97,7 @@ bool    ManageSSH::loadSSHKeys()
                 }
             }
             // Column Headers
-            if (lstSSHKeys.count() > 0)  {
+            if (lstSSH_TPacKeys.count() > 0)  {
                 QStringList lstCols;
                 lstCols.append("Row");
                 lstCols.append("Type");
@@ -105,9 +112,12 @@ bool    ManageSSH::loadSSHKeys()
             // Select first user available row
             if (nFirstSelectable >= 0)  {
                 ui->tblTPac->selectRow(nFirstSelectable);
+                ui->lblKey->setText(QString("Key:%1") .arg(nFirstSelectable + 1, 3, 10));
+                nCurrentKey = nFirstSelectable;
             }
             ui->tblTPac->update();
         }
+        ui->lblNumTP->setText(QString::number(lstSSH_TPacKeys.count()));
     }
     return fRes;
 }
@@ -121,4 +131,154 @@ void  ManageSSH::clearTable(QTableWidget *table)
     table->horizontalHeader()->reset();
     table->setHorizontalHeaderLabels(QStringList());
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+}
+
+bool  ManageSSH::loadSSHFiles()
+// Read ssh keys files on USB Key
+{
+    bool                fRes = false;
+    QTableWidgetItem    *tItem;
+    int                 nRows = 0;
+    QString             szFirstFile;
+    QDir                dirUSB(SSH_KEY_DIR);
+    QStringList         lstFilesUSB = dirUSB.entryList(QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Readable,
+                                                       QDir::Name | QDir::IgnoreCase);
+
+    if (lstFilesUSB.count() > 0)  {
+        ui->tblUsb->setColumnCount(3);
+        for (int nFile = 0; nFile < lstFilesUSB.count(); nFile++)  {
+            QString szFileName = QString("%1%2") .arg(SSH_KEY_DIR) .arg(lstFilesUSB.at(nFile));
+            QFile   sshFile(szFileName);
+            if (sshFile.open(QIODevice::ReadOnly) && ! sshFile.atEnd()) {
+                if (! sshFile.atEnd())  {
+                    // Read only first line of each file on USB Key
+                    QString     sshKey = sshFile.readLine().simplified();
+                    QStringList lstItems = sshKey.split(" ", QString::SkipEmptyParts);
+                    if (lstItems.count() > SSH_KEY_COMMENT)  {
+                        lstSSH_USBKeys.append(sshKey);
+                        ui->tblUsb->insertRow(nRows++);
+                        if (szFirstFile.isEmpty())  {
+                            szFirstFile = lstFilesUSB.at(nFile);
+                        }
+                        // Add file name Info
+                        tItem = new QTableWidgetItem(lstFilesUSB.at(nFile));
+                        ui->tblUsb->setItem(ui->tblUsb->rowCount() - 1, 0, tItem);
+                        // Add Type Info
+                        tItem = new QTableWidgetItem(lstItems.at(SSH_KEY_TYPE));
+                        ui->tblUsb->setItem(ui->tblUsb->rowCount() - 1, 1, tItem);
+                        // Add Comment Info
+                        tItem = new QTableWidgetItem(lstItems.at(SSH_KEY_COMMENT));
+                        ui->tblUsb->setItem(ui->tblUsb->rowCount() - 1, 2, tItem);
+                    }
+                }
+                sshFile.close();
+            }
+        }
+        // Almost one key loaded, adjust Column headers
+        if (lstSSH_USBKeys.count() > 0)  {
+            QStringList lstCols;
+            lstCols.append("File");
+            lstCols.append("Type");
+            lstCols.append("Comment");
+            ui->tblUsb->setHorizontalHeaderLabels(lstCols);
+            ui->tblUsb->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+            ui->tblUsb->horizontalHeader()->setStretchLastSection(true);
+            ui->tblUsb->setColumnHidden(0, true);
+            ui->tblUsb->verticalHeader()->hide();
+            ui->tblUsb->selectRow(0);
+            ui->lblNumUSB->setText(QString::number(lstSSH_USBKeys.count()));
+            ui->lblFile->setText(szFirstFile);
+            nCurrentFile = 0;
+            fRes = true;
+        }
+    }
+    return fRes;
+}
+
+void ManageSSH::on_tblUsb_itemClicked(QTableWidgetItem *item)
+{
+    QTableWidgetItem *fileCell;
+    int nRow = item->row();
+
+    ui->lblFile->setText("");
+    nCurrentFile = -1;
+    if (nRow >= 0 && nRow < ui->tblUsb->rowCount())  {
+        // retrieve file name from hidden column 0
+        fileCell = ui->tblUsb->item(nRow, 0);
+        if (fileCell)  {
+            ui->lblFile->setText(fileCell->text());
+            nCurrentFile = nRow;
+        }
+    }
+}
+
+void ManageSSH::on_tblTPac_itemClicked(QTableWidgetItem *item)
+{
+    QTableWidgetItem *rowCell;
+    int nRow = item->row();
+
+    ui->lblKey->setText("");
+    nCurrentKey = -1;
+    if (nRow >= 0 && nRow < ui->tblTPac->rowCount())  {
+        // retrieve file name from hidden column 0
+        rowCell = ui->tblTPac->item(nRow, 0);
+        if (rowCell)  {
+            QString szText = rowCell->text();
+            int nKeyRow = szText.toInt();
+            if (nKeyRow >= 0 && nKeyRow < lstSSH_TPacKeys.count())  {
+                ui->lblKey->setText(QString("Key:%1") .arg(nKeyRow + 1, 3, 10));
+                nCurrentKey = nKeyRow;
+            }
+        }
+    }
+}
+
+void ManageSSH::lockTableRow(QTableWidget *table, int nRow2Lock)
+// Lock a table Row
+{
+    if (nRow2Lock >= 0 && nRow2Lock < table->rowCount())  {
+        for (int nCol = 0; nCol < table->columnCount(); nCol++)  {
+            table->item(nRow2Lock, nCol)->setFlags(Qt::NoItemFlags);
+        }
+    }
+}
+
+void ManageSSH::on_cmdAdd_clicked()
+// Add to TPAC Key List a Key imported from file
+{
+    QTableWidgetItem    *tItem;
+
+    if (nCurrentFile >= 0 && nCurrentFile < ui->tblUsb->rowCount())  {
+        QString szNewKey = lstSSH_USBKeys.at(nCurrentFile);
+        QStringList lstItems = szNewKey.split(" ", QString::SkipEmptyParts);
+        if (lstItems.count() > SSH_KEY_COMMENT)  {
+            lstSSH_TPacKeys.append(szNewKey);
+            int nNewRowIndex = ui->tblTPac->rowCount();
+            ui->tblTPac->insertRow(nNewRowIndex);
+            // Add Row Info
+            tItem = new QTableWidgetItem(QString::number(nNewRowIndex));
+            ui->tblTPac->setItem(nNewRowIndex, 0, tItem);
+            // Add Type Info
+            tItem = new QTableWidgetItem(lstItems.at(SSH_KEY_TYPE));
+            ui->tblTPac->setItem(nNewRowIndex, 1, tItem);
+            // Add Comment Info
+            tItem = new QTableWidgetItem(lstItems.at(SSH_KEY_COMMENT));
+            ui->tblTPac->setItem(nNewRowIndex, 2, tItem);
+            // Deselect Current File
+            lockTableRow(ui->tblUsb, nCurrentFile);
+            nCurrentFile = -1;
+            ui->tblUsb->selectRow(nCurrentFile);
+            // Update Interface
+            ui->lblNumUSB->setText(QString::number(lstSSH_TPacKeys.count()));
+            ui->tblTPac->update();
+            ui->tblUsb->update();
+        }
+    }
+}
+
+void ManageSSH::on_cmdRemove_clicked()
+// Remove a key from TPAC Key List
+{
+    if (nCurrentKey >= 0 && nCurrentFile  < ui->tblTPac->rowCount())  {
+    }
 }

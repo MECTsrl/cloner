@@ -77,10 +77,9 @@ int ChooseImage::fillImagesList()
                 QListWidgetItem *newItem = new QListWidgetItem;
                 newItem->setText(lstDir.at(nItem));
                 ui->lstImmagini->insertItem(nItem, newItem);
-                fprintf(stderr, "Local tar file found %s\n", localFsTar.toLatin1().data());
             }
             else {
-                fprintf(stderr, "Local tar file NOT found %s\n", localFsTar.toLatin1().data());
+                fprintf(stderr, "ChooseImage: Local tar file NOT found %s\n", localFsTar.toLatin1().data());
             }
         }
     }

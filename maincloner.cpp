@@ -66,7 +66,7 @@ MainCloner::MainCloner(QWidget *parent) :
     szDestination.clear();
     szSource.clear();
     ui->lblAction->setText("");
-    ui->lblAction->setMaximumWidth((screen_width / 2) -10);
+    ui->lblAction->setMaximumWidth((screen_width * 2 / 3) -10);
     ui->progressBar->setMaximumWidth((screen_width / 3) -10);
     ui->progressBar->setVisible(false);
 }
@@ -93,7 +93,7 @@ void MainCloner::updateData()
 //        }
     }
     else  {
-        ui->lblAction->setText("");
+        ui->lblAction->setText("Select an option or Power OFF and remove USB Key");
         ui->progressBar->setVisible(false);
     }
 }
@@ -138,9 +138,9 @@ bool MainCloner::loadInfo()
         if (! szModel.isEmpty())  {
             sysUpdateModelFile = QString(MODEL_SYSUPDATE_FILE) .arg(szClonerVersion) .arg(szModel);
             mfgToolsModelDir = QString(MODEL_IMAGE_DIR) .arg(szModel) .arg(szClonerVersion);
-            fprintf(stderr, "SysUpdate File:[%s]-Simple Local Image Directory:[%s]\n",
-                    sysUpdateModelFile.toLatin1().data(),
-                    mfgToolsModelDir.toLatin1().data());
+            // fprintf(stderr, "SysUpdate File:[%s]-Simple Local Image Directory:[%s]\n",
+            //        sysUpdateModelFile.toLatin1().data(),
+            //        mfgToolsModelDir.toLatin1().data());
         }
     }
     // Load the exclude list for the root file system.
@@ -152,7 +152,6 @@ bool MainCloner::loadInfo()
             while (! excludesRFS.atEnd())    {
                 excludesRFSList.append(excludesRFS.readLine().simplified());
             }
-            fprintf(stderr, "%s Read:%d Items\n", EXCLUDES_RFS, excludesRFSList.count());
         }
     }
     // Load the exclude list for the local file system.
@@ -163,7 +162,6 @@ bool MainCloner::loadInfo()
             while (! excludesLFS.atEnd())  {
                 excludesLFSList.append(excludesLFS.readLine().simplified());
             }
-            fprintf(stderr, "%s Read:%d Items\n", EXCLUDES_LFS, excludesLFSList.count());
         }
     }
 
@@ -228,7 +226,6 @@ void MainCloner::on_cmdBackup_clicked()
         commandList.append(QString("tar cf %1%2 -C /local .") .arg(szDirImage) .arg(LOCAL_FS_TAR));
         commandList.append("sync");
         // Avvio del Processo di Backup
-        fprintf(stderr, "First Backup Command: [%s]\n", runningCommand.toLatin1().data());
         // Creazione processo
         myProcess = new QProcess(this);
         // Impostazione dei parametri del Processo
@@ -346,14 +343,11 @@ void MainCloner::on_cmdSimple_clicked()
                     QMessageBox::Ok|QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Ok)  {
         // Start restore procedure
         szSource = QString("%1_%2") .arg(szModel) .arg(szClonerVersion);
-        QStringList lstExclude;
         int         nRestore = ACTION_RESTORE;
         QString sourceTar = mfgToolsModelDir;
         sourceTar.append(LOCAL_FS_TAR);
-        lstExclude.clear();
-        restoreLocalFile(sourceTar, lstExclude, nRestore);
+        restoreLocalFile(sourceTar, excludesLFSList, nRestore);
     }
-
 }
 
 void MainCloner::on_cmdMenu_clicked()
@@ -393,7 +387,6 @@ void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclud
         commandList.append(QString("dd if=/dev/zero of=%1 bs=768 count=1") .arg(RETENTIVE_FILE));
     }
     // Avvio del Processo di Backup
-    fprintf(stderr, "First Restore Command: [%s]\n", runningCommand.toLatin1().data());
     // Creazione processo
     myProcess = new QProcess(this);
     // Impostazione dei parametri del Processo
@@ -428,17 +421,17 @@ void MainCloner::actionCompleted(int exitCode, QProcess::ExitStatus exitStatus)
             szTitle = "Restore";
             szMessage = QString("Restore from [%1] Successfully completed!") .arg(szSource);
         }
-        fprintf(stderr, "Last Command Done [%s]. %s exitCode: %d exitStatus: %d\n", runningCommand.toLatin1().data(), szMessage.toLatin1().data(), exitCode, exitStatus);
         QMessageBox::information(this, szTitle, szMessage, QMessageBox::Ok);
         ui->lblAction->setText("");
         ui->progressBar->setVisible(false);
         QObject::disconnect(myProcess, 0, 0, 0);
         myProcess->deleteLater();
+        runningAction = ACTION_NONE;
     }
     else  {
         QString szNextCommand = commandList.takeFirst();
-        fprintf(stderr, "Running Command Done [%s] - Starting Next Command [%s] exitCode: %d exitStatus: %d\n", runningCommand.toLatin1().data(),
-                                        szNextCommand.toLatin1().data(), exitCode, exitStatus);
+        // fprintf(stderr, "Running Command Done [%s] - Starting Next Command [%s] exitCode: %d exitStatus: %d\n", runningCommand.toLatin1().data(),
+        //                                szNextCommand.toLatin1().data(), exitCode, exitStatus);
         myProcess->start(szNextCommand);
         runningCommand = szNextCommand;
         ui->lblAction->setText(runningCommand);
@@ -463,5 +456,6 @@ void MainCloner::actionFailed(QProcess::ProcessError errorCode)
     QMessageBox::critical(this, szTitle, szMessage, QMessageBox::Ok);
     QObject::disconnect(myProcess, 0, 0, 0);
     myProcess->deleteLater();
+    runningAction = ACTION_NONE;
 }
 

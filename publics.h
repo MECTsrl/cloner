@@ -38,26 +38,30 @@
 #define SSH_KEY_VALUE           1
 #define SSH_KEY_COMMENT         2
 
-#define COLOR_OK        "color: LimeGreen;"
-#define COLOR_FAIL      "color: OrangeRed;"
+#define COLOR_OK                "color: LimeGreen;"
+#define COLOR_FAIL              "color: OrangeRed;"
 
-#define EXCLUDES_RFS    "excludes_rootfs.lst"
-#define EXCLUDES_LFS    "excludes_localfs.lst"
+#define EXCLUDES_RFS            "excludes_rootfs.lst"
+#define EXCLUDES_LFS            "excludes_localfs.lst"
 
-#define REFRESH_MS      1000
+#define REFRESH_MS              1000
 
-#define START_SYSUPDATE     42
+#define START_SYSUPDATE         42
 
 #define RETENTIVE_FILE          "/local/retentive"
-#define RETENTIVE_IGNORE    0
-#define RETENTIVE_RESET     1
-#define RETENTIVE_RESTORE   2
+#define RETENTIVE_IGNORE        0
+#define RETENTIVE_RESET         1
+#define RETENTIVE_RESTORE       2
 
-#define ACTION_NONE         0
-#define ACTION_BACKUP       1
-#define ACTION_RESTORE      2
+#define ACTION_NONE             0
+#define ACTION_BACKUP           1
+#define ACTION_RESTORE          2
 
-#define RAMDISK_SIZE        48
+#define RAMDISK_SIZE            48
+
+#define MOUNT_ROOTFS_RW         "mount -o remount,rw /"
+#define MOUNT_ROOTFS_RO         "mount -o remount,ro /"
+
 
 extern QString     szModel;                     // Target Model
 extern QString     szTargetVersion;             // MS Target Version
@@ -66,12 +70,7 @@ extern QString     sysUpdateModelFile;          // Sysupdate Model File
 extern QString     mfgToolsModelDir;            // MFG Tools Model Directory (contains Local)
 extern int         screen_width;                // Screen width  in Pixel
 extern int         screen_height;               // Screen height in Pixel
+
 extern NtpClient   *ntpclient;                  // NTP Interface
-
-
-extern QStringList excludesRFSList;             // Root file system.
-extern QStringList excludesLFSList;             // Local file system Exclude
-// extern NtpClient   *ntpclient;                  // NTP Interface
-
 
 #endif // PUBLICS_H

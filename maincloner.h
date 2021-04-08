@@ -51,6 +51,8 @@ private:
     QString         szSource;
     QString         runningCommand;
     QStringList     commandList;
+    QStringList     excludesRFSList;        // Root file system  Exclude
+    QStringList     excludesLFSList;        // Local file system Exclude
 
     // Variabili di Cloner
     QTimer      *refresh_timer;

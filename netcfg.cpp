@@ -19,7 +19,7 @@ NetCfg::NetCfg(QWidget *parent) :
     ui(new Ui::NetCfg)
 {
     ui->setupUi(this);
-    ui->lblModel->setText(szModel);
+    // ui->lblModel->setText(szModel);
     startTimer(REFRESH_MS);
 
     ui->comboBox_wlan0_essid->clear();
@@ -127,8 +127,8 @@ bool NetCfg::checkNetAddr(char * ipaddr)
 void NetCfg::timerEvent(QTimerEvent *event)
 {
     // Aggiornamento orologio
-    QString szDateTime = QDateTime::currentDateTime().toString("yyyy/MM/dd hh:mm:ss");
-    ui->lblDateTime->setText(szDateTime);
+    // QString szDateTime = QDateTime::currentDateTime().toString("yyyy/MM/dd hh:mm:ss");
+    // ui->lblDateTime->setText(szDateTime);
 }
 
 void NetCfg::on_cmdCancel_clicked()
