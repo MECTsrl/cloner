@@ -237,7 +237,7 @@ color: Yellow;</string>
          </font>
         </property>
         <property name="text">
-         <string>Select Cloner Image to restore:</string>
+         <string>Select image to restore:</string>
         </property>
        </widget>
       </item>
@@ -317,7 +317,7 @@ color: Yellow;</string>
            </font>
           </property>
           <property name="text">
-           <string notr="true">Reset</string>
+           <string notr="true">Zero</string>
           </property>
           <property name="checked">
            <bool>false</bool>
@@ -344,7 +344,7 @@ color: Yellow;</string>
            <string notr="true">Ignore</string>
           </property>
           <property name="checked">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -367,6 +367,9 @@ color: Yellow;</string>
           <property name="text">
            <string notr="true">Restore</string>
           </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item row="0" column="0" alignment="Qt::AlignVCenter">
@@ -386,7 +389,7 @@ color: Yellow;</string>
            </font>
           </property>
           <property name="text">
-           <string>Retentive Vars:</string>
+           <string>Retentives:</string>
           </property>
          </widget>
         </item>

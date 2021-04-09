@@ -16,7 +16,7 @@ ChooseImage::ChooseImage(QWidget *parent) :
     selectedImage.clear();
     fillImagesList();
     retentiveMode = RETENTIVE_IGNORE;
-    ui->optIgnore->setChecked(true);
+    ui->optRestore->setChecked(true);
     if (ui->lstImmagini->count())  {
         ui->cmdOk->setEnabled(true);
         ui->lstImmagini->setFocus();
@@ -56,7 +56,8 @@ void ChooseImage::on_cmdOk_clicked()
 
 
     if (! selectedImage.isEmpty())  {
-        if (QMessageBox::question(this, "Confirm Restore", QString("Confirm Restore from:\n\n[%1]\n\nCloner Image?").arg(selectedImage),
+        if (QMessageBox::question(this, "Confirm Restore", QString("Confirm Restore from:\n\n[%1]\nto Model: [%2]\nVersion: [%3] ?")
+                            .arg(selectedImage) .arg(szModel) .arg(szTargetVersion),
                         QMessageBox::Ok|QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Ok)  {
             this->accept();
         }

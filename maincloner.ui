@@ -252,13 +252,13 @@ color: Yellow;</string>
         <property name="minimumSize">
          <size>
           <width>50</width>
-          <height>29</height>
+          <height>30</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>80</width>
-          <height>29</height>
+          <height>30</height>
          </size>
         </property>
         <property name="font">
@@ -281,6 +281,12 @@ color: Yellow;</string>
         <property name="icon">
          <iconset resource="resources.qrc">
           <normaloff>:/libicons/img/info_64.png</normaloff>:/libicons/img/info_64.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>28</width>
+          <height>28</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -541,7 +547,7 @@ text-align: bottom center;
 </string>
        </property>
        <property name="text">
-        <string>SIMPLE</string>
+        <string>FACTORY</string>
        </property>
       </widget>
      </item>

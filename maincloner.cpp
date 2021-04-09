@@ -59,9 +59,15 @@ MainCloner::MainCloner(QWidget *parent) :
         }
     }
     // TODO: Verifica che sulla chiavetta esistano dei file OVPN
+    // ui->cmdVPN->setVisible(false);
     ui->cmdVPN->setEnabled(false);
     // Abilitazione bottone SSH_KEYS
     ui->cmdSSH->setEnabled(QFile::exists(SSH_KEY_FILE));
+    // TODO: Abilitazione del bottone Time Set
+    // ui->cmdClock->setVisible(false);
+    ui->cmdClock->setEnabled(false);
+    // TODO: Abilitazione del bottone Info (Menu)
+    ui->cmdMenu->setEnabled(false);
     // Clear values
     szDestination.clear();
     szSource.clear();
@@ -93,7 +99,7 @@ void MainCloner::updateData()
 //        }
     }
     else  {
-        ui->lblAction->setText("Select an option or power off and remove the USB Key");
+        ui->lblAction->setText("Select an option or power off and remove the usb key");
         ui->progressBar->setVisible(false);
     }
 }
@@ -307,9 +313,9 @@ void MainCloner::on_cmdSSH_clicked()
 
 void MainCloner::on_cmdMectSuite_clicked()
 {
-    if (QMessageBox::question(this, "Confirm Mect Suite Update",
-                              QString("Confirm Mect Suite Update for Model:\n\n[%1]\n\nFrom Version: [%2]\n\nTo Version: [%3]\n\nUpdate File:[%4]")
-                              .arg(szModel) .arg(szTargetVersion) .arg(szClonerVersion) .arg(sysUpdateModelFile),
+    if (QMessageBox::question(this, "Mect Suite Update",
+                              QString("Confirm Mect Suite Update for\n\nModel: [%1]\nFrom Version: [%2]\nTo Version: [%3]")
+                              .arg(szModel) .arg(szTargetVersion) .arg(szClonerVersion),
                     QMessageBox::Ok|QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Ok)  {
         // Uscita da programma con Exit 42
         exit(START_SYSUPDATE);
@@ -337,9 +343,9 @@ void MainCloner::on_cmdNetwork_clicked()
 
 void MainCloner::on_cmdSimple_clicked()
 {
-    if (QMessageBox::question(this, "Confirm Simple Restore",
-                              QString("Confirm Mect Suite Simple Restore for Model:\n[%1]\nVersion: [%2]\nFile:[%3]")
-                              .arg(szModel) .arg(szClonerVersion) .arg(mfgToolsModelDir),
+    if (QMessageBox::question(this, "Factory Restore",
+                              QString("Confirm Mect Suite Factory Restore\n\nModel: [%1]\nVersion: [%2]")
+                              .arg(szModel) .arg(szClonerVersion),
                     QMessageBox::Ok|QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Ok)  {
         // Start restore procedure
         szSource = QString("%1_%2") .arg(szModel) .arg(szClonerVersion);
