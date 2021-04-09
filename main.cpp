@@ -18,6 +18,7 @@ QString     szTargetVersion;        // MS Target Version
 QString     szClonerVersion;        // Cloner App Version
 QString     sysUpdateModelFile;     // Sysupdate Model File
 QString     mfgToolsModelDir;       // MFG Tools Model Directory (contains Local)
+QString     szAlphaStyle;           // Alphanumpad Stylesheet String
 int         screen_width;           // Screen width  in Pixel
 int         screen_height;          // Screen height in Pixel
 NtpClient   *ntpclient;             // NTP Interface

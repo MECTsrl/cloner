@@ -68,8 +68,8 @@ void NetCfg::updateData()
         ui->pushButton_wlan0_enable->setIcon(QIcon(QPixmap(":/libicons/img/disconnect.png")));
     } else {
         ui->label_Wlan_connect->setText("Connect");
-        ui->pushButton_wlan0_enable->setIcon(QIcon(QPixmap(":/libicons/img/wifi_connect.png")));
         ui->pushButton_wlan0_IP->setText(NONE);
+        ui->pushButton_wlan0_enable->setIcon(QIcon(QPixmap(":/libicons/img/wifi_connect.png")));
     }
 }
 
@@ -83,7 +83,7 @@ bool NetCfg::netcfg_ini_set(QString setting, QString value, QString file)
     fp = popen(command.toLatin1().data(),"r");
     if (fp == NULL) {
         fRes = false;
-        QMessageBox::critical(0,"Network configuration", "Problem during writing the network settings" + setting);
+        QMessageBox::critical(this,this->windowTitle(), "Error writing network settings" + setting);
     } else {
         fRes = true;
     }
@@ -103,7 +103,6 @@ QString NetCfg::netcfg_ini_get(QString setting, QString file)
     readSettings.waitForFinished();
 
     if (readSettings.exitCode() != 0) {
-        QMessageBox::critical(0,QApplication::trUtf8("Network configuration"), QApplication::trUtf8("Problem during reading the network settings"));
         resultValue = "";
 
     } else {
@@ -163,7 +162,7 @@ void NetCfg::on_cmdCancel_clicked()
 void NetCfg::on_cmdOk_clicked()
 {
     if (saveETH0cfg() && saveWLAN0cfg() && saveWAN0cfg()) {
-        QMessageBox::information(0,QApplication::trUtf8("Network configuration"), QApplication::trUtf8("The new configuration is saved and active."));
+        QMessageBox::information(this,this->windowTitle(), "The new configuration is saved and active.");
     }
     this->accept();
 }
@@ -262,6 +261,7 @@ void NetCfg::on_pushButton_wan0_dialnb_clicked()
 {
     char value [32];
     nk = new numpad(value, DIALNB, ui->pushButton_wan0_dialnb->text().toAscii().data());
+    nk->setStyleSheet(szAlphaStyle);
     nk->showFullScreen();
     if(nk->exec()==QDialog::Accepted)
     {
@@ -273,6 +273,7 @@ void NetCfg::on_pushButton_wan0_apn_clicked()
 {
     char value [32];
     dk = new alphanumpad(value, ui->pushButton_wan0_apn->text().toAscii().data());
+    dk->setStyleSheet(szAlphaStyle);
     dk->showFullScreen();
     if(dk->exec() == QDialog::Accepted)
     {
@@ -284,6 +285,7 @@ void NetCfg::on_pushButton_wan0_DNS1_clicked()
 {
     char value [32];
     nk = new numpad(value, IPADDR, ui->pushButton_wan0_DNS1->text().toAscii().data());
+    nk->setStyleSheet(szAlphaStyle);
     nk->showFullScreen();
     if(nk->exec()==QDialog::Accepted && checkNetAddr(value))
     {
@@ -295,6 +297,7 @@ void NetCfg::on_pushButton_wan0_DNS2_clicked()
 {
     char value [32];
     nk = new numpad(value, IPADDR, ui->pushButton_wan0_DNS2->text().toAscii().data());
+    nk->setStyleSheet(szAlphaStyle);
     nk->showFullScreen();
     if(nk->exec()==QDialog::Accepted && checkNetAddr(value))
     {
@@ -436,6 +439,7 @@ void NetCfg::on_pushButton_hidden_wlan0_clicked()
        currentText = NONE;
     }
     dk = new alphanumpad(value, currentText.toAscii().data());
+    dk->setStyleSheet(szAlphaStyle);
     dk->showFullScreen();
     if(dk->exec() == QDialog::Accepted)
     {
@@ -465,6 +469,7 @@ void NetCfg::on_pushButton_wlan0_IP_clicked()
 {
     char value [32];
     nk = new numpad(value, IPADDR, ui->pushButton_wlan0_IP->text().toAscii().data());
+    nk->setStyleSheet(szAlphaStyle);
     nk->showFullScreen();
     if(nk->exec()==QDialog::Accepted && checkNetAddr(value))
     {
@@ -476,6 +481,7 @@ void NetCfg::on_pushButton_wlan0_NM_clicked()
 {
     char value [32];
     nk = new numpad(value, IPADDR, ui->pushButton_wlan0_NM->text().toAscii().data());
+    nk->setStyleSheet(szAlphaStyle);
     nk->showFullScreen();
     if(nk->exec()==QDialog::Accepted && checkNetAddr(value))
     {
@@ -487,6 +493,7 @@ void NetCfg::on_pushButton_wlan0_GW_clicked()
 {
     char value [32];
     nk = new numpad(value, IPADDR, ui->pushButton_wlan0_GW->text().toAscii().data());
+    nk->setStyleSheet(szAlphaStyle);
     nk->showFullScreen();
     if(nk->exec()==QDialog::Accepted && checkNetAddr(value))
     {
@@ -498,6 +505,7 @@ void NetCfg::on_pushButton_wlan0_DNS1_clicked()
 {
     char value [32];
     nk = new numpad(value, IPADDR, ui->pushButton_wlan0_DNS1->text().toAscii().data());
+    nk->setStyleSheet(szAlphaStyle);
     nk->showFullScreen();
     if(nk->exec()==QDialog::Accepted && checkNetAddr(value))
     {
@@ -509,6 +517,7 @@ void NetCfg::on_pushButton_wlan0_DNS2_clicked()
 {
     char value [32];
     nk = new numpad(value, IPADDR, ui->pushButton_wlan0_DNS2->text().toAscii().data());
+    nk->setStyleSheet(szAlphaStyle);
     nk->showFullScreen();
     if(nk->exec()==QDialog::Accepted && checkNetAddr(value))
     {
@@ -532,7 +541,7 @@ void NetCfg::on_pushButton_wlan0_scan_clicked()
     ui->comboBox_wlan0_essid->clear();
     if (wifiScan.exitCode() != 0) {
         ui->comboBox_wlan0_essid->addItem(NONE);
-        QMessageBox::critical(0,QApplication::trUtf8("Network configuration"), QApplication::trUtf8("Problem during wifi network scanning"));
+        QMessageBox::critical(this,this->windowTitle(), "Wifi scanning failure!");
         return;
 
     } else {
@@ -567,24 +576,20 @@ void NetCfg::on_pushButton_wlan0_scan_clicked()
 
 bool NetCfg::isWlanOn(void)
 {
-
     bool fRes = false;
     QProcess readSettings;
-    readSettings.start("/bin/sh", QStringList() << "-c" << "iwconfig wlan0 | grep 'Access Point: Not-Associate'");
+    //readSettings.start("/bin/sh", QStringList() << "-c" << "iwconfig wlan0 | grep 'Access Point: Not-Associate'");
+    readSettings.start("/bin/sh", QStringList() << "-c" << "ip addr show dev wlan0 | grep 'state UP'");
     readSettings.waitForFinished();
 
-    if (readSettings.exitCode() != 0) {
-        fRes = false;
+    if (readSettings.exitCode() == 0) {
+        ui->label_wifi_status->setText("ON");
+        fRes = true; // connected
     } else {
-        QString readResult = QString(readSettings.readAll());
-        if (readResult.contains("Not-Associated")) {
-            fRes = false;
-        } else {
-            fRes = true;
-        }
-     }
-    // True = connected  || False = not connected
-   return fRes;
+        ui->label_wifi_status->setText("off");
+        fRes = false; //  not connected
+    }
+    return fRes;
 }
 
 bool NetCfg::saveWLAN0cfg()
@@ -710,9 +715,9 @@ void NetCfg::loadWLAN0cfg()
     /* MAC */
     QString MACW0 = getMacAddr("wlan0");
     if (MACW0.isEmpty()) {
-        ui->label_wlan0_MAC->setText(MACW0.remove("\""));
-    } else {
         ui->label_wlan0_MAC->setText(NONE);
+    } else {
+        ui->label_wlan0_MAC->setText(MACW0.remove("\""));
     }
 }
 
@@ -723,7 +728,17 @@ void NetCfg::on_pushButton_wlan0_enable_clicked()
 
     ui->tab_wlan0->repaint();
     // WiFi Current Cfg Update forced
-    if (!isWlanOn()) {
+    if (isWlanOn()) {
+        if (!netcfg_ini_set("ONBOOTW0","0",NET_CONF_FILE)) {
+            /* error */
+            ui->tab_wlan0->setEnabled(true);
+            ui->tab_wlan0->repaint();
+            return;
+        }
+        system("/usr/sbin/wifi.sh stop >/dev/null 2>&1 &");
+        ui->label_Wlan_connect->setText("Connect");
+        icon = ":/libicons/img/wifi_connect.png";
+    } else {
         saveWLAN0cfg();
         if (!netcfg_ini_set("ONBOOTW0","1",NET_CONF_FILE)){
             /* error */
@@ -734,16 +749,7 @@ void NetCfg::on_pushButton_wlan0_enable_clicked()
         system("/usr/sbin/wifi.sh start >/dev/null 2>&1 &");
         ui->label_Wlan_connect->setText("Disconnect");
         icon = ":/libicons/img/disconnect.png";
-    } else {
-        if (!netcfg_ini_set("ONBOOTW0","0",NET_CONF_FILE)) {
-            /* error */
-            ui->tab_wlan0->setEnabled(true);
-            ui->tab_wlan0->repaint();
-            return;
-        }
-        system("/usr/sbin/wifi.sh stop >/dev/null 2>&1 &");
-        ui->label_Wlan_connect->setText("Connect");
-        icon = ":/libicons/img/wifi_connect.png";
+
     }
     ui->pushButton_wlan0_IP->setText(getIPAddr(getIPAddr("wlan0")));
     ui->pushButton_wlan0_enable->setIcon(QIcon(QPixmap(icon)));
@@ -755,6 +761,7 @@ void NetCfg::on_pushButton_wlan0_pwd_clicked()
 {
     char value [32];
     dk = new alphanumpad(value, wlan0_pwd.toAscii().data(), true);
+    dk->setStyleSheet(szAlphaStyle);
     dk->showFullScreen();
     if(dk->exec()==QDialog::Accepted)
     {
@@ -783,6 +790,7 @@ void NetCfg::on_pushButton_eth0_IP_clicked()
 {
     char value [32];
     nk = new numpad(value, IPADDR, ui->pushButton_eth0_IP->text().toAscii().data());
+    nk->setStyleSheet(szAlphaStyle);
     nk->showFullScreen();
     if(nk->exec()==QDialog::Accepted && checkNetAddr(value))
     {
@@ -794,6 +802,7 @@ void NetCfg::on_pushButton_eth0_NM_clicked()
 {
     char value [32];
     nk = new numpad(value, IPADDR, ui->pushButton_eth0_NM->text().toAscii().data());
+    nk->setStyleSheet(szAlphaStyle);
     nk->showFullScreen();
     if(nk->exec()==QDialog::Accepted && checkNetAddr(value))
     {
@@ -805,6 +814,7 @@ void NetCfg::on_pushButton_eth0_GW_clicked()
 {
     char value [32];
     nk = new numpad(value, IPADDR, ui->pushButton_eth0_GW->text().toAscii().data());
+    nk->setStyleSheet(szAlphaStyle);
     nk->showFullScreen();
     if(nk->exec()==QDialog::Accepted && checkNetAddr(value))
     {
@@ -816,6 +826,7 @@ void NetCfg::on_pushButton_eth0_DNS1_clicked()
 {
     char value [32];
     nk = new numpad(value, IPADDR, ui->pushButton_eth0_DNS1->text().toAscii().data());
+    nk->setStyleSheet(szAlphaStyle);
     nk->showFullScreen();
     if(nk->exec()==QDialog::Accepted && checkNetAddr(value))
     {
@@ -827,6 +838,7 @@ void NetCfg::on_pushButton_eth0_DNS2_clicked()
 {
     char value [32];
     nk = new numpad(value, IPADDR, ui->pushButton_eth0_DNS2->text().toAscii().data());
+    nk->setStyleSheet(szAlphaStyle);
     nk->showFullScreen();
     if(nk->exec()==QDialog::Accepted && checkNetAddr(value))
     {
@@ -892,7 +904,7 @@ bool NetCfg::saveETH0cfg()
     if (system("/etc/rc.d/init.d/network restart >/dev/null 2>&1"))
     {
         /* error */
-        QMessageBox::critical(0,QApplication::trUtf8("Network configuration"), QApplication::trUtf8("Cannot setup the eth0 network configuration."));
+        QMessageBox::critical(this,this->windowTitle(), "Cannot setup the eth0 network configuration.");
         return false;
     }
     return true;

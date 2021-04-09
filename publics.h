@@ -68,6 +68,7 @@ extern QString     szTargetVersion;             // MS Target Version
 extern QString     szClonerVersion;             // Cloner App Version
 extern QString     sysUpdateModelFile;          // Sysupdate Model File
 extern QString     mfgToolsModelDir;            // MFG Tools Model Directory (contains Local)
+extern QString     szAlphaStyle;                // Alphanumpad Stylesheet String
 extern int         screen_width;                // Screen width  in Pixel
 extern int         screen_height;               // Screen height in Pixel
 

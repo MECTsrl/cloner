@@ -75,6 +75,9 @@ MainCloner::MainCloner(QWidget *parent) :
     ui->lblAction->setMaximumWidth((screen_width * 2 / 3) -10);
     ui->progressBar->setMaximumWidth((screen_width / 3) -10);
     ui->progressBar->setVisible(false);
+
+    szAlphaStyle = QString("font-size: 10pt;\n");
+    szAlphaStyle.append(QString( "background-color: Azure;\ncolor: Navy;\n"));
 }
 
 MainCloner::~MainCloner()
@@ -195,12 +198,7 @@ void MainCloner::on_cmdBackup_clicked()
     szDestination.clear();
     commandList.clear();
     dk = new alphanumpad(value, false, getDefaultDirName().toAscii().data(), false, this);
-    QString szStyle = QString("font-size: 10pt;\n");
-    szStyle.append(QString(
-    "background-color: Azure;\n"
-    "color: Navy;\n"
-    ));
-    dk->setStyleSheet(szStyle);
+    dk->setStyleSheet(szAlphaStyle);
     dk->showFullScreen();
     if (dk->exec() == QDialog::Accepted && strlen(value) != 0)
     {
