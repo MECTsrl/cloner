@@ -31,10 +31,15 @@ ManageSSH::ManageSSH(QWidget *parent) :
     if (loadSSHKeys())  {
         ui->tblTPac->setEnabled(true);
     }
+    ui->cmdRemove->setEnabled(ui->tblTPac->rowCount() > 0);
     // Load SSH Key files on USB
     if (loadSSHFiles())  {
         ui->tblUsb->setEnabled(true);
     }
+    else {
+        ui->tblUsb->setEnabled(false);
+    }
+    ui->cmdAdd->setEnabled(ui->tblUsb->rowCount() > 0);
     startTimer(REFRESH_MS);
 }
 

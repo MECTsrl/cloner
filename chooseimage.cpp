@@ -23,6 +23,7 @@ ChooseImage::ChooseImage(QWidget *parent) :
         ui->lstImmagini->setCurrentRow(0);
     }
     else {
+        ui->lstImmagini->setEnabled(false);
         ui->cmdOk->setEnabled(false);
     }
 }
@@ -84,7 +85,7 @@ int ChooseImage::fillImagesList()
             }
         }
     }
-    return lstDir.count();
+    return (ui->lstImmagini->count());
 }
 
 void ChooseImage::on_lstImmagini_currentRowChanged(int currentRow)
