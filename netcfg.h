@@ -23,11 +23,7 @@ protected:
 
 private slots:
     void on_cmdCancel_clicked();
-    bool netcfg_ini_set(QString setting, QString value, QString file);
-    QString netcfg_ini_get(QString setting, QString file);
-    QString getMacAddr(QString interface);
-    QString getIPAddr(QString interface);
-
+    void updateData();
 
 
     ///MOBILE
@@ -35,6 +31,7 @@ private slots:
     void on_pushButton_wan0_apn_clicked();
     void on_pushButton_wan0_DNS1_clicked();
     void on_pushButton_wan0_DNS2_clicked();
+    void on_pushButton_wan0_enable_clicked();
 
     ///WIFI
     void on_pushButton_wlan0_scan_clicked();
@@ -51,18 +48,13 @@ private slots:
     void on_comboBox_wlan0_essid_currentIndexChanged(const QString &arg1);
 
     ///ETH
-    void on_pushButton_eth1_DNS2_clicked();
-    void on_pushButton_eth1_DNS1_clicked();
-    void on_pushButton_eth1_GW_clicked();
-    void on_pushButton_eth1_NM_clicked();
-    void on_pushButton_eth1_IP_clicked();
+
     void on_pushButton_eth0_DNS2_clicked();
     void on_pushButton_eth0_DNS1_clicked();
     void on_pushButton_eth0_GW_clicked();
     void on_pushButton_eth0_NM_clicked();
     void on_pushButton_eth0_IP_clicked();
     void on_checkBox_eth0_DHCP_clicked(bool checked);
-    void on_checkBox_eth1_DHCP_clicked(bool checked);
 
 
     void on_cmdOk_clicked();
@@ -70,11 +62,19 @@ private slots:
 private:
     bool checkNetAddr(char * ipaddr);
     bool saveETH0cfg();
-    bool saveETH1cfg();
     bool saveWLAN0cfg();
     bool saveWAN0cfg();
 
     void loadETH0cfg();
+    void loadWAN0cfg();
+    void loadWLAN0cfg();
+
+    bool netcfg_ini_set(QString setting, QString value, QString file);
+    QString netcfg_ini_get(QString setting, QString file);
+    QString getMacAddr(QString interface);
+    QString getIPAddr(QString interface);
+    void setEnableWidgets(bool enabled);
+
 
 
     bool isWlanOn(void);
@@ -90,7 +90,6 @@ private:
     QString wlan0_pwd;
     QString wlan0_essid;
     bool is_eth0_enabled;
-    bool is_eth1_enabled;
     bool is_wlan_active;
     bool is_wan_active;
     bool setup;
