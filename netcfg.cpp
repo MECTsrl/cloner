@@ -240,20 +240,16 @@ bool NetCfg::isWanOn()
 {
     bool fRes = false;
     QProcess readSettings;
-    readSettings.start("/bin/sh", QStringList() << "-c" << "ip a | grep ppp0");
+    readSettings.start("/bin/sh", QStringList() << "-c" << "ip addr show dev ppp0");
     readSettings.waitForFinished();
 
-    if (readSettings.exitCode() != 0) {
-        fRes = false;
+    if (readSettings.exitCode() == 0) {
+        ui->label_wan_status->setText("ON");
+        fRes = true; // connected
     } else {
-        QString readResult = QString(readSettings.readAll());
-        if (readResult.contains("DOWN")) {
-            fRes = false;
-        } else {
-            fRes = true;
-        }
+        ui->label_wan_status->setText("off");
+        fRes = false; //  not connected
     }
-    // True = connected  || False = not connected
     return fRes;
 }
 
