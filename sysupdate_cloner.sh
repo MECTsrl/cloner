@@ -25,6 +25,8 @@ cleanup()
     sync
 }
 
+/etc/rc.d/init.d/autoexec stop
+
 cd "$WORKDIR"
 mount -o remount,ro /
 
