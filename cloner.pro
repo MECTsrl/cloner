@@ -54,7 +54,9 @@ RESOURCES += \
     resources.qrc
 
 OTHER_FILES += \
-    cloner.qss
+    cloner.qss \
+    excludes_rootfs.lst \
+    excludes_localfs.lst
 
 target.path = /local/root
 

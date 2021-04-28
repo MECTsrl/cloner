@@ -261,26 +261,26 @@ void MainCloner::on_cmdRestore_clicked()
         if (! image2Restore.isEmpty())  {
             // Restore Dir
             szSource = image2Restore;
-            /* before 2.0 */
-            if (! QFile::exists("/etc/mac.conf")) {
-                /* extract MAC0 from /local/etc/sysconfig/net.conf and put it into /etc/mac.conf */
-                system(
-                    "mount -o rw,remount /"
-                    " && "
-                    "grep MAC0 /local/etc/sysconfig/net.conf "
-                    " && "
-                    "grep MAC0 /local/etc/sysconfig/net.conf > /etc/mac.conf"
-                    " && "
-                    "mount -o ro,remount /"
-                );
+//            /* before 2.0 */
+//            if (! QFile::exists("/etc/mac.conf")) {
+//                /* extract MAC0 from /local/etc/sysconfig/net.conf and put it into /etc/mac.conf */
+//                system(
+//                    "mount -o rw,remount /"
+//                    " && "
+//                    "grep MAC0 /local/etc/sysconfig/net.conf "
+//                    " && "
+//                    "grep MAC0 /local/etc/sysconfig/net.conf > /etc/mac.conf"
+//                    " && "
+//                    "mount -o ro,remount /"
+//                );
 
-                /* delete MAC0 from /local/etc/sysconfig/net.conf */
-                system(
-                    "grep -v MAC0 /local/etc/sysconfig/net.conf > /tmp/net.conf"
-                    " && "
-                    "mv /tmp/net.conf /local/etc/sysconfig/net.conf"
-                );
-            }
+//                /* delete MAC0 from /local/etc/sysconfig/net.conf */
+//                system(
+//                    "grep -v MAC0 /local/etc/sysconfig/net.conf > /tmp/net.conf"
+//                    " && "
+//                    "mv /tmp/net.conf /local/etc/sysconfig/net.conf"
+//                );
+//            }
             // Start restore procedure
             QString sourceTar = QString("%1%2/%3") .arg(CLONED_IMAGES_DIR) .arg(image2Restore) .arg(LOCAL_FS_TAR);
             restoreLocalFile(sourceTar, excludesLFSList, nRetentiveMode);

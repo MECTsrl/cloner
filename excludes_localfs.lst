@@ -1,3 +1,5 @@
 flash/root/fcrts
 flash/etc/sysconfig/net.conf
+flash/etc/wpa_supplicant/default.conf
+flash/etc/ppp
 var/spool/cron/crontabs/root
