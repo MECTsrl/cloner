@@ -388,7 +388,7 @@ void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclud
     commandList.append(QString("/bin/umount %1") .arg(TMP_DIR));
     // Clear variabili ritentive
     if (nRetentiveMode == RETENTIVE_RESET)  {
-        commandList.append(QString("dd if=/dev/zero of=%1 bs=768 count=1") .arg(RETENTIVE_FILE));
+        commandList.append(QString("dd if=/dev/zero of=/local/%1 bs=768 count=1") .arg(RETENTIVE_FILE));
     }
     // Avvio del Processo di Backup
     // Creazione processo

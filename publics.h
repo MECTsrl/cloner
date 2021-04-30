@@ -48,7 +48,7 @@
 
 #define START_SYSUPDATE         42
 
-#define RETENTIVE_FILE          "/local/retentive"
+#define RETENTIVE_FILE          "retentive" // in "/local/"
 #define RETENTIVE_IGNORE        0
 #define RETENTIVE_RESET         1
 #define RETENTIVE_RESTORE       2
