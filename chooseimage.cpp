@@ -15,8 +15,9 @@ ChooseImage::ChooseImage(QWidget *parent) :
     startTimer(REFRESH_MS);
     selectedImage.clear();
     fillImagesList();
-    retentiveMode = RETENTIVE_IGNORE;
-    ui->optRestore->setChecked(true);
+    ui->optRetRestore->setChecked(true);
+    ui->optIniRestore->setChecked(true);
+    ui->optLogRestore->setChecked(true);
     if (ui->lstImmagini->count())  {
         ui->cmdOk->setEnabled(true);
         ui->lstImmagini->setFocus();
@@ -41,9 +42,41 @@ void ChooseImage::timerEvent(QTimerEvent *event)
 }
 
 
-QString ChooseImage::getSelectedImage(int &nRetentiveMode)
+QString ChooseImage::getSelectedImage(int &nRetentiveMode, int &nHmiMode, int &nLogMode)
 {
-    nRetentiveMode = retentiveMode;
+    // Retentives Vars
+    if (ui->optRetIgnore->isChecked())  {
+        nRetentiveMode = RESTORE_IGNORE;
+    }
+    else if (ui->optRetReset->isChecked())  {
+        nRetentiveMode = RESTORE_RESET;
+
+    }
+    else if (ui->optRetRestore->isChecked())  {
+        nRetentiveMode = RESTORE_RESTORE;
+    }
+    // HMI.ini
+    if (ui->optIniIgnore->isChecked())  {
+        nHmiMode = RESTORE_IGNORE;
+    }
+    else if (ui->optIniReset->isChecked())  {
+        nHmiMode = RESTORE_RESET;
+
+    }
+    else if (ui->optIniRestore->isChecked())  {
+        nHmiMode = RESTORE_RESTORE;
+    }
+    // Logs
+    if (ui->optLogIgnore->isChecked())  {
+        nLogMode = RESTORE_IGNORE;
+    }
+    else if (ui->optLogReset->isChecked())  {
+        nLogMode = RESTORE_RESET;
+
+    }
+    else if (ui->optLogRestore->isChecked())  {
+        nLogMode = RESTORE_RESTORE;
+    }
     return selectedImage;
 }
 
@@ -95,23 +128,3 @@ void ChooseImage::on_lstImmagini_currentRowChanged(int currentRow)
     }
 }
 
-void ChooseImage::on_optIgnore_clicked(bool checked)
-{
-    if (checked)  {
-        retentiveMode = RETENTIVE_IGNORE;
-    }
-}
-
-void ChooseImage::on_optReset_clicked(bool checked)
-{
-    if (checked)  {
-        retentiveMode = RETENTIVE_RESET;
-    }
-}
-
-void ChooseImage::on_optRestore_clicked(bool checked)
-{
-    if (checked)  {
-        retentiveMode = RETENTIVE_RESTORE;
-    }
-}

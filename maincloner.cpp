@@ -252,12 +252,14 @@ void MainCloner::on_cmdRestore_clicked()
     ChooseImage     *selectImage;
     QString         image2Restore;
     int             nRetentiveMode = -1;
+    int             nHmiIniMode = -1;
+    int             nLogMode = -1;
 
     selectImage = new ChooseImage(this);
     selectImage->showFullScreen();
     if (selectImage->exec() == QDialog::Accepted)   {
         // Revert resore Options
-        image2Restore = selectImage->getSelectedImage(nRetentiveMode);
+        image2Restore = selectImage->getSelectedImage(nRetentiveMode, nHmiIniMode, nLogMode);
         if (! image2Restore.isEmpty())  {
             // Restore Dir
             szSource = image2Restore;
@@ -368,7 +370,7 @@ void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclud
     QStringList localExclude = files2Exclude;
 
     // Add retentive file to exclude list
-    if (nRetentiveMode == RETENTIVE_IGNORE)   {
+    if (nRetentiveMode == RESTORE_IGNORE)   {
         localExclude.append(RETENTIVE_FILE);
     }
     // Extract list of Exclude files
@@ -387,7 +389,7 @@ void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclud
     // Umount Ram Disk
     commandList.append(QString("/bin/umount %1") .arg(TMP_DIR));
     // Clear variabili ritentive
-    if (nRetentiveMode == RETENTIVE_RESET)  {
+    if (nRetentiveMode == RESTORE_RESET)  {
         commandList.append(QString("dd if=/dev/zero of=/local/%1 bs=768 count=1") .arg(RETENTIVE_FILE));
     }
     // Avvio del Processo di Backup

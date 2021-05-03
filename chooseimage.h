@@ -17,7 +17,7 @@ class ChooseImage : public QDialog
 
 public:
     explicit ChooseImage(QWidget *parent = 0);
-    QString     getSelectedImage(int &nRetentiveMode);
+    QString     getSelectedImage(int &nRetentiveMode, int &nHmiMode, int &nLogMode);
     ~ChooseImage();
 
 protected:
@@ -28,9 +28,6 @@ private slots:
     void on_cmdCancel_clicked();
     void on_cmdOk_clicked();
     void on_lstImmagini_currentRowChanged(int currentRow);
-    void on_optIgnore_clicked(bool checked);
-    void on_optReset_clicked(bool checked);
-    void on_optRestore_clicked(bool checked);
 
 private:
     int fillImagesList();

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>480</width>
-    <height>272</height>
+    <height>270</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,24 +26,11 @@ QPushButton {
 	max-width: 100px;
 	max-height: 32px;
 }
-</string>
+QGroupBox  {
+
+}</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
-   <property name="spacing">
-    <number>0</number>
-   </property>
-   <property name="leftMargin">
-    <number>2</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>2</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
     <widget class="QFrame" name="frameTitle">
      <property name="minimumSize">
@@ -266,66 +253,36 @@ color: Yellow;</string>
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="frameButtons">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>90</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="spacing">
-       <number>4</number>
-      </property>
-      <property name="margin">
-       <number>2</number>
-      </property>
-      <item>
-       <layout class="QGridLayout" name="gridLayout">
-        <property name="horizontalSpacing">
-         <number>8</number>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QGroupBox" name="grpRetentive">
+       <property name="minimumSize">
+        <size>
+         <width>95</width>
+         <height>80</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Retentive Vars</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>2</number>
         </property>
-        <property name="verticalSpacing">
-         <number>0</number>
+        <property name="topMargin">
+         <number>1</number>
         </property>
-        <item row="1" column="1" alignment="Qt::AlignVCenter">
-         <widget class="QRadioButton" name="optReset">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>25</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>DejaVu Sans</family>
-            <pointsize>9</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string notr="true">Zero</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" alignment="Qt::AlignVCenter">
-         <widget class="QRadioButton" name="optIgnore">
+        <property name="rightMargin">
+         <number>2</number>
+        </property>
+        <property name="bottomMargin">
+         <number>1</number>
+        </property>
+        <item>
+         <widget class="QRadioButton" name="optRetIgnore">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -348,8 +305,32 @@ color: Yellow;</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1" alignment="Qt::AlignVCenter">
-         <widget class="QRadioButton" name="optRestore">
+        <item>
+         <widget class="QRadioButton" name="optRetReset">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>DejaVu Sans</family>
+            <pointsize>9</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string notr="true">Zero</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="optRetRestore">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -372,8 +353,38 @@ color: Yellow;</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="0" alignment="Qt::AlignVCenter">
-         <widget class="QLabel" name="lblRetentive">
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="grpHmiIni">
+       <property name="minimumSize">
+        <size>
+         <width>95</width>
+         <height>80</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Hmi.ini</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <property name="topMargin">
+         <number>1</number>
+        </property>
+        <property name="rightMargin">
+         <number>2</number>
+        </property>
+        <property name="bottomMargin">
+         <number>1</number>
+        </property>
+        <item>
+         <widget class="QRadioButton" name="optIniIgnore">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -389,67 +400,232 @@ color: Yellow;</string>
            </font>
           </property>
           <property name="text">
-           <string>Retentives:</string>
+           <string notr="true">Ignore</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="optIniReset">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>DejaVu Sans</family>
+            <pointsize>9</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string notr="true">Zero</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="optIniRestore">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>DejaVu Sans</family>
+            <pointsize>9</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string notr="true">Restore</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
        </layout>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="grpLogs">
+       <property name="minimumSize">
+        <size>
+         <width>95</width>
+         <height>80</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Logs</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <property name="spacing">
+         <number>2</number>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>50</width>
-          <height>20</height>
-         </size>
+        <property name="topMargin">
+         <number>1</number>
         </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="cmdOk">
-        <property name="font">
-         <font>
-          <family>DejaVu Sans</family>
-          <pointsize>9</pointsize>
-         </font>
+        <property name="rightMargin">
+         <number>2</number>
         </property>
-        <property name="text">
-         <string notr="true">Ok</string>
+        <property name="bottomMargin">
+         <number>1</number>
         </property>
-        <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/libicons/img/OK.png</normaloff>:/libicons/img/OK.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="cmdCancel">
-        <property name="font">
-         <font>
-          <family>DejaVu Sans</family>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string notr="true">Cancel</string>
-        </property>
-        <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/libicons/img/Delete.png</normaloff>:/libicons/img/Delete.png</iconset>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-        <property name="default">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+        <item>
+         <widget class="QRadioButton" name="optLogIgnore">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>DejaVu Sans</family>
+            <pointsize>9</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string notr="true">Ignore</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="optLogReset">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>DejaVu Sans</family>
+            <pointsize>9</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string notr="true">Zero</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="optLogRestore">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>DejaVu Sans</family>
+            <pointsize>9</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string notr="true">Restore</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cmdOk">
+       <property name="minimumSize">
+        <size>
+         <width>104</width>
+         <height>36</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>DejaVu Sans</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string notr="true">Ok</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/libicons/img/OK.png</normaloff>:/libicons/img/OK.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cmdCancel">
+       <property name="minimumSize">
+        <size>
+         <width>104</width>
+         <height>36</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>DejaVu Sans</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string notr="true">Cancel</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/libicons/img/Delete.png</normaloff>:/libicons/img/Delete.png</iconset>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

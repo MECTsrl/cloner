@@ -49,9 +49,9 @@
 #define START_SYSUPDATE         42
 
 #define RETENTIVE_FILE          "retentive" // in "/local/"
-#define RETENTIVE_IGNORE        0
-#define RETENTIVE_RESET         1
-#define RETENTIVE_RESTORE       2
+#define RESTORE_IGNORE          0
+#define RESTORE_RESET           1
+#define RESTORE_RESTORE         2
 
 #define ACTION_NONE             0
 #define ACTION_BACKUP           1
