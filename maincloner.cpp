@@ -226,8 +226,9 @@ void MainCloner::on_cmdBackup_clicked()
         QString szCommand = QString("mkdir -p %1") .arg(szDirImage);
         system(szCommand.toLatin1().data());
         // Comandi di Backup
-        runningCommand = QString("/etc/rc.d/init.d/sdcheck stop");
-        commandList.append(QString("tar cf %1%2 -C /local .") .arg(szDirImage) .arg(LOCAL_FS_TAR));
+        // NON Smonta SD Card
+        // runningCommand = QString("/etc/rc.d/init.d/sdcheck stop");
+        runningCommand = QString("tar cf %1%2 -C /local .") .arg(szDirImage) .arg(LOCAL_FS_TAR);
         commandList.append("sync");
         // Avvio del Processo di Backup
         // Creazione processo
@@ -386,9 +387,10 @@ void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclud
     }
     // Extract list of Exclude files
     QString excludesToLocal = localExclude.join(" --exclude ");
-    runningCommand = QString("/etc/rc.d/init.d/sdcheck stop");
+    // NON smonta SD Card
+    // runningCommand = QString("/etc/rc.d/init.d/sdcheck stop");
     // Create Ram Disk Mount Point
-    commandList.append(QString("mkdir -p %1") .arg(TMP_DIR));
+    runningCommand = QString("mkdir -p %1") .arg(TMP_DIR);
     // Mount Ram Disk
     commandList.append(QString("/bin/mount -t tmpfs -o size=%1M tmpfs %2") .arg(RAMDISK_SIZE) .arg(TMP_DIR));
     // Expand local tar to ram disk
@@ -405,12 +407,14 @@ void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclud
     }
     // Clear hmi.ini
     if (nHmiIniMode == RESTORE_RESET)  {
-        commandList.append(QString("echo -e \"[General]\nrotation=0\nplc_host=127.0.0.1\n\" > hmi.ini"));
+        commandList.append(QString("echo -e \"[General]\nrotation=0\nplc_host=127.0.0.1\n\" > /local/flash/root/hmi.ini"));
     }
     // Clear Logs
     if (nLogMode == RESTORE_RESET)  {
-        commandList.append(QString("rm -rf /local/data/store/*"));
+        commandList.append(QString("rm -rf /local/flash/data/store/*"));
     }
+    // Final Sync
+    commandList.append(QString("sync"));
     // Avvio del Processo di Backup
     // Creazione processo
     myProcess = new QProcess(this);
@@ -458,8 +462,9 @@ void MainCloner::actionCompleted(int exitCode, QProcess::ExitStatus exitStatus)
     }
     else  {
         QString szNextCommand = commandList.takeFirst();
-        // fprintf(stderr, "Running Command Done [%s] - Starting Next Command [%s] exitCode: %d exitStatus: %d\n", runningCommand.toLatin1().data(),
-        //                                szNextCommand.toLatin1().data(), exitCode, exitStatus);
+        qDebug("Running Command Done [%s] exitCode: %d exitStatus: %d stdout[%s] stderr[%s]", runningCommand.toLatin1().data(),
+               exitCode, exitStatus, myProcess->readAllStandardOutput().data(), myProcess->readAllStandardError().data());
+        qDebug("Starting Next Command [%s]", szNextCommand.toLatin1().data());
         myProcess->start(szNextCommand);
         runningCommand = szNextCommand;
         ui->lblAction->setText(runningCommand);
