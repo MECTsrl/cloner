@@ -49,6 +49,8 @@
 #define START_SYSUPDATE         42
 
 #define RETENTIVE_FILE          "retentive" // in "/local/"
+#define INI_FILE                "flash/root/hmi.ini"
+#define TAR_STORE_DIR           "flash/data/store"
 #define RESTORE_IGNORE          0
 #define RESTORE_RESET           1
 #define RESTORE_RESTORE         2

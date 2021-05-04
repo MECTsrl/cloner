@@ -36,7 +36,7 @@ private slots:
 
 private:
     bool        loadInfo();
-    void        restoreLocalFile(QString &szLocalTar, QStringList &files2Exclude, int nRetentiveMode);
+    void        restoreLocalFile(QString &szLocalTar, QStringList &files2Exclude, int nRetentiveMode, int nHmiIniMode, int nLogMode);
     QString     getDefaultDirName();
 
 

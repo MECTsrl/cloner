@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
+    <width>543</width>
     <height>270</height>
    </rect>
   </property>
@@ -21,14 +21,12 @@ QPushButton {
     background-origin: margin;
     background-clip: padding;
 	text-align: center center;
-	min-width: 100px;
+	min-width: 90px;
 	min-height: 32px;
-	max-width: 100px;
+	max-width: 90px;
 	max-height: 32px;
 }
-QGroupBox  {
-
-}</string>
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
@@ -258,9 +256,17 @@ color: Yellow;</string>
       <widget class="QGroupBox" name="grpRetentive">
        <property name="minimumSize">
         <size>
-         <width>95</width>
+         <width>90</width>
          <height>80</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>DejaVu Sans</family>
+         <pointsize>5</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
        <property name="title">
         <string>Retentive Vars</string>
@@ -292,7 +298,7 @@ color: Yellow;</string>
           <property name="font">
            <font>
             <family>DejaVu Sans</family>
-            <pointsize>9</pointsize>
+            <pointsize>5</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
@@ -316,7 +322,7 @@ color: Yellow;</string>
           <property name="font">
            <font>
             <family>DejaVu Sans</family>
-            <pointsize>9</pointsize>
+            <pointsize>5</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
@@ -340,7 +346,7 @@ color: Yellow;</string>
           <property name="font">
            <font>
             <family>DejaVu Sans</family>
-            <pointsize>9</pointsize>
+            <pointsize>5</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
@@ -360,9 +366,17 @@ color: Yellow;</string>
       <widget class="QGroupBox" name="grpHmiIni">
        <property name="minimumSize">
         <size>
-         <width>95</width>
+         <width>90</width>
          <height>80</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>DejaVu Sans</family>
+         <pointsize>5</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
        <property name="title">
         <string>Hmi.ini</string>
@@ -394,7 +408,7 @@ color: Yellow;</string>
           <property name="font">
            <font>
             <family>DejaVu Sans</family>
-            <pointsize>9</pointsize>
+            <pointsize>5</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
@@ -418,7 +432,7 @@ color: Yellow;</string>
           <property name="font">
            <font>
             <family>DejaVu Sans</family>
-            <pointsize>9</pointsize>
+            <pointsize>5</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
@@ -442,7 +456,7 @@ color: Yellow;</string>
           <property name="font">
            <font>
             <family>DejaVu Sans</family>
-            <pointsize>9</pointsize>
+            <pointsize>5</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
@@ -462,9 +476,17 @@ color: Yellow;</string>
       <widget class="QGroupBox" name="grpLogs">
        <property name="minimumSize">
         <size>
-         <width>95</width>
+         <width>90</width>
          <height>80</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>DejaVu Sans</family>
+         <pointsize>5</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
        <property name="title">
         <string>Logs</string>
@@ -496,7 +518,7 @@ color: Yellow;</string>
           <property name="font">
            <font>
             <family>DejaVu Sans</family>
-            <pointsize>9</pointsize>
+            <pointsize>5</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
@@ -520,7 +542,7 @@ color: Yellow;</string>
           <property name="font">
            <font>
             <family>DejaVu Sans</family>
-            <pointsize>9</pointsize>
+            <pointsize>5</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
@@ -544,7 +566,7 @@ color: Yellow;</string>
           <property name="font">
            <font>
             <family>DejaVu Sans</family>
-            <pointsize>9</pointsize>
+            <pointsize>5</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
@@ -577,14 +599,20 @@ color: Yellow;</string>
       <widget class="QPushButton" name="cmdOk">
        <property name="minimumSize">
         <size>
-         <width>104</width>
+         <width>90</width>
+         <height>36</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>90</width>
          <height>36</height>
         </size>
        </property>
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>9</pointsize>
+         <pointsize>8</pointsize>
         </font>
        </property>
        <property name="text">
@@ -600,14 +628,20 @@ color: Yellow;</string>
       <widget class="QPushButton" name="cmdCancel">
        <property name="minimumSize">
         <size>
-         <width>104</width>
+         <width>90</width>
+         <height>36</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>90</width>
          <height>36</height>
         </size>
        </property>
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>9</pointsize>
+         <pointsize>8</pointsize>
         </font>
        </property>
        <property name="text">

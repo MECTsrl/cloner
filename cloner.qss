@@ -33,6 +33,24 @@ QPushButton:pressed {
 QPushButton:default {
 	border: 2px solid steelblue;
 }
+/* QSpinBox */
+QSpinBox {
+        border: 1px solid rgb(170, 255, 255);
+}
+QSpinbox::up-button  {
+        background-color: rgb(170, 255, 255);
+}
+QSpinbox::down-button  {
+        background-color: rgb(170, 255, 255);
+}
+/* QProgressBar */
+QProgressBar {
+    border: 1px solid 	rgb(170, 255, 255);
+}
+QProgressBar::chunk {
+    background-color: rgb(255, 0, 0);
+        margin: 1px;
+}
 /* QCheckBox */
 QCheckBox::indicator {
     width: 32px;

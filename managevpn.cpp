@@ -19,6 +19,7 @@ ManageVPN::~ManageVPN()
 
 void ManageVPN::timerEvent(QTimerEvent *event)
 {
+    Q_UNUSED(event);
     // Aggiornamento orologio
     QString szDateTime = QDateTime::currentDateTime().toString("yyyy/MM/dd hh:mm:ss");
     ui->lblDateTime->setText(szDateTime);

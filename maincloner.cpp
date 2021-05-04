@@ -285,7 +285,7 @@ void MainCloner::on_cmdRestore_clicked()
 //            }
             // Start restore procedure
             QString sourceTar = QString("%1%2/%3") .arg(CLONED_IMAGES_DIR) .arg(image2Restore) .arg(LOCAL_FS_TAR);
-            restoreLocalFile(sourceTar, excludesLFSList, nRetentiveMode);
+            restoreLocalFile(sourceTar, excludesLFSList, nRetentiveMode, nHmiIniMode, nLogMode);
 
         }
     }
@@ -349,10 +349,12 @@ void MainCloner::on_cmdSimple_clicked()
                     QMessageBox::Ok|QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Ok)  {
         // Start restore procedure
         szSource = QString("%1_%2") .arg(szModel) .arg(szClonerVersion);
-        int         nRestore = ACTION_RESTORE;
+        int         nRetentive = RESTORE_RESTORE;
+        int         nHmiIni = RESTORE_RESTORE;
+        int         nLogs = RESTORE_RESET;
         QString sourceTar = mfgToolsModelDir;
         sourceTar.append(LOCAL_FS_TAR);
-        restoreLocalFile(sourceTar, excludesLFSList, nRestore);
+        restoreLocalFile(sourceTar, excludesLFSList, nRetentive, nHmiIni, nLogs);
     }
 }
 
@@ -365,13 +367,22 @@ void MainCloner::on_cmdMenu_clicked()
     infoPage->deleteLater();
 }
 
-void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclude, int nRetentiveMode)
+void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclude, int nRetentiveMode, int nHmiIniMode, int nLogMode)
 {
     QStringList localExclude = files2Exclude;
 
+    qDebug("Restore File: [%s] Retentive:%d Hmi.ini:%d Log:%d", szLocalTar.toLatin1().data(), nRetentiveMode, nHmiIniMode, nLogMode);
     // Add retentive file to exclude list
     if (nRetentiveMode == RESTORE_IGNORE)   {
         localExclude.append(RETENTIVE_FILE);
+    }
+    // Add hmi.ini to exclude list
+    if (nHmiIniMode == RESTORE_IGNORE)   {
+        localExclude.append(INI_FILE);
+    }
+    // Add store dir to exclude list
+    if (nLogMode == RESTORE_IGNORE)   {
+        localExclude.append(TAR_STORE_DIR);
     }
     // Extract list of Exclude files
     QString excludesToLocal = localExclude.join(" --exclude ");
@@ -391,6 +402,14 @@ void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclud
     // Clear variabili ritentive
     if (nRetentiveMode == RESTORE_RESET)  {
         commandList.append(QString("dd if=/dev/zero of=/local/%1 bs=768 count=1") .arg(RETENTIVE_FILE));
+    }
+    // Clear hmi.ini
+    if (nHmiIniMode == RESTORE_RESET)  {
+        commandList.append(QString("echo -e \"[General]\nrotation=0\nplc_host=127.0.0.1\n\" > hmi.ini"));
+    }
+    // Clear Logs
+    if (nLogMode == RESTORE_RESET)  {
+        commandList.append(QString("rm -rf /local/data/store/*"));
     }
     // Avvio del Processo di Backup
     // Creazione processo
@@ -416,6 +435,9 @@ void MainCloner::actionCompleted(int exitCode, QProcess::ExitStatus exitStatus)
 {
     QString     szTitle;
     QString     szMessage;
+
+    Q_UNUSED(exitCode);
+    Q_UNUSED(exitStatus);
 
     if (commandList.isEmpty())  {
         ui->progressBar->setValue(ui->progressBar->maximum());

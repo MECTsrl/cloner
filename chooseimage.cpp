@@ -15,9 +15,11 @@ ChooseImage::ChooseImage(QWidget *parent) :
     startTimer(REFRESH_MS);
     selectedImage.clear();
     fillImagesList();
+    // Default values: Full Restore
     ui->optRetRestore->setChecked(true);
     ui->optIniRestore->setChecked(true);
     ui->optLogRestore->setChecked(true);
+    // Check images
     if (ui->lstImmagini->count())  {
         ui->cmdOk->setEnabled(true);
         ui->lstImmagini->setFocus();
@@ -36,6 +38,7 @@ ChooseImage::~ChooseImage()
 
 void ChooseImage::timerEvent(QTimerEvent *event)
 {
+    Q_UNUSED(event);
     // Aggiornamento orologio
     QString szDateTime = QDateTime::currentDateTime().toString("yyyy/MM/dd hh:mm:ss");
     ui->lblDateTime->setText(szDateTime);
