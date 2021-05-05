@@ -5,7 +5,6 @@
 #include <QTimer>
 #include <QString>
 #include <QStringList>
-#include <QProcess>
 #include <QElapsedTimer>
 
 namespace Ui {
@@ -31,8 +30,7 @@ private slots:
     void on_cmdNetwork_clicked();
     void on_cmdSimple_clicked();
     void on_cmdMenu_clicked();
-    void actionCompleted(int exitCode, QProcess::ExitStatus exitStatus);
-    void actionFailed(QProcess::ProcessError errorCode);
+    void execCommadList();
 
 private:
     bool        loadInfo();
@@ -43,13 +41,11 @@ private:
     Ui::MainCloner *ui;
     // Variabili nuove
     QStringList     infoList;
-    QProcess        *myProcess;
     QElapsedTimer   startElapsed;
     int             runningAction;
-    int             nCommandCount;
     QString         szDestination;
     QString         szSource;
-    QString         runningCommand;
+    QString         szRunningCommand;
     QStringList     commandList;
     QStringList     excludesRFSList;        // Root file system  Exclude
     QStringList     excludesLFSList;        // Local file system Exclude

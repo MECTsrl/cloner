@@ -30,7 +30,6 @@ MainCloner::MainCloner(QWidget *parent) :
     refresh_timer = new QTimer(this);
     connect(refresh_timer, SIGNAL(timeout()), this, SLOT(updateData()));
     runningAction = ACTION_NONE;
-    nCommandCount = 0;
     refresh_timer->start(REFRESH_MS);
     if (loadInfo())  {
         ui->lblModel->setStyleSheet(COLOR_OK);
@@ -93,15 +92,7 @@ void MainCloner::updateData()
     // Aggiornamento orologio
     QString szDateTime = QDateTime::currentDateTime().toString("yyyy/MM/dd hh:mm:ss");
     ui->lblDateTime->setText(szDateTime);
-    if (runningAction > ACTION_NONE)  {
-//        if (runningAction == ACTION_BACKUP)  {
-//            szMessage = QString("Backup Image: [%1] - Elapsed: [%2]") .arg(szDestination) .arg(startElapsed.elapsed() / 1000);
-//        }
-//        else if (runningAction == ACTION_RESTORE)  {
-//            szMessage = QString("Restore Image: [%1] - Elapsed: [%2]") .arg(szSource) .arg(startElapsed.elapsed() / 1000);
-//        }
-    }
-    else  {
+    if (runningAction == ACTION_NONE)  {
         ui->lblAction->setText("Select an option or power off and remove the usb key");
         ui->progressBar->setVisible(false);
     }
@@ -224,26 +215,19 @@ void MainCloner::on_cmdBackup_clicked()
         }
         // Create Path
         QString szCommand = QString("mkdir -p %1") .arg(szDirImage);
-        system(szCommand.toLatin1().data());
+        // system(szCommand.toLatin1().data());
+        commandList.append(szCommand);
         // Comandi di Backup
         // NON Smonta SD Card
         // runningCommand = QString("/etc/rc.d/init.d/sdcheck stop");
-        runningCommand = QString("tar cf %1%2 -C /local .") .arg(szDirImage) .arg(LOCAL_FS_TAR);
+        szCommand = QString("tar cf %1%2 -C /local .") .arg(szDirImage) .arg(LOCAL_FS_TAR);
+        commandList.append(szCommand);
         commandList.append("sync");
         // Avvio del Processo di Backup
-        // Creazione processo
-        myProcess = new QProcess(this);
-        // Impostazione dei parametri del Processo
-        myProcess->setWorkingDirectory(MOUNTED_FS);
-        // Slot di Gestione del processo
-        connect(myProcess, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(actionCompleted(int,QProcess::ExitStatus)));
-        connect(myProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(actionFailed(QProcess::ProcessError)));
-        // Avvio del Task
+        QDir::setCurrent(MOUNTED_FS);
         runningAction = ACTION_BACKUP;
-        ui->lblAction->setText(runningCommand);
-        myProcess->start(runningCommand);
-        // Restart del Timer
         startElapsed.start();
+        execCommadList();
     }
     dk->deleteLater();
 }
@@ -372,6 +356,7 @@ void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclud
 {
     QStringList localExclude = files2Exclude;
 
+    commandList.clear();
     qDebug("Restore File: [%s] Retentive:%d Hmi.ini:%d Log:%d", szLocalTar.toLatin1().data(), nRetentiveMode, nHmiIniMode, nLogMode);
     // Add retentive file to exclude list
     if (nRetentiveMode == RESTORE_IGNORE)   {
@@ -381,8 +366,8 @@ void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclud
     if (nHmiIniMode == RESTORE_IGNORE)   {
         localExclude.append(INI_FILE);
     }
-    // Add store dir to exclude list
-    if (nLogMode == RESTORE_IGNORE)   {
+    // Add store dir to exclude list (both IGNORE and RESET) do not restore backup logs
+    if (nLogMode == RESTORE_IGNORE || RESTORE_RESET)   {
         localExclude.append(TAR_STORE_DIR);
     }
     // Extract list of Exclude files
@@ -390,7 +375,7 @@ void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclud
     // NON smonta SD Card
     // runningCommand = QString("/etc/rc.d/init.d/sdcheck stop");
     // Create Ram Disk Mount Point
-    runningCommand = QString("mkdir -p %1") .arg(TMP_DIR);
+    commandList.append(QString("mkdir -p %1") .arg(TMP_DIR));
     // Mount Ram Disk
     commandList.append(QString("/bin/mount -t tmpfs -o size=%1M tmpfs %2") .arg(RAMDISK_SIZE) .arg(TMP_DIR));
     // Expand local tar to ram disk
@@ -416,34 +401,35 @@ void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclud
     // Final Sync
     commandList.append(QString("sync"));
     // Avvio del Processo di Backup
-    // Creazione processo
-    myProcess = new QProcess(this);
-    // Impostazione dei parametri del Processo
-    myProcess->setWorkingDirectory("/");
-    // Slot di Gestione del processo
-    connect(myProcess, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(actionCompleted(int,QProcess::ExitStatus)));
-    connect(myProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(actionFailed(QProcess::ProcessError)));
+    QDir::setCurrent("/");
     // Avvio del Task
     runningAction = ACTION_RESTORE;
-    ui->lblAction->setText(runningCommand);
-    nCommandCount = commandList.count();
-    ui->progressBar->setMaximum(nCommandCount);
-    ui->progressBar->setValue(0);
-    ui->progressBar->setVisible(true);
-    myProcess->start(runningCommand);
     // Restart del Timer
     startElapsed.start();
+    execCommadList();
 }
 
-void MainCloner::actionCompleted(int exitCode, QProcess::ExitStatus exitStatus)
+void MainCloner::execCommadList()
 {
+    bool        allOK = true;
     QString     szTitle;
     QString     szMessage;
 
-    Q_UNUSED(exitCode);
-    Q_UNUSED(exitStatus);
-
-    if (commandList.isEmpty())  {
+    // Show Progress
+    ui->progressBar->setMaximum(commandList.count());
+    ui->progressBar->setValue(0);
+    ui->progressBar->setVisible(true);
+    // Commands execution Loop
+    while (commandList.count() > 0 && allOK)  {
+        szRunningCommand = commandList.takeFirst();
+        qDebug("Starting Next Command [%s]", szRunningCommand.toLatin1().data());
+        ui->lblAction->setText(szRunningCommand);
+        int nRes = system(szRunningCommand.toLatin1().data());
+        ui->progressBar->setValue(ui->progressBar->value() + 1);
+        allOK = (nRes == 0);
+    }
+    // Loop ended
+    if (allOK)  {
         ui->progressBar->setValue(ui->progressBar->maximum());
         if (runningAction == ACTION_BACKUP)  {
             szTitle = "Back-Up";
@@ -453,42 +439,22 @@ void MainCloner::actionCompleted(int exitCode, QProcess::ExitStatus exitStatus)
             szTitle = "Restore";
             szMessage = QString("Restore from [%1] Successfully completed!") .arg(szSource);
         }
+        qDebug("Execution Ended: elapsed [%d]s", (int) (startElapsed.elapsed() / 1000));
         QMessageBox::information(this, szTitle, szMessage, QMessageBox::Ok);
-        ui->lblAction->setText("");
-        ui->progressBar->setVisible(false);
-        QObject::disconnect(myProcess, 0, 0, 0);
-        myProcess->deleteLater();
-        runningAction = ACTION_NONE;
     }
     else  {
-        QString szNextCommand = commandList.takeFirst();
-        qDebug("Running Command Done [%s] exitCode: %d exitStatus: %d stdout[%s] stderr[%s]", runningCommand.toLatin1().data(),
-               exitCode, exitStatus, myProcess->readAllStandardOutput().data(), myProcess->readAllStandardError().data());
-        qDebug("Starting Next Command [%s]", szNextCommand.toLatin1().data());
-        myProcess->start(szNextCommand);
-        runningCommand = szNextCommand;
-        ui->lblAction->setText(runningCommand);
-        ui->progressBar->setValue(ui->progressBar->value() + 1);
+        if (runningAction == ACTION_BACKUP)  {
+            szTitle = "Back-Up";
+            szMessage = QString("Back-Up to [%1] Failed!") .arg(szDestination);
+        }
+        else if (runningAction == ACTION_RESTORE)  {
+            szTitle = "Restore";
+            szMessage = QString("Restore from [%1] Failed!") .arg(szSource);
+        }
+        qCritical("Failed Command [%s]", szRunningCommand.toLatin1().data());
+        QMessageBox::critical(this, szTitle, szMessage, QMessageBox::Ok);
     }
-}
-
-void MainCloner::actionFailed(QProcess::ProcessError errorCode)
-{
-    QString     szTitle;
-    QString     szMessage;
-
-    if (runningAction == ACTION_BACKUP)  {
-        szTitle = "Back-Up";
-        szMessage = QString("Back-Up to [%1] Failed!") .arg(szDestination);
-    }
-    else if (runningAction == ACTION_RESTORE)  {
-        szTitle = "Restore";
-        szMessage = QString("Restore from [%1] Failed!") .arg(szSource);
-    }
-    fprintf(stderr, "%s errorCode: %d\n", szMessage.toLatin1().data(), errorCode);
-    QMessageBox::critical(this, szTitle, szMessage, QMessageBox::Ok);
-    QObject::disconnect(myProcess, 0, 0, 0);
-    myProcess->deleteLater();
+    ui->lblAction->setText("");
+    ui->progressBar->setVisible(false);
     runningAction = ACTION_NONE;
 }
-
