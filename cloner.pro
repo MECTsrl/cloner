@@ -22,7 +22,17 @@ INCLUDEPATH += \
 LIBS += \
     -L$$(DEV_IMAGE)/usr/lib \
     -lATCMinputdialog \
-    -lts  
+#    -lATCMlogger \
+#    -lATCMrecipe \
+#    -lATCMstore \
+#    -lATCMtrend \
+#    -lATCMutility \
+#    -lATCMcommunication \
+#    -lATCMcommon \
+#    -lATCMalarms \
+#    -lATCMsystem \
+#    -lqwt \
+    -lts
 
 SOURCES += main.cpp\
         maincloner.cpp \
@@ -31,7 +41,8 @@ SOURCES += main.cpp\
     managessh.cpp \
     timeset.cpp \
     netcfg.cpp \
-    info.cpp
+    info.cpp \
+    myntpclient.cpp
 
 HEADERS  += maincloner.h \
     chooseimage.h \
@@ -40,7 +51,8 @@ HEADERS  += maincloner.h \
     managessh.h \
     timeset.h \
     netcfg.h \
-    info.h
+    info.h \
+    myntpclient.h
 
 FORMS    += maincloner.ui \
     chooseimage.ui \

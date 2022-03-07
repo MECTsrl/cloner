@@ -1,5 +1,6 @@
 #include "maincloner.h"
-#include "ntpclient.h"
+
+#include "myntpclient.h"
 
 #include <QApplication>
 #include <QFile>
@@ -21,7 +22,7 @@ QString     mfgToolsModelDir;       // MFG Tools Model Directory (contains Local
 QString     szAlphaStyle;           // Alphanumpad Stylesheet String
 int         screen_width;           // Screen width  in Pixel
 int         screen_height;          // Screen height in Pixel
-NtpClient   *ntpclient;             // NTP Interface
+
 
 int main(int argc, char *argv[])
 {
@@ -63,7 +64,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 #endif
     QWSServer::setCursorVisible(false);
-    // ntpclient = new NtpClient(NULL);
+    ntpClient = new MyNtpClient(NULL);
     // Qss globale di applicazione
     QFile   fileQSS(QSS_FILE);
     if (fileQSS.exists())  {

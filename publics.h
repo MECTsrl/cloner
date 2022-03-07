@@ -1,7 +1,7 @@
 #ifndef PUBLICS_H
 #define PUBLICS_H
 
-#include "ntpclient.h"
+#include "myntpclient.h"
 
 
 #include <QString>
@@ -74,6 +74,5 @@ extern QString     szAlphaStyle;                // Alphanumpad Stylesheet String
 extern int         screen_width;                // Screen width  in Pixel
 extern int         screen_height;               // Screen height in Pixel
 
-extern NtpClient   *ntpclient;                  // NTP Interface
 
 #endif // PUBLICS_H

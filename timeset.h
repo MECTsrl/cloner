@@ -27,7 +27,16 @@ protected:
 
 private slots:
     void on_cmdBack_clicked();
-
+    void on_pushButtonCalendar_clicked();
+    void on_pushButtonTime_clicked();
+    void on_pushButtonSetManual_clicked();
+    void on_pushButtonNTPServer_clicked();
+    void on_pushButtonNTPSet_clicked();
+    void on_pushButtonNTPOffset_clicked();
+    void on_pushButtonNTPTimeOut_clicked();
+    void on_checkBoxDst_stateChanged(int state);
+    void on_pushButtonNTPPeriod_clicked();
+    void on_pushButtonNTPSync_clicked();
     void ntpSyncDone(bool timeOut);
     void ntpManualSetDone(bool setOk);
     void lockUI(bool setLocked);
