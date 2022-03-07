@@ -64,7 +64,7 @@ MainCloner::MainCloner(QWidget *parent) :
     ui->cmdSSH->setEnabled(QFile::exists(SSH_KEY_FILE));
     // TODO: Abilitazione del bottone Time Set
     // ui->cmdClock->setVisible(false);
-    ui->cmdClock->setEnabled(false);
+    ui->cmdClock->setEnabled(true);
     // TODO: Abilitazione del bottone Info (Menu)
     ui->cmdMenu->setEnabled(false);
     // Clear values

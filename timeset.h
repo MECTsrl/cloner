@@ -1,6 +1,8 @@
 #ifndef TIMESET_H
 #define TIMESET_H
 
+
+
 #include <QDialog>
 #include <QString>
 #include <QElapsedTimer>
@@ -26,7 +28,13 @@ protected:
 private slots:
     void on_cmdBack_clicked();
 
+    void ntpSyncDone(bool timeOut);
+    void ntpManualSetDone(bool setOk);
+    void lockUI(bool setLocked);
+
 private:
+    void            updateIface();
+
     Ui::TimeSet     *ui;
     int             nOffset;
     bool            isDst;
