@@ -59,22 +59,23 @@ int main(int argc, char *argv[])
     else  {
         myargv[3] = strdup("VNC:LinuxFb:mmWidth=95:mmHeight=56");
     }
-    QApplication a(myargc, myargv);
+    QApplication clonerApp(myargc, myargv);
 #else
-    QApplication a(argc, argv);
+    QApplication clonerApp(argc, argv);
 #endif
     QWSServer::setCursorVisible(false);
-    ntpClient = new MyNtpClient(NULL);
     // Qss globale di applicazione
     QFile   fileQSS(QSS_FILE);
     if (fileQSS.exists())  {
         fileQSS.open(QFile::ReadOnly);
         QString styleSheet = QString(fileQSS.readAll());
         fileQSS.close();
-        a.setStyleSheet(styleSheet);
+        clonerApp.setStyleSheet(styleSheet);
     }
     MainCloner w;
+    ntpClient = new MyNtpClient(NULL);
     w.showFullScreen();
-
-    return a.exec();
+    int nRes = clonerApp.exec();
+    ntpClient->deleteLater();
+    return nRes;
 }

@@ -23,13 +23,16 @@ TimeSet::TimeSet(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->lblModel->setText(szModel);
-
+    ntpSyncRunning = false;
+    // ntp Server Parameters
     nOffset = ntpClient->getOffset_h();
     isDst = ntpClient->getDst();
     nTimeOut = ntpClient->getTimeout_s();
     nPeriod = ntpClient->getPeriod_h();
     szTimeServer = ntpClient->getNtpServer();
-    updateIface();
+    updateIface(true);
+    ui->progressBarElapsed->setMinimum(0);
+    ui->progressBarElapsed->setMaximum(nTimeOut);
     ui->progressBarElapsed->setVisible(false);
     lockInterface = false;
     lockUI(lockInterface);
@@ -64,56 +67,18 @@ void TimeSet::on_cmdBack_clicked()
     this->reject();
 }
 
-void TimeSet::on_pushButtonCalendar_clicked()
-{
-//    if (calendarpopup) {
-//        QDate d = QDate::fromString(ui->pushButtonCalendar->text(), DATE_MASK);
-//        if (d.isValid()) {
-//            lockInterface = true;
-//            lockUI(true);
-//            calendarpopup->setDate(d);
-//            calendarpopup->setModal(true);
-//            calendarpopup->movePosition(ui->pushButtonCalendar->geometry().x(),ui->pushButtonCalendar->geometry().y());
-//            if (calendarpopup->exec() == QDialog::Accepted) {
-//                ui->pushButtonCalendar->setText(calendarpopup->getDate().toString(DATE_MASK));
-//            }
-//            lockInterface = false;
-//        }
-//    }
-}
 
-void TimeSet::on_pushButtonTime_clicked()
-{
-//    if (timepopup) {
-//        QTime t = QTime::fromString(ui->pushButtonTime->text(), "hh:mm:ss"); // and not "HH:mm:ss"
-//        if (t.isValid()) {
-//            lockInterface = true;
-//            lockUI(true);
-//            timepopup->setTime(t);
-//            timepopup->setModal(true);
-//            timepopup->movePosition(ui->pushButtonTime->geometry().x(),ui->pushButtonTime->geometry().y());
-//            if (timepopup->exec() == QDialog::Accepted) {
-//                // ui->timeEdit->setTime(timepop->getTime());
-//                ui->pushButtonTime->setText(timepopup->getTime().toString(TIME_MASK));
-//            }
-//            lockInterface = false;
-//        }
-//    }
-}
 
 void TimeSet::on_pushButtonSetManual_clicked()
 {
-//    QDate d = QDate::fromString(ui->pushButtonCalendar->text(), DATE_MASK);
-//    QTime t = QTime::fromString(ui->pushButtonTime->text(), "hh:mm:ss");
-
-//    if (d.isValid() && t.isValid())  {
-//        lockInterface = true;
-//        lockUI(lockInterface);
-//        QDateTime   currentDT(d, t);
-//        QObject::connect(ntpClient, SIGNAL(ntpDateTimeChangeFinish(bool)), this, SLOT(ntpManualSetDone(bool)));
-//        datetimeTarget = currentDT;
-//        ntpClient->requestDateTimeChange(currentDT);
-//    }
+    QDateTime currentDT = iface2DateTime();
+    if (currentDT.isValid())  {
+        lockInterface = true;
+        lockUI(lockInterface);
+        QObject::connect(ntpClient, SIGNAL(ntpDateTimeChangeFinish(bool)), this, SLOT(ntpManualSetDone(bool)));
+        datetimeTarget = currentDT;
+        ntpClient->requestDateTimeChange(currentDT);
+    }
 }
 
 void TimeSet::on_pushButtonNTPServer_clicked()
@@ -212,22 +177,42 @@ void TimeSet::on_pushButtonNTPSync_clicked()
     }
 }
 
-void TimeSet::updateIface()
+void TimeSet::updateIface(bool updateTime)
 {
     ui->pushButtonNTPServer->setText(szTimeServer);
     ui->pushButtonNTPOffset->setText(QString("%1 h") .arg(nOffset,2,10));
     ui->checkBoxDst->setCheckState(isDst ? Qt::Checked : Qt::Unchecked);
     ui->pushButtonNTPTimeOut->setText(QString("%1 s") .arg(nTimeOut,2,10));
     ui->pushButtonNTPPeriod->setText(QString("%1 h") .arg(nPeriod,4,10));
-//    ui->pushButtonTime->setText(QTime::currentTime().toString(TIME_MASK));
-//    ui->pushButtonCalendar->setText(QDate::currentDate().toString(DATE_MASK));
+    if (updateTime)  {
+        // Current Time Settings
+        QDate dNow = QDate::currentDate();
+        QTime tNow = QTime::currentTime();
+        if (dNow.year()  > 1970)  {
+            ui->spinBoxAnno->setValue(dNow.year());
+            ui->spinBoxMese->setValue(dNow.month());
+            ui->spinBoxGiorno->setValue(dNow.day());
+            ui->spinBoxOre->setValue(tNow.hour());
+            ui->spinBoxMinuti->setValue(tNow.minute());
+        }
+        else  {
+            ui->spinBoxAnno->setValue(2022);
+            ui->spinBoxMese->setValue(06);
+            ui->spinBoxGiorno->setValue(15);
+            ui->spinBoxOre->setValue(9);
+            ui->spinBoxMinuti->setValue(0);
+        }
+    }
 }
 
 void TimeSet::lockUI(bool setLocked)
 {
-    // Aggiornamento dell'interfaccia utente
-//    ui->pushButtonCalendar->setEnabled(! setLocked);
-//    ui->pushButtonTime->setEnabled(! setLocked);
+    // Abilitazione interfaccia utente
+    ui->spinBoxGiorno->setEnabled(! setLocked);
+    ui->spinBoxMese->setEnabled(! setLocked);
+    ui->spinBoxAnno->setEnabled(! setLocked);
+    ui->spinBoxOre->setEnabled(! setLocked);
+    ui->spinBoxMinuti->setEnabled(! setLocked);
     ui->pushButtonNTPServer->setEnabled(! setLocked);
     ui->pushButtonSetManual->setEnabled(! setLocked);
     ui->pushButtonNTPSet->setEnabled(! setLocked);
@@ -237,6 +222,23 @@ void TimeSet::lockUI(bool setLocked)
     ui->pushButtonNTPTimeOut->setEnabled(! setLocked);
     ui->pushButtonNTPPeriod->setEnabled(! setLocked);
     ui->cmdBack->setEnabled(! setLocked);
+}
+
+QDateTime TimeSet::iface2DateTime()
+{
+    int year = ui->spinBoxAnno->value();
+    int mon = ui->spinBoxMese->value();
+    int mday = ui->spinBoxGiorno->value();
+
+    int hour = ui->spinBoxOre->value();
+    int min = ui->spinBoxMinuti->value();
+    int sec = 0;
+    QDate d = QDate(year, mon, mday);
+    QTime t = QTime(hour, min, sec);
+
+    QDateTime ifaceDT = QDateTime(d, t);
+
+    return ifaceDT;
 }
 
 void TimeSet::ntpManualSetDone(bool setOk)
@@ -262,7 +264,7 @@ void TimeSet::ntpSyncDone(bool timeOut)
     else  {
         QMessageBox::information(this,trUtf8("NTP Time Set"), trUtf8("Current Date and Time set from NTP Server:\n%1") .arg(szTimeServer));
     }
-    updateIface();
+    updateIface(true);
     lockInterface = false;
     lockUI(lockInterface);
 }

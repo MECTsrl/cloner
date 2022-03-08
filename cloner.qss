@@ -35,17 +35,45 @@ QPushButton:default {
 }
 /* QSpinBox */
 QSpinBox {
-        border: 1px solid rgb(170, 255, 255);
+    border: 1px solid DodgerBlue;
+    padding-right: 36px;
+    border-radius: 2px;
+ }
+
+QSpinBox:disabled {
+    border: 2px solid darkGray;
 }
+
+QSpinBox::up-button, QSpinBox::down-button {
+    subcontrol-origin: border;
+    padding-left: 0px;
+    padding-right: 0px;
+        width: 40px;
+}
+
 QSpinbox::up-button  {
-        background-color: rgb(170, 255, 255);
+        subcontrol-position: top left;
 }
+
 QSpinbox::down-button  {
-        background-color: rgb(170, 255, 255);
+        subcontrol-position: bottom right;
+}
+
+QSpinBox::up-arrow {
+    border-image: url(:/libicons/img/Plus16.png);
+    border-radius: 2px;
+        border: 1px solid  DodgerBlue;
+}
+
+QSpinBox::down-arrow {
+    border-image: url(:/libicons/img/Minus16.png);
+    border-radius: 2px;
+        border: 1px solid  DodgerBlue;
 }
 /* QProgressBar */
 QProgressBar {
     border: 1px solid 	rgb(170, 255, 255);
+    text-align: center;
 }
 QProgressBar::chunk {
     background-color: rgb(255, 0, 0);

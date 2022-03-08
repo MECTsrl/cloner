@@ -187,175 +187,47 @@ color: Yellow;</string>
     </widget>
    </item>
    <item>
+    <spacer name="verticalSpacer_3">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gridLayout_2">
      <property name="spacing">
-      <number>2</number>
+      <number>0</number>
      </property>
-     <item row="0" column="1">
-      <widget class="QSpinBox" name="spinBoxGiorno">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>28</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>130</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>DejaVu Sans</family>
-         <pointsize>12</pointsize>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="minimum">
-        <number>1</number>
-       </property>
-       <property name="maximum">
-        <number>31</number>
-       </property>
-       <property name="value">
-        <number>1</number>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QSpinBox" name="spinBoxMinuti">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>28</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>130</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>DejaVu Sans</family>
-         <pointsize>12</pointsize>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="maximum">
-        <number>59</number>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="labelOraTile">
-         <property name="font">
-          <font>
-           <family>DejaVu Sans</family>
-           <pointsize>9</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Ora [0-23]:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelMinTile">
-         <property name="font">
-          <font>
-           <family>DejaVu Sans</family>
-           <pointsize>9</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Min [0-59]:</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="0" column="2">
-      <widget class="QSpinBox" name="spinBoxMese">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>28</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>130</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>DejaVu Sans</family>
-         <pointsize>12</pointsize>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="minimum">
-        <number>1</number>
-       </property>
-       <property name="maximum">
-        <number>12</number>
-       </property>
-       <property name="value">
-        <number>1</number>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="3">
       <widget class="QSpinBox" name="spinBoxAnno">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
          <width>110</width>
-         <height>28</height>
+         <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>160</width>
-         <height>40</height>
+         <height>66</height>
         </size>
        </property>
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>12</pointsize>
+         <pointsize>11</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -381,24 +253,76 @@ color: Yellow;</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
-      <widget class="QSpinBox" name="spinBoxOre">
+     <item row="0" column="2">
+      <widget class="QSpinBox" name="spinBoxMese">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
          <width>100</width>
-         <height>28</height>
+         <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>130</width>
-         <height>40</height>
+         <height>66</height>
         </size>
        </property>
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>12</pointsize>
+         <pointsize>11</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>12</number>
+       </property>
+       <property name="value">
+        <number>1</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QSpinBox" name="spinBoxMinuti">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>36</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>130</width>
+         <height>66</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>DejaVu Sans</family>
+         <pointsize>11</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -411,7 +335,55 @@ color: Yellow;</string>
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="maximum">
-        <number>23</number>
+        <number>59</number>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="pushButtonSetManual">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>36</width>
+         <height>36</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>80</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton
+{
+border: 2px solid  rgb(94, 94, 94);
+border-radius: 8px;
+qproperty-icon: url(:/libicons/img/OK.png);
+qproperty-iconSize: 24px 24px;
+qproperty-focusPolicy: NoFocus;
+}
+QPushButton:pressed
+{
+border: 2px solid  rgb(194, 194, 194);
+background-color:  rgb(255, 255, 127);
+}
+QPushButton:disabled
+{
+border: 2px solid  rgb(194, 194, 194);
+}
+</string>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>
@@ -448,8 +420,159 @@ color: Yellow;</string>
        </item>
       </layout>
      </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="pushButtonSetManual">
+     <item row="1" column="0">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="labelOraTile">
+         <property name="font">
+          <font>
+           <family>DejaVu Sans</family>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Hour [0-23]:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelMinTile">
+         <property name="font">
+          <font>
+           <family>DejaVu Sans</family>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Min [0-59]:</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="2">
+      <widget class="QSpinBox" name="spinBoxOre">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>36</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>130</width>
+         <height>66</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>DejaVu Sans</family>
+         <pointsize>11</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="maximum">
+        <number>23</number>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QSpinBox" name="spinBoxGiorno">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>36</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>130</width>
+         <height>66</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>DejaVu Sans</family>
+         <pointsize>11</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>31</number>
+       </property>
+       <property name="value">
+        <number>1</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>1</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="horizontalSpacing">
+      <number>0</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>2</number>
+     </property>
+     <item row="2" column="5">
+      <widget class="QPushButton" name="pushButtonNTPSync">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
          <width>36</width>
@@ -458,57 +581,8 @@ color: Yellow;</string>
        </property>
        <property name="maximumSize">
         <size>
-         <width>32</width>
-         <height>32</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton
-{
-border: 2px solid  rgb(94, 94, 94);
-border-radius: 8px;
-qproperty-icon: url(:/libicons/img/OK.png);
-qproperty-iconSize: 24px 24px;
-qproperty-focusPolicy: NoFocus;
-}
-QPushButton:pressed
-{
-border: 2px solid  rgb(194, 194, 194);
-background-color:  rgb(255, 255, 127);
-}
-QPushButton:disabled
-{
-border: 2px solid  rgb(194, 194, 194);
-}
-</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <item row="2" column="5">
-      <widget class="QPushButton" name="pushButtonNTPSync">
-       <property name="minimumSize">
-        <size>
-         <width>36</width>
-         <height>32</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>40</height>
+         <width>80</width>
+         <height>90</height>
         </size>
        </property>
        <property name="focusPolicy">
@@ -542,27 +616,27 @@ border: 2px solid  rgb(194, 194, 194);
      <item row="0" column="0">
       <widget class="QLabel" name="labelNtpServer">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>40</width>
+         <width>80</width>
          <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>128</width>
-         <height>30</height>
+         <height>90</height>
         </size>
        </property>
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>12</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
@@ -573,7 +647,7 @@ border: 2px solid  rgb(194, 194, 194);
      <item row="0" column="1" colspan="4">
       <widget class="QPushButton" name="pushButtonNTPServer">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -581,13 +655,13 @@ border: 2px solid  rgb(194, 194, 194);
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>800</width>
-         <height>50</height>
+         <height>90</height>
         </size>
        </property>
        <property name="font">
@@ -607,21 +681,21 @@ border: 2px solid  rgb(194, 194, 194);
      <item row="1" column="2">
       <widget class="QPushButton" name="pushButtonNTPOffset">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>50</width>
-         <height>32</height>
+         <width>80</width>
+         <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>50</width>
-         <height>50</height>
+         <width>80</width>
+         <height>90</height>
         </size>
        </property>
        <property name="font">
@@ -641,27 +715,27 @@ border: 2px solid  rgb(194, 194, 194);
      <item row="1" column="3">
       <widget class="QLabel" name="labelTOut">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>60</width>
+         <width>80</width>
          <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>850</width>
-         <height>30</height>
+         <height>90</height>
         </size>
        </property>
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>12</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
@@ -672,21 +746,21 @@ border: 2px solid  rgb(194, 194, 194);
      <item row="1" column="4">
       <widget class="QPushButton" name="pushButtonNTPTimeOut">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>50</width>
-         <height>32</height>
+         <width>80</width>
+         <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>50</width>
-         <height>50</height>
+         <width>80</width>
+         <height>90</height>
         </size>
        </property>
        <property name="font">
@@ -706,27 +780,27 @@ border: 2px solid  rgb(194, 194, 194);
      <item row="1" column="0" colspan="2">
       <widget class="QLabel" name="labelOffset">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>40</width>
+         <width>80</width>
          <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>128</width>
-         <height>30</height>
+         <height>90</height>
         </size>
        </property>
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>12</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
@@ -736,16 +810,22 @@ border: 2px solid  rgb(194, 194, 194);
      </item>
      <item row="0" column="5">
       <widget class="QPushButton" name="pushButtonNTPSet">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
-         <width>32</width>
-         <height>32</height>
+         <width>36</width>
+         <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>40</width>
-         <height>40</height>
+         <width>80</width>
+         <height>90</height>
         </size>
        </property>
        <property name="focusPolicy">
@@ -779,21 +859,21 @@ border: 2px solid  rgb(194, 194, 194);
      <item row="2" column="4">
       <widget class="QPushButton" name="pushButtonNTPPeriod">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>50</width>
-         <height>30</height>
+         <width>80</width>
+         <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>50</width>
-         <height>50</height>
+         <width>80</width>
+         <height>90</height>
         </size>
        </property>
        <property name="font">
@@ -813,27 +893,27 @@ border: 2px solid  rgb(194, 194, 194);
      <item row="2" column="3">
       <widget class="QLabel" name="labelPeriod">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>40</width>
+         <width>80</width>
          <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>128</width>
-         <height>30</height>
+         <height>90</height>
         </size>
        </property>
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>12</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
@@ -844,27 +924,27 @@ border: 2px solid  rgb(194, 194, 194);
      <item row="2" column="0">
       <widget class="QLabel" name="labelDst">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>40</width>
+         <width>80</width>
          <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>128</width>
-         <height>30</height>
+         <height>90</height>
         </size>
        </property>
        <property name="font">
         <font>
          <family>DejaVu Sans</family>
-         <pointsize>12</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
@@ -875,7 +955,7 @@ border: 2px solid  rgb(194, 194, 194);
      <item row="2" column="2">
       <widget class="QCheckBox" name="checkBoxDst">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -886,6 +966,12 @@ border: 2px solid  rgb(194, 194, 194);
          <height>32</height>
         </size>
        </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>90</height>
+        </size>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
@@ -893,10 +979,6 @@ border: 2px solid  rgb(194, 194, 194);
         <string notr="true">QCheckBox::indicator {
 	width: 32px;
 	height:32px;
-}
-
-QCheckBox::indicator:checked:enabled {
-    image: url(:/libicons/img/Yes.png);
 }
 </string>
        </property>
@@ -906,6 +988,22 @@ QCheckBox::indicator:checked:enabled {
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>18</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
    </item>
    <item>
     <widget class="QFrame" name="frameButtons">
@@ -947,7 +1045,7 @@ QCheckBox::indicator:checked:enabled {
        <widget class="QProgressBar" name="progressBarElapsed">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>330</width>
           <height>20</height>
          </size>
         </property>
@@ -956,6 +1054,12 @@ QCheckBox::indicator:checked:enabled {
           <width>16777215</width>
           <height>20</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>DejaVu Sans</family>
+          <pointsize>8</pointsize>
+         </font>
         </property>
         <property name="maximum">
          <number>30</number>
@@ -981,7 +1085,7 @@ QCheckBox::indicator:checked:enabled {
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>68</width>
+          <width>20</width>
           <height>20</height>
          </size>
         </property>
@@ -991,14 +1095,14 @@ QCheckBox::indicator:checked:enabled {
        <widget class="QPushButton" name="cmdBack">
         <property name="minimumSize">
          <size>
-          <width>104</width>
+          <width>114</width>
           <height>30</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>104</width>
-          <height>36</height>
+          <width>200</width>
+          <height>40</height>
          </size>
         </property>
         <property name="font">
@@ -1006,6 +1110,9 @@ QCheckBox::indicator:checked:enabled {
           <family>DejaVu Sans</family>
           <pointsize>9</pointsize>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
         </property>
         <property name="text">
          <string notr="true">Back</string>

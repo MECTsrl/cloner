@@ -29,6 +29,11 @@
         <file>img/wifi_connect.png</file>
         <file>img/disconnect.png</file>
         <file>img/4g_connect.png</file>
+        <file>img/Down.png</file>
+        <file>img/Up16r.png</file>
+        <file>img/Down16r.png</file>
+        <file>img/Plus16.png</file>
+        <file>img/Minus16.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file>cloner.qss</file>

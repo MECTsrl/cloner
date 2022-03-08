@@ -27,8 +27,6 @@ protected:
 
 private slots:
     void on_cmdBack_clicked();
-    void on_pushButtonCalendar_clicked();
-    void on_pushButtonTime_clicked();
     void on_pushButtonSetManual_clicked();
     void on_pushButtonNTPServer_clicked();
     void on_pushButtonNTPSet_clicked();
@@ -42,7 +40,8 @@ private slots:
     void lockUI(bool setLocked);
 
 private:
-    void            updateIface();
+    QDateTime       iface2DateTime();
+    void            updateIface(bool updateTime = false);
 
     Ui::TimeSet     *ui;
     int             nOffset;

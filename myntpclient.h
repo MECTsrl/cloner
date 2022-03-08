@@ -26,7 +26,6 @@ public:
     bool        getDst();
     int         getPeriod_h();
     void        setNtpParams(const QString &server, int timeout_s, int offset_h, int period_h, bool dst = false);
-    QMutex*     getNTPMutex();
 
 signals:
     void        ntpSyncFinish(bool timeOut);                    // ntp Sync Ended
@@ -37,9 +36,9 @@ public slots:
     void        requestDateTimeChange(QDateTime newTime);       // Force RTC to newTime
 
 protected:
+    virtual void    run();
     bool            ntpSyncOrChangeRequested();     // check if a Clock change is requested
     void            doSyncOrChange();               // do a Clock change
-    virtual void    run();
     bool            isTimeChanged();
     QDateTime       getTimeBefore();
 
@@ -56,10 +55,10 @@ private:
     QDateTime       invalidDateTime;        // Invalid QDateTime
 
     QString         ntpServerName;          // ntp params
-    int             ntpTimeout;
-    int             ntpOffset;
+    int             ntpTimeoutSecs;
+    int             ntpOffsetHours;
     bool            ntpDst;
-    int             ntpPeriod;
+    int             ntpPeriodHours;
     qint64          ntpPeriodms;
 
     bool            timeChanged;            // Rilevato un cambio di data e ora genera una riga vuota nei log per segnare il cambio di tempo

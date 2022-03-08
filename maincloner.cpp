@@ -77,7 +77,7 @@ MainCloner::MainCloner(QWidget *parent) :
 
     szAlphaStyle = QString("font-size: 10pt;\n");
     szAlphaStyle.append(QString( "background-color: Azure;\ncolor: Navy;\n"));
-
+    // ntpClient->start();
 }
 
 MainCloner::~MainCloner()

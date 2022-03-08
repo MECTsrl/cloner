@@ -10,6 +10,7 @@
 #include <unistd.h>
 
 #include <QSettings>
+#include <QDebug>
 
 
 
@@ -19,6 +20,8 @@
 #ifndef NTP_FILE
 #define NTP_FILE           LOCAL_ETC_DIR"/ntp.ini"
 #endif
+
+#define NTP_TIMER_WAIT 800
 
 #define THE_NTP_PORT       123
 #define THE_MAX_TRIPTIME_s 1LL
@@ -32,24 +35,24 @@ MyNtpClient::MyNtpClient(QObject *parent) :
 
     objSettings->beginGroup("NTP-Server");
     ntpServerName = objSettings->value("serverName", THE_NTP_SERVER).toString();
-    ntpTimeout = objSettings->value("serverTimeOut", "10").toInt();
-    ntpOffset = objSettings->value("serverOffset", "1").toInt();
+    ntpTimeoutSecs = objSettings->value("serverTimeOut", "10").toInt();
+    ntpOffsetHours = objSettings->value("serverOffset", "1").toInt();
     ntpDst = objSettings->value("clientDst", false).toBool();
-    ntpPeriod = objSettings->value("serverPeriod", "0").toInt();
-    ntpPeriodms = ntpPeriod * 1000 * 3600;
+    ntpPeriodHours = objSettings->value("serverPeriod", "0").toInt();
+    ntpPeriodms = ntpPeriodHours * 1000 * 3600;
     objSettings->endGroup();
 
     // Default values to stop automatic sync
     doSync = false;
     invalidDateTime = QDateTime();
     newDateTime = invalidDateTime;
-
+    timeChanged = false;
     // Attiva il timer NTP
-    if (ntpPeriod > 0)  {
+    if (ntpPeriodHours > 0)  {
         requestNTPSync();
         ntpSyncTimer.start();
     }
-    timeChanged = false;
+    this->start();
 }
 
 QString     MyNtpClient::getNtpServer()
@@ -59,12 +62,12 @@ QString     MyNtpClient::getNtpServer()
 
 int         MyNtpClient::getTimeout_s()
 {
-    return ntpTimeout;
+    return ntpTimeoutSecs;
 }
 
 int       MyNtpClient::getOffset_h()
 {
-    return ntpOffset;
+    return ntpOffsetHours;
 }
 
 bool       MyNtpClient::getDst()
@@ -74,7 +77,7 @@ bool       MyNtpClient::getDst()
 
 int         MyNtpClient::getPeriod_h()
 {
-    return ntpPeriod;
+    return ntpPeriodHours;
 }
 
 bool        MyNtpClient::isTimeChanged()
@@ -101,22 +104,22 @@ void        MyNtpClient::setNtpParams(const QString &server, int timeout_s, int 
     ntpServerName = ntpServerName.isEmpty() ? QString(THE_NTP_SERVER) : ntpServerName;
     objSettings->setValue("serverName", ntpServerName);
 
-    ntpTimeout = timeout_s;
-    ntpTimeout = ntpTimeout > 0 ? ntpTimeout : 1;
-    objSettings->setValue("serverTimeOut", ntpTimeout);
+    ntpTimeoutSecs = timeout_s;
+    ntpTimeoutSecs = ntpTimeoutSecs > 0 ? ntpTimeoutSecs : 1;
+    objSettings->setValue("serverTimeOut", ntpTimeoutSecs);
 
-    ntpOffset = offset_h;
-    ntpOffset = (ntpOffset > 12 || ntpOffset < -12) ? 1 : ntpOffset;
-    objSettings->setValue("serverOffset", ntpOffset);
+    ntpOffsetHours = offset_h;
+    ntpOffsetHours = (ntpOffsetHours > 12 || ntpOffsetHours < -12) ? 1 : ntpOffsetHours;
+    objSettings->setValue("serverOffset", ntpOffsetHours);
 
     dstChanged = (ntpDst != dst);
     ntpDst = dst;
     objSettings->setValue("clientDst", ntpDst);
 
-    ntpPeriod = period_h;
-    ntpPeriod = (ntpPeriod < 0 || (ntpPeriod > THE_NTP_MAX_PERIOD_H)) ? 0 : ntpPeriod;
-    ntpPeriodms = ntpPeriod * 1000 * 3600;
-    objSettings->setValue("serverPeriod", ntpPeriod);
+    ntpPeriodHours = period_h;
+    ntpPeriodHours = (ntpPeriodHours < 0 || (ntpPeriodHours > THE_NTP_MAX_PERIOD_H)) ? 0 : ntpPeriodHours;
+    ntpPeriodms = ntpPeriodHours * 1000 * 3600;
+    objSettings->setValue("serverPeriod", ntpPeriodHours);
 
     objSettings->endGroup();
 
@@ -133,7 +136,7 @@ void        MyNtpClient::setNtpParams(const QString &server, int timeout_s, int 
     }
 
     // Attiva il timer NTP
-    if (ntpPeriod > 0)  {
+    if (ntpPeriodHours > 0)  {
         // no requestNTPSync();
         ntpSyncTimer.restart();
     }
@@ -145,6 +148,7 @@ void        MyNtpClient::requestNTPSync()
     newDateTime = invalidDateTime;
     timeChanged = true;
     doSync = true;
+    qDebug("myNtp, Ntp Sync");
     ntpSem.release(1);
 }
 
@@ -154,6 +158,7 @@ void        MyNtpClient::requestDateTimeChange(QDateTime newTime)
     newDateTime = newTime;
     timeChanged = true;
     doSync = false;
+    qDebug("myNtp, Manual Change");
     ntpSem.release(1);
 }
 
@@ -171,7 +176,7 @@ void        MyNtpClient::doSyncOrChange()
 // do a Clock change
 {
     doSync = false;
-    // Manual Date Request
+    // Manual Date Request before ntp sync request
     if (newDateTime.isValid())  {
         time_t rt = 0;
         struct tm *pt = NULL;
@@ -227,6 +232,7 @@ void        MyNtpClient::doSyncOrChange()
         mutexNTP.unlock();
     endManual:
         newDateTime = invalidDateTime;
+        qDebug("myNtp, Manual Change Done. Exit:%d", manualOK);
         emit ntpDateTimeChangeFinish(manualOK);
         return;
 
@@ -234,10 +240,11 @@ void        MyNtpClient::doSyncOrChange()
     else  {
         bool autoSyncOK = false;
 
-        if (ntpPeriod > 0) {
+        if (ntpPeriodHours > 0) {
             ntpSyncTimer.restart();
         }
         autoSyncOK = ntpClientProcedure();
+        qDebug("myNtp, NTP Sync Done. Exit:%d", autoSyncOK);
         emit ntpSyncFinish(! autoSyncOK);
     }
 }
@@ -324,7 +331,7 @@ void MyNtpClient::setTimestamp(int64_t TargetTimestamp)
     //qDebug("set time = 0x%08lx s, ntp 0x%016llx\n", target.tv_sec, TargetTimestamp);
 
     // time zone correction: utc offset and daylight saving time
-    target.tv_sec += 3600 * ntpOffset;
+    target.tv_sec += 3600 * ntpOffsetHours;
     if (ntpDst) {
         target.tv_sec += 3600;
     }
@@ -449,12 +456,12 @@ bool MyNtpClient::ntpClientProcedure()
 
         FD_ZERO(&recv_set);
         FD_SET(theUdpSocket, &recv_set);
-        timeout.tv_sec = (long) ntpTimeout;
+        timeout.tv_sec = (long) ntpTimeoutSecs;
         timeout.tv_usec = 0;
         selectStatus = select(theUdpSocket + 1, &recv_set, NULL, NULL, &timeout);
        // qDebug("\n");
         if (selectStatus == 0) {
-            qDebug("ERROR: cannot receive reply (timeout %d s)\n", ntpTimeout);
+            qDebug("ERROR: cannot receive reply (timeout %d s)\n", ntpTimeoutSecs);
             goto exit_function;
         } else if (selectStatus < 0) {
             qDebug("ERROR: cannot receive reply (error = %d)\n", selectStatus);
@@ -535,28 +542,28 @@ QDateTime MyNtpClient::getTimeBefore()
     return timeBeforeChange;
 }
 
-QMutex* MyNtpClient::getNTPMutex()
-{
-    return &mutexNTP;
-}
 
 void MyNtpClient::run()
 {
-    while (1) {
-        int ntpTimeWait = ntpPeriod == 0 ? 1 : ntpPeriod;
-
-        if (ntpPeriodms > 0 && ntpSyncTimer.elapsed() > ntpPeriodms) {
+    while (1)  {
+        // Periodic Time-out elapsed, release sem
+        if (ntpPeriodms > 0 && ntpSyncTimer.hasExpired(ntpPeriodms)) {
             //check for NTP autosync
             timeChanged = true;
             doSync = true;
             ntpSem.release(1);
-        }        
-        if (ntpSem.tryAcquire(1, ntpTimeWait)) {
+        }
+        // NTP Procedure must start
+        if (ntpSem.tryAcquire(1)) {
             // resource grabbed, do NTP things
             timeBeforeChange = QDateTime::currentDateTime();
+            qDebug("myNtp, Change Requested");
             doSyncOrChange();
         } else {
             // cant grab resource;
+            // qDebug("myNtp, Nothing to do");
+            msleep(NTP_TIMER_WAIT);
         }
+
     }
 }
