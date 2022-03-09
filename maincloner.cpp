@@ -69,7 +69,7 @@ MainCloner::MainCloner(QWidget *parent) :
     // ui->cmdClock->setVisible(false);
     ui->cmdClock->setEnabled(true);
     // TODO: Abilitazione del bottone Info (Menu)
-    ui->cmdMenu->setEnabled(false);
+    ui->cmdMenu->setEnabled(true);
     // Clear values
     szDestination.clear();
     szSource.clear();
@@ -128,12 +128,16 @@ bool MainCloner::loadInfo()
                     fRes = true;
                 }
                 // Versione corrente    Release:
-                if (line.startsWith("Release:"))  {
+                else if (line.startsWith("Release:"))  {
                     line.replace("Release:", "");
                     szTargetVersion = line.trimmed();
                     ui->lblVersion->setText(QString(" v%1") .arg(szTargetVersion));
                 }
-
+                // Versione QT
+                else if (line.startsWith("Qt:"))  {
+                    line.replace("Qt:", "");
+                    szQtVersion = line.trimmed();
+                }
             }
         }
         file.close();
@@ -323,12 +327,17 @@ void MainCloner::on_cmdVPN_clicked()
             }
             // Remove Existing Cert
             if (nAction & OVPN_CERT_REMOVE && QFile::exists(szVPNOriginalFile))  {
+                // Remove
                 szCommand = QString("rm -f %1") .arg(szVPNOriginalFile);
                 commandList.append(szCommand);
             }
             // Add new Cert
             if (nAction & OVPN_CERT_ADD && QFile::exists(szVPNNewFile))  {
+                // Copy file
                 szCommand = QString("cp %1 %2") .arg(szVPNNewFile) .arg(szVPNOriginalFile);
+                commandList.append(szCommand);
+                // Change Mode to 644
+                szCommand = QString("chmod 644 %1") .arg(szVPNOriginalFile);
                 commandList.append(szCommand);
             }
             // Sync

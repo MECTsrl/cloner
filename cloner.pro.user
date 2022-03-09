@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 2.8.1, 2022-03-09T12:45:46. -->
+<!-- Written by QtCreator 2.8.1, 2022-03-09T17:33:26. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -164,22 +164,27 @@
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedFiles">
        <value type="QString">/home/fmandracci/mect_suite_3.0/cloner/cloner</value>
        <value type="QString">/home/fmandracci/mect_suite_3.0/cloner/cloner</value>
+       <value type="QString">/home/fmandracci/mect_suite_3.0/cloner/cloner</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedHosts">
        <value type="QString">192.168.5.65</value>
        <value type="QString">192.168.5.213</value>
+       <value type="QString">192.168.5.61</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedRemotePaths">
+       <value type="QString">/local/root</value>
        <value type="QString">/local/root</value>
        <value type="QString">/local/root</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedSysroots">
        <value type="QString">/home/fmandracci/mect_suite_3.0/imx_mect/ltib/rootfs</value>
        <value type="QString">/home/fmandracci/mect_suite_3.0/imx_mect/ltib/rootfs</value>
+       <value type="QString">/home/fmandracci/mect_suite_3.0/imx_mect/ltib/rootfs</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
-       <value type="QDateTime">2022-03-09T12:42:46</value>
+       <value type="QDateTime">2022-03-09T16:26:46</value>
        <value type="QDateTime">2022-03-08T18:14:36</value>
+       <value type="QDateTime">2022-03-09T17:32:59</value>
       </valuelist>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.Incremental">true</value>
      </valuemap>

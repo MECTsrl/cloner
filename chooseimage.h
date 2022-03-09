@@ -4,7 +4,6 @@
 #include <QDialog>
 #include <QString>
 #include <QStringList>
-#include <QListWidgetItem>
 #include <QTimerEvent>
 
 namespace Ui {

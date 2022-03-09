@@ -1,10 +1,11 @@
 #ifndef PUBLICS_H
 #define PUBLICS_H
 
-#include "myntpclient.h"
-
+#include <QFile>
+#include <QDir>
 
 #include <QString>
+#include <QList>
 #include <QStringList>
 #include <QDateTime>
 #include <QMessageBox>
@@ -82,6 +83,7 @@
 extern QString     szModel;                     // Target Model
 extern QString     szSerialNO;                  // Target Serial #
 extern QString     szTargetVersion;             // MS Target Version
+extern QString     szQtVersion;                 // Qt Release
 extern QString     szClonerVersion;             // Cloner App Version
 extern QString     sysUpdateModelFile;          // Sysupdate Model File
 extern QString     mfgToolsModelDir;            // MFG Tools Model Directory (contains Local)

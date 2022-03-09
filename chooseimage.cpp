@@ -3,7 +3,7 @@
 
 #include "publics.h"
 
-#include <QDir>
+#include <QListWidgetItem>
 
 ChooseImage::ChooseImage(QWidget *parent) :
     QDialog(parent),

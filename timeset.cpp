@@ -1,6 +1,7 @@
 #include "timeset.h"
 #include "ui_timeset.h"
 #include "publics.h"
+#include "myntpclient.h"
 
 
 #include "numpad.h"
@@ -11,6 +12,8 @@
 #include <QDate>
 #include <QTime>
 #include <QObject>
+
+
 
 #define TIME_MASK "HH:mm:ss"
 #define DATE_MASK "yyyy-MM-dd"

@@ -3,8 +3,6 @@
 
 #include "publics.h"
 
-#include <QDir>
-#include <QFile>
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QHeaderView>

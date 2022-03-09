@@ -340,6 +340,9 @@ color: Yellow;</string>
          <pointsize>9</pointsize>
         </font>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="styleSheet">
         <string notr="true"/>
        </property>
@@ -377,6 +380,9 @@ color: Yellow;</string>
          <family>DejaVu Sans</family>
          <pointsize>9</pointsize>
         </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
        </property>
        <property name="styleSheet">
         <string notr="true"/>
@@ -467,6 +473,9 @@ color: Yellow;</string>
           <pointsize>9</pointsize>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="text">
          <string notr="true">Ok</string>
         </property>
@@ -495,6 +504,9 @@ color: Yellow;</string>
           <family>DejaVu Sans</family>
           <pointsize>9</pointsize>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
         </property>
         <property name="text">
          <string notr="true">Cancel</string>

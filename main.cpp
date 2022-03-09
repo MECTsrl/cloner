@@ -17,6 +17,7 @@
 QString     szModel;                // Target Model
 QString     szSerialNO;             // Target Serial #
 QString     szTargetVersion;        // MS Target Version
+QString     szQtVersion;            // Qt Release
 QString     szClonerVersion;        // Cloner App Version
 QString     sysUpdateModelFile;     // Sysupdate Model File
 QString     mfgToolsModelDir;       // MFG Tools Model Directory (contains Local)

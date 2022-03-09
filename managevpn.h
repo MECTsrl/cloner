@@ -22,6 +22,8 @@ protected:
 private slots:
     void on_cmdCancel_clicked();
     void on_cmdOk_clicked();
+    void on_cmdRemove_clicked();
+    void on_cmdAdd_clicked();
 
 private:
     Ui::ManageVPN   *ui;
