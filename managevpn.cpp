@@ -10,6 +10,7 @@ ManageVPN::ManageVPN(QWidget *parent) :
     ui->setupUi(this);
     ui->lblModel->setText(szModel);
     startTimer(REFRESH_MS);
+    userAction = OVPN_NO_ACTION;
 }
 
 ManageVPN::~ManageVPN()
@@ -29,3 +30,15 @@ void ManageVPN::on_cmdCancel_clicked()
 {
     this->reject();
 }
+
+void ManageVPN::on_cmdOk_clicked()
+{
+    this->accept();
+}
+
+int     ManageVPN::getSelectedAction()
+// Return user selected Action
+{
+    return userAction;
+}
+

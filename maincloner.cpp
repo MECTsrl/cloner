@@ -57,9 +57,12 @@ MainCloner::MainCloner(QWidget *parent) :
             ui->cmdSimple->setEnabled(dirSimple.exists(LOCAL_FS_TAR));
         }
     }
-    // TODO: Verifica che sulla chiavetta esistano dei file OVPN
-    // ui->cmdVPN->setVisible(false);
+    // Verifica che esista il certificato OVPN originale o da copiare
     ui->cmdVPN->setEnabled(false);
+    if ((not szVPNOriginalFile.isEmpty() && QFile::exists(szVPNOriginalFile)) || (not szVPNNewFile.isEmpty() && QFile::exists(szVPNNewFile)))  {
+        // Il bottone è abilitato se esiste un file nella cartella dei certificati con nome <SERIALNO>.ovpn
+        ui->cmdVPN->setEnabled(true);
+    }
     // Abilitazione bottone SSH_KEYS
     ui->cmdSSH->setEnabled(QFile::exists(SSH_KEY_FILE));
     // TODO: Abilitazione del bottone Time Set
@@ -105,7 +108,6 @@ bool MainCloner::loadInfo()
 
     // Cloner Version from Environment
     szClonerVersion = QString("%1.%2.%3") .arg(MECT_BUILD_MAJOR) .arg(MECT_BUILD_MINOR) .arg(MECT_BUILD_BUILD);
-
     QFile file(ROOTFS_VERSION);
     if(file.exists()) {
         file.open(QIODevice::ReadOnly);
@@ -139,11 +141,27 @@ bool MainCloner::loadInfo()
         if (! szModel.isEmpty())  {
             sysUpdateModelFile = QString(MODEL_SYSUPDATE_FILE) .arg(szClonerVersion) .arg(szModel);
             mfgToolsModelDir = QString(MODEL_IMAGE_DIR) .arg(szModel) .arg(szClonerVersion);
-            // fprintf(stderr, "SysUpdate File:[%s]-Simple Local Image Directory:[%s]\n",
-            //        sysUpdateModelFile.toLatin1().data(),
-            //        mfgToolsModelDir.toLatin1().data());
         }
     }
+    // Board Serial #
+    szSerialNO.clear();
+    QFile fileSerialNO(SERIAL_FILE);
+    // Caricamento del Serial Number della scheda
+    if (fileSerialNO.exists() && fileSerialNO.open(QIODevice::ReadOnly | QIODevice::Text))  {
+        char buf[STR_LEN];
+        if (fileSerialNO.readLine(buf, STR_LEN) > 0) {
+            szSerialNO = QString(buf).trimmed();
+        }
+        fileSerialNO.close();
+    }
+    // Open VPN Certificates
+    szVPNOriginalFile.clear();
+    szVPNNewFile.clear();
+    if (! szSerialNO.isEmpty())  {
+        szVPNOriginalFile = QString(OVPN_CERT_LOCFILE) .arg(szSerialNO);
+        szVPNNewFile   = QString(OVPN_CERT_NEWFILE) .arg(szSerialNO);
+    }
+    // qDebug("Board S/N: %s", szSerialNO.toLatin1().data());
     // Load the exclude list for the root file system.
     excludesRFSList.prepend("");
     QDir distDir(MOUNTED_FS);
@@ -165,7 +183,6 @@ bool MainCloner::loadInfo()
             }
         }
     }
-
     return fRes;
 }
 
@@ -184,7 +201,7 @@ QString MainCloner::getDefaultDirName()
 void MainCloner::on_cmdBackup_clicked()
 {
     alphanumpad * dk;
-    char        value[256];
+    char        value[STR_LEN];
     QString     szLocalTar;
 
     szDestination.clear();
@@ -228,7 +245,7 @@ void MainCloner::on_cmdBackup_clicked()
         QDir::setCurrent(MOUNTED_FS);
         runningAction = ACTION_BACKUP;
         startElapsed.start();
-        execCommadList();
+        execCommandList();
     }
     dk->deleteLater();
 }
@@ -280,11 +297,59 @@ void MainCloner::on_cmdRestore_clicked()
 
 void MainCloner::on_cmdVPN_clicked()
 {
-    ManageVPN     *openVPNManager;
+    ManageVPN       *openVPNManager;
+    QString         szCommand;
 
     openVPNManager = new ManageVPN(this);
     openVPNManager->showFullScreen();
-    openVPNManager->exec();
+    if (openVPNManager->exec() == QDialog::Accepted)   {
+        // Get Action to be performed
+        int nAction = openVPNManager->getSelectedAction();
+        if (nAction > OVPN_NO_ACTION)  {
+            commandList.clear();
+            // Stop VPN Service
+            szCommand = QString(OVPN_COMMAND) .arg("stop");
+            commandList.append(szCommand);
+            szCommand = QString("sleep 2");
+            commandList.append(szCommand);
+            // Mount rootfs as R/W
+            szCommand = QString(MOUNT_ROOTFS_RW);
+            commandList.append(szCommand);
+            // Check Open VPN Config Dir
+            QDir vpnConfigDir(OVPN_CONF_DIR);
+            if (! vpnConfigDir.exists())  {
+                szCommand = QString("mkdir -p %1") .arg(OVPN_CONF_DIR);
+                commandList.append(szCommand);
+            }
+            // Remove Existing Cert
+            if (nAction & OVPN_CERT_REMOVE && QFile::exists(szVPNOriginalFile))  {
+                szCommand = QString("rm -f %1") .arg(szVPNOriginalFile);
+                commandList.append(szCommand);
+            }
+            // Add new Cert
+            if (nAction & OVPN_CERT_ADD && QFile::exists(szVPNNewFile))  {
+                szCommand = QString("cp %1 %2") .arg(szVPNNewFile) .arg(szVPNOriginalFile);
+                commandList.append(szCommand);
+            }
+            // Sync
+            szCommand = QString("sync");
+            commandList.append(szCommand);
+            // Mount Root File System as RO
+            szCommand = QString(MOUNT_ROOTFS_RO);
+            commandList.append(szCommand);
+            // Restart VPN Service
+            szCommand = QString(OVPN_COMMAND) .arg("start");
+            commandList.append(szCommand);
+            // Avvio del Task
+            runningAction = ACTION_OVPN;
+            // Restart del Timer
+            startElapsed.start();
+            execCommandList();
+        }
+    }
+    else  {
+        qDebug("VPN: No action required");
+    }
     openVPNManager->deleteLater();
 }
 
@@ -407,10 +472,10 @@ void MainCloner::restoreLocalFile(QString &szLocalTar, QStringList &files2Exclud
     runningAction = ACTION_RESTORE;
     // Restart del Timer
     startElapsed.start();
-    execCommadList();
+    execCommandList();
 }
 
-void MainCloner::execCommadList()
+void MainCloner::execCommandList()
 {
     bool        allOK = true;
     QString     szTitle;
@@ -440,6 +505,10 @@ void MainCloner::execCommadList()
             szTitle = "Restore";
             szMessage = QString("Restore from [%1] Successfully completed!") .arg(szSource);
         }
+        else if (runningAction == ACTION_OVPN)  {
+            szTitle = "Open VPN";
+            szMessage = QString("Update OVPN Config Successfully completed!");
+        }
         qDebug("Execution Ended: elapsed [%d]s", (int) (startElapsed.elapsed() / 1000));
         QMessageBox::information(this, szTitle, szMessage, QMessageBox::Ok);
     }
@@ -451,6 +520,10 @@ void MainCloner::execCommadList()
         else if (runningAction == ACTION_RESTORE)  {
             szTitle = "Restore";
             szMessage = QString("Restore from [%1] Failed!") .arg(szSource);
+        }
+        else if (runningAction == ACTION_OVPN)  {
+            szTitle = "Open VPN";
+            szMessage = QString("Update OVPN Failed!");
         }
         qCritical("Failed Command [%s]", szRunningCommand.toLatin1().data());
         QMessageBox::critical(this, szTitle, szMessage, QMessageBox::Ok);

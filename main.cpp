@@ -15,11 +15,14 @@
 
 
 QString     szModel;                // Target Model
+QString     szSerialNO;             // Target Serial #
 QString     szTargetVersion;        // MS Target Version
 QString     szClonerVersion;        // Cloner App Version
 QString     sysUpdateModelFile;     // Sysupdate Model File
 QString     mfgToolsModelDir;       // MFG Tools Model Directory (contains Local)
 QString     szAlphaStyle;           // Alphanumpad Stylesheet String
+QString     szVPNOriginalFile;      // OpenVPN Certificate original file
+QString     szVPNNewFile;           // OpenVPN Certificate new file
 int         screen_width;           // Screen width  in Pixel
 int         screen_height;          // Screen height in Pixel
 

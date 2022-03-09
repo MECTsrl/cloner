@@ -373,7 +373,7 @@ bool NetCfg::saveWAN0cfg()
     {
         netcfg_ini_set("NAMESERVERP02", ui->pushButton_wan0_DNS2->text(),NET_CONF_FILE);
     }
-    char command[256];
+    char command[STR_LEN];
     system("/usr/sbin/usb3g.sh stop"); // do wait
     sprintf(command, "/usr/sbin/usb3g.sh setup \"%s\" \"%s\" >/dev/null 2>&1 ",
             ui->pushButton_wan0_dialnb->text().toAscii().data(),

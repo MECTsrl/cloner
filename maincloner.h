@@ -1,6 +1,8 @@
 #ifndef MAINCLONER_H
 #define MAINCLONER_H
 
+#include "publics.h"
+
 #include <QWidget>
 #include <QTimer>
 #include <QString>
@@ -30,7 +32,7 @@ private slots:
     void on_cmdNetwork_clicked();
     void on_cmdSimple_clicked();
     void on_cmdMenu_clicked();
-    void execCommadList();
+    void execCommandList();
 
 private:
     bool        loadInfo();
@@ -52,8 +54,8 @@ private:
 
     // Variabili di Cloner
     QTimer      *refresh_timer;
-    char backupDir[256];
-    char restoreDir[256];
+    char backupDir[STR_LEN];
+    char restoreDir[STR_LEN];
 
 };
 

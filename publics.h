@@ -19,8 +19,11 @@
 #define MECT_BUILD_BUILD 0
 #endif
 
+#define STR_LEN 256
 
 #define ROOTFS_VERSION          "/rootfs_version"
+#define SERIAL_FILE             "/etc/serial.conf"
+
 #define MOUNTED_FS              "/tmp/cloner/"
 #define MOUNTED_USB             "/tmp/mnt/"
 #define CLONED_IMAGES_DIR       MOUNTED_USB"cloner/"
@@ -33,6 +36,16 @@
 #define SSH_KEY_DIR             MOUNTED_USB"keys/"
 #define SSH_KEY_FILE            "/etc/dropbear/authorized_keys"
 #define SSH_KEY_SMILY           "root@vpndev.vpn-smily.com"
+
+#define OVPN_CERT_DIR           MOUNTED_USB"ovpn/"
+#define OVPN_CONF_DIR           "/etc/openvpn/"
+#define OVPN_COMMAND            "/etc/rc.d/init.d/openvpn %1"
+#define OVPN_CERT_NEWFILE       OVPN_CERT_DIR"%1.ovpn"
+#define OVPN_CERT_LOCFILE       OVPN_CONF_DIR"%1.ovpn"
+#define OVPN_NO_ACTION          0
+#define OVPN_CERT_REMOVE        1
+#define OVPN_CERT_ADD           2
+
 // Columns in SSH Keys
 #define SSH_KEY_TYPE            0
 #define SSH_KEY_VALUE           1
@@ -58,6 +71,7 @@
 #define ACTION_NONE             0
 #define ACTION_BACKUP           1
 #define ACTION_RESTORE          2
+#define ACTION_OVPN             3
 
 #define RAMDISK_SIZE            48
 
@@ -66,11 +80,14 @@
 
 
 extern QString     szModel;                     // Target Model
+extern QString     szSerialNO;                  // Target Serial #
 extern QString     szTargetVersion;             // MS Target Version
 extern QString     szClonerVersion;             // Cloner App Version
 extern QString     sysUpdateModelFile;          // Sysupdate Model File
 extern QString     mfgToolsModelDir;            // MFG Tools Model Directory (contains Local)
 extern QString     szAlphaStyle;                // Alphanumpad Stylesheet String
+extern QString     szVPNOriginalFile;           // OpenVPN Certificate original file
+extern QString     szVPNNewFile;                // OpenVPN Certificate new file
 extern int         screen_width;                // Screen width  in Pixel
 extern int         screen_height;               // Screen height in Pixel
 
