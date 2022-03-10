@@ -201,7 +201,7 @@ color: Yellow;</string>
       </font>
      </property>
      <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="contextMenuPolicy">
       <enum>Qt::NoContextMenu</enum>

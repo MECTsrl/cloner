@@ -177,14 +177,27 @@ QTabWidget::tab-bar {
         left: 10px;
 }
 QTabBar::tab {
+  font-size: 7pt;
   background: 	rgb(62, 104, 168);
   color: white;
-  padding: 10px;
-  }
- QTabBar::tab:selected {
-  background: rgb(199, 213, 234);
-  color: rgb(41, 69, 112);
- }
- QTabBar::tab:!selected {
-     margin-top: 4px; /* make non-selected tabs look smaller */
+  padding: 8px;
+  min-width:48px;
 }
+QTabBar::tab:selected {
+  background: LightSkyBlue;
+  color: DarkBlue;
+  margin-left: -1px;
+  margin-right: -1px;
+}
+QTabBar::tab:!selected {
+    margin-top: 4px; /* make non-selected tabs look smaller */
+}
+/* QLineEdit, QPlainTextEdit */
+QLineEdit, QPlainTextEdit {
+    font-size: 7pt;
+    border: 1px solid rgb(125, 158, 207);
+    border-radius: 4px;
+    color:GhostWhite;
+    background-color: rgb(62, 104, 168);
+}
+

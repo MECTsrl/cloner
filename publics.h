@@ -9,6 +9,8 @@
 #include <QStringList>
 #include <QDateTime>
 #include <QMessageBox>
+#include <QDebug>
+
 
 #ifndef MECT_BUILD_MAJOR
 #define MECT_BUILD_MAJOR 3

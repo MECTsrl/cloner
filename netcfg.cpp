@@ -3,7 +3,6 @@
 
 #include "publics.h"
 #include <QProcess>
-#include <QDebug>
 #include <QFile>
 #include <stdio.h>
 #include <QTimer>

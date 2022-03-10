@@ -10,7 +10,6 @@
 #include <unistd.h>
 
 #include <QSettings>
-#include <QDebug>
 
 
 
