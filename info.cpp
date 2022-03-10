@@ -21,6 +21,7 @@ Info::Info(QWidget *parent) :
     ui->lblAction->setText("Target Info");
     ui->lblModel->setText(szModel);
     refreshAllTabs();
+    ui->tabWidget->setCurrentIndex(0);
     startTimer(REFRESH_MS);
 }
 
