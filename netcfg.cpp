@@ -35,6 +35,9 @@ NetCfg::NetCfg(QWidget *parent) :
     {
         ui->tabWidget->removeTab(0);
     }
+    else {
+        ui->tabWidget->setCurrentIndex(0);
+    }
     ui->checkBox_wlan0_DHCP->setChecked(true);
     wlan0_essid = "";
     wlan0_pwd = "";
