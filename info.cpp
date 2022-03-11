@@ -13,6 +13,11 @@
 #define DNS_FILE        "/etc/resolv.conf"
 #define ROUTING_FILE    "/proc/net/route"
 
+#define USB0_DEVICE     "/proc/bus/usb/001/"
+#define USB1_DEVICE     "/proc/bus/usb/002/"
+#define SDCARD_DEVICE   "/dev/mmcblk0"
+
+
 Info::Info(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Info)
@@ -57,17 +62,52 @@ void Info::refreshAllTabs()
 
 void Info::refreshSystemTab()
 {
+    bool    usb0Inserted = false;
+    bool    usb1Inserted = false;
+    bool    sdCardPresent = false;
+    int     nFiles = 0;
+
     ui->sys_text->setPlainText("");
     ui->sys_text->appendPlainText(QString("Product Id:\t[ %1]") .arg(szModel));
     ui->sys_text->appendPlainText(QString("S/N:\t[%1]") .arg(szSerialNO));
     ui->sys_text->appendPlainText(QString("Release:\t[%1]") .arg(szTargetVersion));
     ui->sys_text->appendPlainText(QString("Qt:\t[%1]") .arg(szQtVersion));
+    ui->sys_text->appendPlainText("");
+    // USB0
+    QDir usb0(USB0_DEVICE);
+    if (usb0.exists())  {
+        nFiles = usb0.entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name).count();
+        // Se nel Device Path esiste almeno un file OLTRE all'Hub, è presente un Device
+        if (nFiles > 1)  {
+            usb0Inserted = true;
+        }
+    }
+    ui->sys_text->appendPlainText(QString("USB 0:\t[%1]") .arg(usb0Inserted ? "Plugged" : "------", 6));
+    // USB1
+    QDir usb1(USB1_DEVICE);
+    if (usb1.exists())  {
+        nFiles = usb1.entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name).count();
+        // Se nel Device Path esiste almeno un file OLTRE all'Hub, è presente un Device
+        if (nFiles > 1)  {
+            usb1Inserted = true;
+        }
+    }
+    ui->sys_text->appendPlainText(QString("USB 1:\t[%1]") .arg(usb1Inserted ? "Plugged" : "------", 6));
+    sdCardPresent = QFile::exists(SDCARD_DEVICE);
+    ui->sys_text->appendPlainText(QString("SD Card:\t[%1]") .arg(sdCardPresent ? "Present" : "------", 6));
     ui->sys_text->moveCursor(QTextCursor::Start);
 
 }
 
 void Info::refreshNetworkingTabs()
 {
+
+    ui->dns_text->setPlainText("");
+    ui->eth0_text->setPlainText("");
+    ui->wlan0_text->setPlainText("");
+    ui->ppp0_text->setPlainText("");
+    ui->tun0_text->setPlainText("");
+
     FILE *fp = NULL;
     char buff[1024];
 
@@ -99,10 +139,6 @@ void Info::refreshNetworkingTabs()
     // [eth0],[wlan0],[ppp0],[tun_mrs]: MACaddress and IPaddress(es)
     QList<QNetworkInterface> allInterfaces = QNetworkInterface::allInterfaces();
     QNetworkInterface iface;
-    ui->eth0_text->setPlainText("");
-    ui->wlan0_text->setPlainText("");
-    ui->ppp0_text->setPlainText("");
-    ui->tun0_text->setPlainText("");
     foreach(iface, allInterfaces) {
         QList<QNetworkAddressEntry> allEntries = iface.addressEntries();
         QPlainTextEdit *plainText = NULL;
@@ -162,10 +198,9 @@ void Info::refreshNetworkingTabs()
         unsigned    Destination, Gateway;
         int         Flags, RefCnt, Use, Metric;
         unsigned    Mask;
-        int         MTU, Window, IRTT, nLine = 0;
+        int         MTU, Window, IRTT;
         const char *fmt = "%16s %X %X %X %d %d %d %X %d %d %d";
         while (fgets(buff, 1023, fp)) {
-            qDebug("%s: %d [%s]", ROUTING_FILE, ++nLine, buff);
             int num = sscanf(buff, fmt,
                 Iface, &Destination, &Gateway, &Flags, &RefCnt, &Use, &Metric, &Mask, &MTU, &Window, &IRTT);
             if (num < 11) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 2.8.1, 2022-03-10T16:48:19. -->
+<!-- Written by QtCreator 2.8.1, 2022-03-11T17:39:02. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -166,14 +166,17 @@
        <value type="QString">/home/fmandracci/mect_suite_3.0/cloner/cloner</value>
        <value type="QString">/home/fmandracci/mect_suite_3.0/cloner/cloner</value>
        <value type="QString">/home/fmandracci/mect_suite_3.0/cloner/cloner</value>
+       <value type="QString">/home/fmandracci/mect_suite_3.0/cloner/cloner</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedHosts">
        <value type="QString">192.168.5.76</value>
        <value type="QString">192.168.5.65</value>
        <value type="QString">192.168.5.213</value>
+       <value type="QString">192.168.5.206</value>
        <value type="QString">192.168.5.61</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedRemotePaths">
+       <value type="QString">/local/root</value>
        <value type="QString">/local/root</value>
        <value type="QString">/local/root</value>
        <value type="QString">/local/root</value>
@@ -184,11 +187,13 @@
        <value type="QString">/home/fmandracci/mect_suite_3.0/imx_mect/ltib/rootfs</value>
        <value type="QString">/home/fmandracci/mect_suite_3.0/imx_mect/ltib/rootfs</value>
        <value type="QString">/home/fmandracci/mect_suite_3.0/imx_mect/ltib/rootfs</value>
+       <value type="QString">/home/fmandracci/mect_suite_3.0/imx_mect/ltib/rootfs</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
        <value type="QDateTime">2022-03-10T15:49:12</value>
-       <value type="QDateTime">2022-03-10T16:44:48</value>
+       <value type="QDateTime">2022-03-11T16:08:25</value>
        <value type="QDateTime">2022-03-08T18:14:36</value>
+       <value type="QDateTime">2022-03-11T16:12:58</value>
        <value type="QDateTime">2022-03-10T16:47:51</value>
       </valuelist>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.Incremental">true</value>
