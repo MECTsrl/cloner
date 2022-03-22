@@ -649,13 +649,13 @@ bool NetCfg::saveWLAN0cfg()
 
 void NetCfg::loadWLAN0cfg()
 {
-
+    /* ESSID */
     QString ESSIDW0 = netcfg_ini_get("ESSIDW0",NET_CONF_FILE);
     if (!ESSIDW0.isEmpty()) {
         int index = ui->comboBox_wlan0_essid->findText(wlan0_essid);
         if (index  <  0) {
             ui->comboBox_wlan0_essid->addItem(ESSIDW0.remove("\""));
-             ui->comboBox_wlan0_essid->setCurrentIndex(1);
+            ui->comboBox_wlan0_essid->setCurrentIndex(ui->comboBox_wlan0_essid.count() - 1);
         } else {
             ui->comboBox_wlan0_essid->setCurrentIndex(index);
         }
@@ -663,6 +663,18 @@ void NetCfg::loadWLAN0cfg()
     } else {
         ui->pushButton_hidden_wlan0->setText(NONE);
     }
+
+    /* PASSWORD */
+    QString PASSWORDW0 = netcfg_ini_get("PASSWORDW0",NET_CONF_FILE);
+    if (!PASSWORDW0.isEmpty()) {
+        wlan0_pwd = PASSWORDW0.remove("\"");
+        ui->pushButton_wlan0_pwd->setText(QString("*").repeated(wlan0_pwd.length()));
+    }
+    else    {
+        wlan0_pwd.clear();
+        ui->pushButton_wlan0_pwd->setText(NO_IP);
+    }
+
     /* DHCP */
     QString BOOTPROTOW0 = netcfg_ini_get("BOOTPROTOW0",NET_CONF_FILE);
     if (!BOOTPROTOW0.isEmpty() && BOOTPROTOW0 == "[DHCP]")
