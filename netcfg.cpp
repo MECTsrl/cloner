@@ -655,7 +655,7 @@ void NetCfg::loadWLAN0cfg()
         int index = ui->comboBox_wlan0_essid->findText(wlan0_essid);
         if (index  <  0) {
             ui->comboBox_wlan0_essid->addItem(ESSIDW0.remove("\""));
-            ui->comboBox_wlan0_essid->setCurrentIndex(ui->comboBox_wlan0_essid.count() - 1);
+            ui->comboBox_wlan0_essid->setCurrentIndex(ui->comboBox_wlan0_essid->count() - 1);
         } else {
             ui->comboBox_wlan0_essid->setCurrentIndex(index);
         }
@@ -672,7 +672,7 @@ void NetCfg::loadWLAN0cfg()
     }
     else    {
         wlan0_pwd.clear();
-        ui->pushButton_wlan0_pwd->setText(NO_IP);
+        ui->pushButton_wlan0_pwd->setText(NONE);
     }
 
     /* DHCP */
