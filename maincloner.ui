@@ -333,7 +333,7 @@ max-width: 200px;
 max-height: 220px;
 background-repeat: no-repeat;
 background-position: center center;
-background-image: url(:/libicons/img/Save.png);
+background-image: url(:/libicons/img/Save_64.png);
 text-align: bottom center;
 </string>
        </property>
@@ -378,7 +378,7 @@ text-align: bottom center;
 max-height: 220px;
 background-repeat: no-repeat;
 background-position: center center;
-background-image: url(:/libicons/img/Load.png);
+background-image: url(:/libicons/img/Load_64.png);
 text-align: bottom center;
 </string>
        </property>

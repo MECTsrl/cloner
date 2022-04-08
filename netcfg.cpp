@@ -271,7 +271,7 @@ void NetCfg::on_pushButton_wan0_dialnb_clicked()
 void NetCfg::on_pushButton_wan0_apn_clicked()
 {
     char value [32];
-    dk = new alphanumpad(value, ui->pushButton_wan0_apn->text().toAscii().data());
+    dk = new alphanumpad(value, true, ui->pushButton_wan0_apn->text().toAscii().data());
     dk->setStyleSheet(szAlphaStyle);
     dk->showFullScreen();
     if(dk->exec() == QDialog::Accepted)
@@ -437,7 +437,7 @@ void NetCfg::on_pushButton_hidden_wlan0_clicked()
     if(currentText.isEmpty()) {
        currentText = NONE;
     }
-    dk = new alphanumpad(value, currentText.toAscii().data());
+    dk = new alphanumpad(value, true, currentText.toAscii().data());
     dk->setStyleSheet(szAlphaStyle);
     dk->showFullScreen();
     if(dk->exec() == QDialog::Accepted)
@@ -771,7 +771,7 @@ void NetCfg::on_pushButton_wlan0_enable_clicked()
 void NetCfg::on_pushButton_wlan0_pwd_clicked()
 {
     char value [32];
-    dk = new alphanumpad(value, wlan0_pwd.toAscii().data(), true);
+    dk = new alphanumpad(value, true, wlan0_pwd.toAscii().data(), true);
     dk->setStyleSheet(szAlphaStyle);
     dk->showFullScreen();
     if(dk->exec()==QDialog::Accepted)

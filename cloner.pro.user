@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 2.8.1, 2022-03-22T17:18:12. -->
+<!-- Written by QtCreator 2.8.1, 2022-04-08T14:00:51. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -190,9 +190,9 @@
        <value type="QString">/home/fmandracci/mect_suite_3.0/imx_mect/ltib/rootfs</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
-       <value type="QDateTime">2022-03-10T15:49:12</value>
-       <value type="QDateTime">2022-03-11T16:08:25</value>
-       <value type="QDateTime">2022-03-08T18:14:36</value>
+       <value type="QDateTime">2022-04-08T13:54:50</value>
+       <value type="QDateTime">2022-04-08T13:57:37</value>
+       <value type="QDateTime">2022-04-08T13:51:24</value>
        <value type="QDateTime">2022-03-11T16:12:58</value>
        <value type="QDateTime">2022-03-10T16:47:51</value>
       </valuelist>

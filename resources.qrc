@@ -1,39 +1,40 @@
 <RCC>
     <qresource prefix="/libicons">
+        <file>img/4g_connect.png</file>
+        <file>img/Apply_48.png</file>
         <file>img/Back.png</file>
-        <file>img/Cancel_32.png</file>
+        <file>img/Cancel_48.png</file>
         <file>img/Checked_32.png</file>
         <file>img/Clear.png</file>
         <file>img/Clock-icon.png</file>
-        <file>img/Delete.png</file>
+        <file>img/Close_48.png</file>
+        <file>img/Discard_48.png</file>
+        <file>img/disconnect.png</file>
         <file>img/Factory_64.png</file>
+        <file>img/Help_48.png</file>
         <file>img/info_64.png</file>
         <file>img/Key64.png</file>
-        <file>img/Load.png</file>
+        <file>img/Load_64.png</file>
         <file>img/Mect64.png</file>
+        <file>img/Minus16.png</file>
         <file>img/Network_64.png</file>
-        <file>img/OK.png</file>
+        <file>img/No_48.png</file>
+        <file>img/Ok_48.png</file>
         <file>img/OpenVPN64.png</file>
-        <file>img/Open_32.png</file>
+        <file>img/Open_48.png</file>
+        <file>img/Plus16.png</file>
         <file>img/Radio_Checked_32.png</file>
         <file>img/Radio_UnChecked_32.png</file>
         <file>img/Reload_64.png</file>
-        <file>img/Reset_32.png</file>
-        <file>img/Save.png</file>
-        <file>img/Save_32.png</file>
+        <file>img/Reset_48.png</file>
+        <file>img/Save_48.png</file>
         <file>img/Trash_32.png</file>
         <file>img/Unchecked_32.png</file>
-        <file>img/Undo_32.png</file>
-        <file>img/Up.png</file>
         <file>img/usbpendrive_64.png</file>
         <file>img/wifi_connect.png</file>
-        <file>img/disconnect.png</file>
-        <file>img/4g_connect.png</file>
-        <file>img/Down.png</file>
-        <file>img/Up16r.png</file>
-        <file>img/Down16r.png</file>
-        <file>img/Plus16.png</file>
-        <file>img/Minus16.png</file>
+        <file>img/Yes_48.png</file>
+        <file>img/Save_64.png</file>
+        <file>img/Up.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file>cloner.qss</file>

@@ -87,13 +87,17 @@ void TimeSet::on_pushButtonSetManual_clicked()
 void TimeSet::on_pushButtonNTPServer_clicked()
 {
     char value [64];
-    alphanumpad tastiera_alfanum(value,ui->pushButtonNTPServer->text().toAscii().data());
-    tastiera_alfanum.showFullScreen();
-    if (tastiera_alfanum.exec()==QDialog::Accepted)
+    alphanumpad *tastiera_alfanum;
+    tastiera_alfanum = new  alphanumpad(value, true, ui->pushButtonNTPServer->text().toAscii().data());
+    tastiera_alfanum->setStyleSheet(szAlphaStyle);
+    tastiera_alfanum->showFullScreen();
+    if (tastiera_alfanum->exec()==QDialog::Accepted)
     {
         szTimeServer = QString(value);
         updateIface();
     }
+    tastiera_alfanum->deleteLater();
+
 }
 
 void TimeSet::on_pushButtonNTPSet_clicked()

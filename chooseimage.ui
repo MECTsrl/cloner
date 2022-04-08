@@ -620,7 +620,7 @@ color: Yellow;</string>
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/libicons/img/OK.png</normaloff>:/libicons/img/OK.png</iconset>
+         <normaloff>:/libicons/img/Ok_48.png</normaloff>:/libicons/img/Ok_48.png</iconset>
        </property>
       </widget>
      </item>
@@ -649,7 +649,7 @@ color: Yellow;</string>
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/libicons/img/Delete.png</normaloff>:/libicons/img/Delete.png</iconset>
+         <normaloff>:/libicons/img/Cancel_48.png</normaloff>:/libicons/img/Cancel_48.png</iconset>
        </property>
        <property name="autoDefault">
         <bool>false</bool>

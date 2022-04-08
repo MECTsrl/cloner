@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <property name="spacing">
     <number>0</number>
@@ -201,8 +204,17 @@ color: Yellow;</string>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
-     <property name="spacing">
-      <number>0</number>
+     <property name="leftMargin">
+      <number>2</number>
+     </property>
+     <property name="topMargin">
+      <number>2</number>
+     </property>
+     <property name="horizontalSpacing">
+      <number>6</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>4</number>
      </property>
      <item row="0" column="3">
       <widget class="QSpinBox" name="spinBoxAnno">
@@ -214,7 +226,7 @@ color: Yellow;</string>
        </property>
        <property name="minimumSize">
         <size>
-         <width>110</width>
+         <width>95</width>
          <height>36</height>
         </size>
        </property>
@@ -263,7 +275,7 @@ color: Yellow;</string>
        </property>
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>80</width>
          <height>36</height>
         </size>
        </property>
@@ -309,7 +321,7 @@ color: Yellow;</string>
        </property>
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>95</width>
          <height>36</height>
         </size>
        </property>
@@ -349,7 +361,7 @@ color: Yellow;</string>
        </property>
        <property name="minimumSize">
         <size>
-         <width>36</width>
+         <width>70</width>
          <height>36</height>
         </size>
        </property>
@@ -367,7 +379,7 @@ color: Yellow;</string>
 {
 border: 2px solid  rgb(94, 94, 94);
 border-radius: 8px;
-qproperty-icon: url(:/libicons/img/OK.png);
+qproperty-icon: url(:/libicons/img/Ok_48.png);
 qproperty-iconSize: 24px 24px;
 qproperty-focusPolicy: NoFocus;
 }
@@ -463,7 +475,7 @@ border: 2px solid  rgb(194, 194, 194);
        </property>
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>80</width>
          <height>36</height>
         </size>
        </property>
@@ -503,7 +515,7 @@ border: 2px solid  rgb(194, 194, 194);
        </property>
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>80</width>
          <height>36</height>
         </size>
        </property>
@@ -559,11 +571,17 @@ border: 2px solid  rgb(194, 194, 194);
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
+     <property name="leftMargin">
+      <number>2</number>
+     </property>
+     <property name="rightMargin">
+      <number>2</number>
+     </property>
      <property name="horizontalSpacing">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="verticalSpacing">
-      <number>2</number>
+      <number>4</number>
      </property>
      <item row="2" column="5">
       <widget class="QPushButton" name="pushButtonNTPSync">
@@ -836,7 +854,7 @@ border: 2px solid  rgb(194, 194, 194);
 {
 border: 2px solid  rgb(94, 94, 94);
 border-radius: 8px;
-qproperty-icon: url(:/libicons/img/Save.png);
+qproperty-icon: url(:/libicons/img/Save_48.png);
 qproperty-iconSize: 24px 24px;
 qproperty-focusPolicy: NoFocus;
 }
@@ -1027,7 +1045,7 @@ border: 2px solid  rgb(194, 194, 194);
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="spacing">
-       <number>2</number>
+       <number>4</number>
       </property>
       <property name="leftMargin">
        <number>2</number>
@@ -1095,13 +1113,13 @@ border: 2px solid  rgb(194, 194, 194);
        <widget class="QPushButton" name="cmdBack">
         <property name="minimumSize">
          <size>
-          <width>114</width>
+          <width>80</width>
           <height>30</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>200</width>
+          <width>80</width>
           <height>40</height>
          </size>
         </property>

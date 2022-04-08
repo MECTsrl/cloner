@@ -210,7 +210,7 @@ void MainCloner::on_cmdBackup_clicked()
 
     szDestination.clear();
     commandList.clear();
-    dk = new alphanumpad(value, false, getDefaultDirName().toAscii().data(), false, this);
+    dk = new alphanumpad(value, true, getDefaultDirName().toAscii().data());
     dk->setStyleSheet(szAlphaStyle);
     dk->showFullScreen();
     if (dk->exec() == QDialog::Accepted && strlen(value) != 0)
