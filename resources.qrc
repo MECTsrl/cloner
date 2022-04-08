@@ -28,13 +28,13 @@
         <file>img/Reload_64.png</file>
         <file>img/Reset_48.png</file>
         <file>img/Save_48.png</file>
+        <file>img/Save_64.png</file>
         <file>img/Trash_32.png</file>
         <file>img/Unchecked_32.png</file>
+        <file>img/Up.png</file>
         <file>img/usbpendrive_64.png</file>
         <file>img/wifi_connect.png</file>
         <file>img/Yes_48.png</file>
-        <file>img/Save_64.png</file>
-        <file>img/Up.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file>cloner.qss</file>
