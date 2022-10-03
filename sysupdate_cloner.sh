@@ -27,6 +27,30 @@ cleanup()
 
 /etc/rc.d/init.d/autoexec stop
 
+# Checking SD Card and umount Swap File if present
+sd_mount_point="/local/sd_card"
+SWAP_FILE="$sd_mount_point/swap/swap_file"
+sd_device_path="/dev/mmcblk0"
+if [ -e $sd_device_path ]; then
+   echo "Found an SD Raw Device: $sd_device_path"
+   SD_PRESENT=`mount|grep $sd_mount_point`
+   if test -n "$SD_PRESENT"  ; then
+      echo "Found an ext3 SD card mounted: $sd_mount_point"
+      if [ -e "$SWAP_FILE" ]; then
+         echo "Stop Swap File"
+         swapoff $SWAP_FILE
+      else
+         echo "No Swap file present"
+      fi
+      echo "Umount SD Card $sd_mount_point"
+      umount $sd_mount_point
+   else
+      echo "No SD card mounted"
+   fi
+else
+   echo "No SD card detected"
+fi
+
 cd "$WORKDIR"
 mount -o remount,ro /
 
