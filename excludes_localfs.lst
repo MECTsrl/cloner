@@ -4,3 +4,4 @@ flash/etc/wpa_supplicant/default.conf
 flash/etc/ppp
 var/spool/cron/crontabs/root
 flash/data/alarms
+sd_card
